@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription
+{% endblock %}
+
+{% block body %}
+	<div class="flex items-center justify-center min-h-screen animate-slide-in ">
+		<div class="w-full max-w-md p-8 space-y-6 bg-slate-800 text-white rounded-lg shadow-md">
+			<h1 class="text-3xl font-bold text-center ">Inscription</h1>
+
+			{% for flash_error in app.flashes('verify_email_error') %}
+				<div class="p-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+					{{ flash_error }}
+				</div>
+			{% endfor %}
+
+			{{ form_start(registrationForm, {'attr': {'class': 'space-y-4'}}) }}
+			{# Display global form errors outside of specific fields #}
+			{{ form_errors(registrationForm, {'attr': {'class': 'p-4 text-sm text-red-700 bg-red-100 rounded-lg'}}) }}
+
+			<div>
+				{{ form_label(registrationForm.email, 'Adresse e-mail', {'label_attr': {'class': 'block text-sm font-medium'}}) }}
+				{{ form_widget(registrationForm.email, {'attr': {'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'}}) }}
+				{{ form_errors(registrationForm.email, {'attr': {'class': 'mt-1 text-sm text-red-600'}}) }}
+			</div>
+
+			<div>
+				{{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'block text-sm font-medium'}}) }}
+				{{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'mt-1 block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'}}) }}
+				{{ form_errors(registrationForm.plainPassword, {'attr': {'class': 'mt-1 text-sm text-red-600'}}) }}
+			</div>
+
+			<div class="flex items-center">
+				{{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'}}) }}
+				{{ form_label(registrationForm.agreeTerms, 'J\'accepte les conditions d\'utilisation', {'label_attr': {'class': 'ml-2 block text-sm '}}) }}
+				{{ form_errors(registrationForm.agreeTerms, {'attr': {'class': 'mt-1 text-sm text-red-600'}}) }}
+			</div>
+
+			<button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+				S'inscrire
+			</button>
+			{{ form_end(registrationForm) }}
+            <div class="text-center">
+            <p class="text-sm my-4">Vous possédez déjà un compte ?</p>
+                <a href="{{ path('app_login') }}" class="text-blue-600 hover:text-gray-900">Se connecter</a>
+            </div>			
+		</div>
+	</div>
+{% endblock %}

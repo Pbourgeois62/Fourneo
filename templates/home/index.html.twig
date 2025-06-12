@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bienvenue sur Fourneo !{% endblock %}
+
+{% block body %}
+<div class="flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl w-full bg-white rounded-lg shadow-md p-8 space-y-6 text-center">
+        <h1 class="text-4xl font-extrabold text-gray-900 mb-4">
+            Bienvenue sur Fourneo ! <span class="text-blue-600">🚀</span>
+        </h1>
+
+        <p class="text-lg text-gray-700 leading-relaxed">
+            Fourneo est votre plateforme dédiée à la gestion simplifiée de vos tâches et projets.
+            Organisez, collaborez et réussissez vos objectifs avec nous !
+        </p>
+
+        <div class="mt-8 space-y-4">
+            <h2 class="text-2xl font-semibold text-gray-800">Commencez dès maintenant :</h2>
+            <ul class="list-disc list-inside text-gray-600 space-y-2 mx-auto max-w-sm">
+                <li class="flex items-center justify-center">
+                    <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    Explorez vos <span class="font-medium text-gray-800 ml-1">projets actifs</span>
+                </li>
+                <li class="flex items-center justify-center">
+                    <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    Ajoutez de <span class="font-medium text-gray-800 ml-1">nouvelles tâches</span>
+                </li>
+                <li class="flex items-center justify-center">
+                    <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    Invitez des <span class="font-medium text-gray-800 ml-1">collaborateurs</span>
+                </li>
+            </ul>
+        </div>
+
+        {# Example of conditional content based on user login status #}
+        {% if app.user %}
+            <p class="text-md text-gray-600 mt-6">
+                Heureux de vous revoir, <span class="font-semibold text-blue-700">{{ app.user.userIdentifier }}</span> !
+                Rendez-vous sur votre <a href="#" class="text-blue-600 hover:underline font-medium">tableau de bord</a> pour commencer.
+            </p>
+        {% else %}
+            <p class="text-md text-gray-600 mt-6">
+                Nouveau sur Fourneo ?
+                <a href="{{ path('app_register') }}" class="text-blue-600 hover:underline font-medium">Créez un compte</a> ou
+                <a href="{{ path('app_login') }}" class="text-blue-600 hover:underline font-medium">connectez-vous</a> !
+            </p>
+        {% endif %}        
+    </div>
+</div>
+{% endblock %}
