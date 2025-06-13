@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter des produits à l'événement{% endblock %}
+
+{% block body %}
+    <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-8">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">
+            Ajouter des produits à l'événement : <span class="text-indigo-600">{{ saleEvent.name }}</span>
+        </h1>
+
+        {{ form_start(form) }}
+
+        <div class="mb-4">
+            {{ form_label(form.products, 'Produits') }}
+            {{ form_widget(form.products, {
+                'attr': {
+                    'class': 'w-full border border-gray-300 rounded p-2',
+                    'multiple': 'multiple',
+                    'size': '10'
+                }
+            }) }}
+            {{ form_errors(form.products) }}
+        </div>
+
+        <div class="flex justify-end mt-6">
+            <button type="submit"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded shadow">
+                Ajouter les produits
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

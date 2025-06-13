@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des événements de vente
+{% endblock %}
+
+{% block body %}
+	<div class="container mx-auto bg-white py-8 px-6 rounded-lg shadow-md">
+		<h1 class="text-3xl font-bold mb-8 text-gray-800">Événements de vente</h1>
+
+		{% if sale_events is not empty %}
+			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{% for event in sale_events %}
+					<div class="relative border border-gray-200 rounded-lg p-4 shadow-sm bg-gray-50 hover:shadow-md transition-shadow">
+						<h2 class="text-xl font-semibold text-gray-900 mb-2">{{ event.name }}</h2>
+
+						{% if event.description %}
+							<p class="text-sm text-gray-600 italic mb-2">{{ event.description }}</p>
+						{% endif %}
+
+						<p class="text-sm text-gray-700 mb-1">
+							<strong>Adresse :</strong>
+							{{ event.address }}</p>
+
+						<p class="text-sm text-gray-700 mb-1">
+							<strong>Début :</strong>
+							{{ event.startDate ? event.startDate|date('d/m/Y H:i') : 'Non défini' }}</p>
+						<p class="text-sm text-gray-700 mb-4">
+							<strong>Fin :</strong>
+							{{ event.endDate ? event.endDate|date('d/m/Y H:i') : 'Non défini' }}</p>
+
+						{# --- Début de la section des produits --- #}
+						{% if event.productEvents is not empty %}
+							<div class="mt-4 pt-4 border-t border-gray-200">
+								<h3 class="text-md font-semibold text-gray-800 mb-2">Produits de l'événement :</h3>
+								<ul class="list-disc list-inside text-sm text-gray-700">
+									{% for productEvent in event.productEvents %}
+										<li>
+											{{ productEvent.product.name }}
+											- Quantité:
+											{{ productEvent.quantity }}
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+						{% else %}
+							<p class="text-sm text-gray-500 mt-4 pt-4 border-t border-gray-200">Aucun produit associé à cet événement.</p>
+						{% endif %}
+						{# --- Fin de la section des produits --- #}
+
+						<div class="absolute top-2 right-2 flex gap-2">
+							<a href="{{ path('sale_event_edit', {id: event.id}) }}" class="text-blue-600 hover:text-blue-800" title="Modifier">
+								<i class="bi bi-pencil-square text-lg"></i>
+							</a>
+							<form method="post" action="{{ path('sale_event_delete', {id: event.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">
+								<input type="hidden" name="_method" value="DELETE">
+								<input
+								type="hidden" name="_token" value="{{ csrf_token('delete_sale_event_' ~ event.id) }}">
+								{# <--- CHANGED THIS LINE #}
+								<button type="submit" class="text-red-600 hover:text-red-800" title="Supprimer">
+									<i class="bi bi-trash text-lg"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% else %}
+			<p class="text-gray-600">Aucun événement de vente enregistré.</p>
+		{% endif %}
+
+		<div class="mt-8 text-right">
+			<a href="{{ path('sale_event_new') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">
+				<i class="bi bi-plus-circle mr-2"></i>Créer un événement
+			</a>
+		</div>
+	</div>
+{% endblock %}

@@ -3,25 +3,47 @@
 {% block title %}Nouveau produit - Fourneo{% endblock %}
 
 {% block body %}
-    <h1 class="text-2xl font-bold mb-6 text-gray-800">Créer un nouveau produit</h1>
-
+<div class="max-w-2xl mx-auto mt-10">
     {{ form_start(form, {
         attr: {
-            class: 'space-y-6 bg-white p-6 rounded-xl shadow-md'
+            class: 'space-y-6 bg-white p-8 rounded-xl shadow-lg'
         }
     }) }}
-        {{ form_row(form.name) }}
-        {{ form_row(form.size) }}
-        {{ form_row(form.price) }}
-        {{ form_row(form.categories) }}
+        <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Créer un nouveau produit</h1>
+        <div>
+            {{ form_label(form.name, null, {'label_attr': {'class': 'block font-medium text-gray-700'}}) }}
+            {{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
 
         <div>
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">
-    {{ product is defined and product ? 'Modifier' : 'Créer' }}
-</button>
-            <a href="{{ path('product_index') }}" class="ml-4 text-gray-600 hover:text-gray-900">
+            {{ form_label(form.size, null, {'label_attr': {'class': 'block font-medium text-gray-700'}}) }}
+            {{ form_widget(form.size, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
+            {{ form_errors(form.size) }}
+        </div>
+
+        <div>
+            {{ form_label(form.price, null, {'label_attr': {'class': 'block font-medium text-gray-700'}}) }}
+            {{ form_widget(form.price, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
+            {{ form_errors(form.price) }}
+        </div>
+
+        <div>
+            {{ form_label(form.categories, null, {'label_attr': {'class': 'block font-medium text-gray-700'}}) }}
+            {{ form_widget(form.categories, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
+            {{ form_errors(form.categories) }}
+        </div>
+
+        <div class="flex items-center justify-between">
+            <button type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg transition-colors duration-200">
+                {{ product is defined and product ? 'Modifier' : 'Créer' }}
+            </button>
+            <a href="{{ path('product_index') }}"
+               class="text-gray-600 hover:text-gray-900 underline">
                 Retour à la liste
             </a>
         </div>
     {{ form_end(form) }}
+</div>
 {% endblock %}

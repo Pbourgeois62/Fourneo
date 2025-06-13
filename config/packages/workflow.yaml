@@ -1,0 +1,17 @@
+framework:
+    workflows:
+        sale_event:
+            type: "state_machine"
+            marking_store:
+                type: "method"
+                property: "status"
+            supports:
+                - App\Entity\SaleEvent
+            initial_marking: incoming
+            places:
+                - incoming
+                - closed                
+            transitions:
+                close:
+                    from: incoming
+                    to: closed                            
