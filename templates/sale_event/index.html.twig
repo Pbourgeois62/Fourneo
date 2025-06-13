@@ -28,7 +28,6 @@
 							<strong>Fin :</strong>
 							{{ event.endDate ? event.endDate|date('d/m/Y H:i') : 'Non défini' }}</p>
 
-						{# --- Début de la section des produits --- #}
 						{% if event.productEvents is not empty %}
 							<div class="mt-4 pt-4 border-t border-gray-200">
 								<h3 class="text-md font-semibold text-gray-800 mb-2">Produits de l'événement :</h3>
@@ -45,7 +44,6 @@
 						{% else %}
 							<p class="text-sm text-gray-500 mt-4 pt-4 border-t border-gray-200">Aucun produit associé à cet événement.</p>
 						{% endif %}
-						{# --- Fin de la section des produits --- #}
 
 						<div class="absolute top-2 right-2 flex gap-2">
 							<a href="{{ path('sale_event_edit', {id: event.id}) }}" class="text-blue-600 hover:text-blue-800" title="Modifier">
@@ -55,7 +53,7 @@
 								<input type="hidden" name="_method" value="DELETE">
 								<input
 								type="hidden" name="_token" value="{{ csrf_token('delete_sale_event_' ~ event.id) }}">
-								{# <--- CHANGED THIS LINE #}
+
 								<button type="submit" class="text-red-600 hover:text-red-800" title="Supprimer">
 									<i class="bi bi-trash text-lg"></i>
 								</button>

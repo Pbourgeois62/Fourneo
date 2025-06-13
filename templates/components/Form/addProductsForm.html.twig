@@ -42,35 +42,27 @@
 
 		<div class="flex flex-wrap gap-4">
 			{% for productForm in form.productEvents %}
-				<div
-					class="relative border rounded-xl p-4 bg-gray-50 w-full sm:w-[calc(50%-0.5rem)]">
+				<div class="relative border rounded-xl p-4 bg-gray-50 w-full sm:w-[calc(50%-0.5rem)]">
 
-					{# Bouton supprimer en haut à droite #}
 					{% if productForm.vars.button_delete is defined %}
 						<div class="absolute top-2 right-2 z-10">
-							{{ form_widget(productForm.vars.button_delete, {
-                        label: '',
-                        attr: {
-                            class: 'btn btn-sm btn-danger d-flex align-items-center justify-content-center p-1',
-                            title: 'Supprimer'
-                        }
-                    }) }}
-							<i class="bi bi-trash"></i>
+							{{ form_widget(productForm.vars.button_delete, {                                
+                            }) }}
 						</div>
 					{% endif %}
 
 					<div class="flex items-start gap-4">
 						<div class="flex-1">
 							{{ form_row(productForm.product, {
-                        label: 'Produit',
-                        attr: { class: 'w-full' }
-                    }) }}
+                                label: 'Produit',
+                                attr: { class: 'w-full' }
+                            }) }}
 						</div>
 						<div class="w-24">
 							{{ form_row(productForm.quantity, {
-                        label: 'Qté',
-                        attr: { class: 'w-full text-center' }
-                    }) }}
+                                label: 'Qté',
+                                attr: { class: 'w-full text-center' }
+                            }) }}
 						</div>
 					</div>
 				</div>

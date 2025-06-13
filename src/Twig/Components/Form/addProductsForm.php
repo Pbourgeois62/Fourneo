@@ -6,6 +6,7 @@ use App\Entity\SaleEvent;
 use App\Form\SaleEventTypeForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\LiveCollectionTrait;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -22,9 +23,12 @@ class addProductsForm extends AbstractController
 
     public function __construct() {}
 
+    #[LiveProp(writable: true)]
+    public ?SaleEvent $saleEvent = null;
+
     protected function instantiateForm(): FormInterface
     {
-        return $this->createForm(SaleEventTypeForm::class);
+        return $this->createForm(SaleEventTypeForm::class, $this->saleEvent);
     }
 
     #[LiveAction]
@@ -33,18 +37,15 @@ class addProductsForm extends AbstractController
         $this->submitForm();
 
         if (!$this->getForm()->isValid()) {
-            // Handle validation errors, e.g., re-render with errors
-            // You might add a flash message or just let the template show errors
             $this->addFlash('error', 'Erreurs de validation, veuillez corriger les champs.');
-            return; // Stop execution if form is invalid
+            return; 
         }
         $saleEvent = $this->getForm()->getData();
-        $entityManager->persist($saleEvent); // Persist the main SaleEvent entity
+        $entityManager->persist($saleEvent);
         $entityManager->flush();
 
         $this->addFlash('success', 'Événement de vente enregistré avec succès !');
 
-        // Redirect to the show page, using the ID of the newly saved saleEvent
         return $this->redirectToRoute('sale_event_index');
     }
 }

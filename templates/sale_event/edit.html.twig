@@ -7,5 +7,5 @@
 	<h1 class="text-2xl font-bold mb-6 text-gray-800">
 		{{ sale_event is defined and sale_event ? 'Modifier un événement de vente' : 'Créer un nouvel événement de vente' }}
 	</h1>
-	{{ component('Form:addProductsForm') }}
+	{{ component('Form:addProductsForm', { saleEvent: saleEvent }) }}
 {% endblock %}

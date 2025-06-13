@@ -17,7 +17,7 @@ class SaleEventTypeForm extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom',
-                'attr' => ['placeholder' => 'Entrer un nom pour votre événement ...']                
+                'attr' => ['placeholder' => 'Entrer un nom pour votre événement ...']
             ])
             ->add('description', TextType::class, [
                 'label' => 'Description (facultatif)',
@@ -27,7 +27,7 @@ class SaleEventTypeForm extends AbstractType
             ->add('address', TextType::class, [
                 'label' => 'Adresse (facultatif)',
                 'required' => false,
-                'attr' => ['placeholder' => 'Entree le lieu de votre événement ...']        
+                'attr' => ['placeholder' => 'Entree le lieu de votre événement ...']
             ])
             ->add('startDate', DateTimeType::class, [
                 'label' => 'Début',
@@ -41,11 +41,20 @@ class SaleEventTypeForm extends AbstractType
             ])
             ->add('productEvents', LiveCollectionType::class, [
                 'entry_type' => ProductQuantityType::class,
-                // 'mapped' => false,
                 'label' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'by_reference' => false,                
+                'by_reference' => false,
+                'button_delete_options' => [
+                    'label' => 'X', 
+                    'attr' => [
+                        'class' => 'text-red-600 hover:text-red-800 p-0 focus:outline-none flex items-center justify-center w-8 h-8 rounded-full', // Ajoutez des classes pour la forme et le centrage
+                        'title' => 'Supprimer ce produit',
+                    ],
+                    'row_attr' => [ 
+                        'class' => 'flex items-center justify-between',
+                    ],
+                ],               
             ])
         ;
     }
@@ -54,6 +63,9 @@ class SaleEventTypeForm extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SaleEvent::class,
+            'csrf_protection' => true, 
+            'csrf_field_name' => '_token', 
+            'csrf_token_id'   => 'sale_event_form_submission',
         ]);
     }
 }
