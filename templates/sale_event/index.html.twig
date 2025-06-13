@@ -26,7 +26,10 @@
 							{{ event.startDate ? event.startDate|date('d/m/Y H:i') : 'Non défini' }}</p>
 						<p class="text-sm text-gray-700 mb-4">
 							<strong>Fin :</strong>
-							{{ event.endDate ? event.endDate|date('d/m/Y H:i') : 'Non défini' }}</p>
+							{{ event.endDate ? event.endDate|date('d/m/Y H:i') : 'Non défini' }}</p>						
+						<p class="text-sm text-gray-700 mb-1">
+							<strong>Statut :</strong>
+							{{ event.status }}</p>
 
 						{% if event.productEvents is not empty %}
 							<div class="mt-4 pt-4 border-t border-gray-200">

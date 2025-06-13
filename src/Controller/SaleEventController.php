@@ -19,7 +19,7 @@ final class SaleEventController extends AbstractController
     public function index(SaleEventRepository $saleEventRepository): Response
     {
         return $this->render('sale_event/index.html.twig', [
-            'sale_events' => $saleEventRepository->findAll(),
+            'sale_events' => $saleEventRepository->findBy([], ['startDate' => 'ASC']),
         ]);
     }
 
