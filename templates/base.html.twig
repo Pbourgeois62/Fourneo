@@ -8,7 +8,7 @@
 			{% endblock %}
 		</title>
 		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-		
+
 		{% block stylesheets %}
 			{{ importmap('app') }}
 		{% endblock %}
@@ -39,27 +39,53 @@
 						<div class="flex items-center space-x-6">
 							<a href={{ path('product_index') }} class="text-gray-600 hover:text-gray-900">Produits</a>
 							<a href={{ path('category_index') }} class="text-gray-600 hover:text-gray-900">Catégories</a>
-							<a href="#" class="text-gray-600 hover:text-gray-900">Services</a>
-							<a href="#" class="text-gray-600 hover:text-gray-900">Contact</a>
-							<a href="{{ path('app_logout') }}" class="text-red-600 hover:text-red-900">Déconnexion</a>							
+							<a href={{ path('sale_event_index') }} class="text-gray-600 hover:text-gray-900">Evénements</a>							
+							<a href="{{ path('app_logout') }}" class="text-red-600 hover:text-red-900">Déconnexion</a>
 						</div>
 						<div class="flex items-center space-x-6">
-						<span class="text-gray-800 font-medium">{{ app.user.email }}</span>
+							<span class="text-gray-800 font-medium">{{ app.user.email }}</span>
 						</div>
 					</nav>
 				</header>
 			{% endif %}
-			<main class="flex-grow container mx-auto mt-8 px-6 py-4"> {% block body %}{% endblock %}
-				</main>
-				{% if app.user %}
-					<footer class="bg-gray-800 text-white py-6 px-6 mt-8">
-						<div class="container mx-auto text-center">
-							&copy;
-							{{ "now"|date("Y") }}
-							Fourneo. Tous droits réservés.
+			<main class="flex-grow container mx-auto mt-8 px-6 py-4">
+				{% for label, messages in app.flashes %}
+					{% for message in messages %}
+						<div class="mb-4 p-4 rounded-lg shadow-md flex items-start gap-4
+								                        {% if label == 'success' %}
+								                            bg-green-100 border-l-4 border-green-500 text-green-800
+								                        {% elseif label == 'error' %}
+								                            bg-red-100 border-l-4 border-red-500 text-red-800
+								                        {% elseif label == 'warning' %}
+								                            bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800
+								                        {% else %}
+								                            bg-blue-100 border-l-4 border-blue-500 text-blue-800
+								                        {% endif %}">
+							<i class="bi
+								                    {% if label == 'success' %}bi-check-circle-fill{%
+								                    elseif label == 'error' %}bi-exclamation-triangle-fill{%
+								                    elseif label == 'warning' %}bi-exclamation-circle-fill{%
+								                    else %}bi-info-circle-fill{% endif %} text-xl mt-0.5"></i>
+							<div class="flex-1">{{ message|raw }}</div>
+							<button type="button" class="ml-auto text-xl text-gray-500 hover:text-gray-700" onclick="this.parentElement.remove()">
+								&times;
+							</button>
 						</div>
-					</footer>
-				{% endif %}
-			</div>
-		</body>
-	</html>
+					{% endfor %}
+				{% endfor %}
+
+				{% block body %}{% endblock %}
+			</main>
+
+			{% if app.user %}
+				<footer class="bg-gray-800 text-white py-6 px-6 mt-8">
+					<div class="container mx-auto text-center">
+						&copy;
+						{{ "now"|date("Y") }}
+						Fourneo. Tous droits réservés.
+					</div>
+				</footer>
+			{% endif %}
+		</div>
+	</body>
+</html>

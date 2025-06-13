@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductRepository;
+use App\Repository\SaleEventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ProductRepository::class)]
-class Product
+#[ORM\Entity(repositoryClass: SaleEventRepository::class)]
+class SaleEvent
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,33 +18,35 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
-    private ?float $price = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $description = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    private ?string $size = null;
+    private ?string $address = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    /**
-     * @var Collection<int, category>
-     */
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products')]
-    private Collection $categories;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $startDate;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $endDate;
+
+    #[ORM\Column]
+    private ?string $status = 'incoming';
 
     /**
      * @var Collection<int, ProductEvent>
      */
-    #[ORM\OneToMany(targetEntity: ProductEvent::class, mappedBy: 'product')]
+    #[ORM\OneToMany(targetEntity: ProductEvent::class, mappedBy: 'event', orphanRemoval: true, cascade: ['persist'])]
     private Collection $productEvents;
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->productEvents = new ArrayCollection();
-    }      
+    } 
 
     public function getId(): ?int
     {
@@ -63,54 +65,66 @@ class Product
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getDescription(): ?string
     {
-        return $this->price;
+        return $this->description;
     }
 
-    public function setPrice(float $price): static
+    public function setDescription(?string $description): static
     {
-        $this->price = $price;
+        $this->description = $description;
 
         return $this;
     }
 
-    public function getSize(): ?string
+    public function getAddress(): ?string
     {
-        return $this->size;
+        return $this->address;
     }
 
-    public function setSize(?string $size): static
+    public function setAddress(?string $address): static
     {
-        $this->size = $size;
+        $this->address = $address;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, category>
-     */
-    public function getCategories(): Collection
+    public function getStartDate(): ?\DateTimeImmutable
     {
-        return $this->categories;
+        return $this->startDate;
     }
 
-    public function addCategory(category $category): static
+    public function setStartDate(?\DateTimeImmutable $startDate): static
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
-        }
+        $this->startDate = $startDate;
 
         return $this;
     }
 
-    public function removeCategory(category $category): static
+    public function getEndDate(): ?\DateTimeImmutable
     {
-        $this->categories->removeElement($category);
+        return $this->endDate;
+    }
+
+    public function setEndDate(?\DateTimeImmutable $endDate): static
+    {
+        $this->endDate = $endDate;
 
         return $this;
     }
-    
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -135,7 +149,7 @@ class Product
     {
         if (!$this->productEvents->contains($productEvent)) {
             $this->productEvents->add($productEvent);
-            $productEvent->setProduct($this);
+            $productEvent->setEvent($this);
         }
 
         return $this;
@@ -145,8 +159,8 @@ class Product
     {
         if ($this->productEvents->removeElement($productEvent)) {
             // set the owning side to null (unless already changed)
-            if ($productEvent->getProduct() === $this) {
-                $productEvent->setProduct(null);
+            if ($productEvent->getEvent() === $this) {
+                $productEvent->setEvent(null);
             }
         }
 

@@ -23,7 +23,9 @@
         "symfony/runtime": "7.3.*",
         "symfony/security-bundle": "7.3.*",
         "symfony/twig-bundle": "7.3.*",
+        "symfony/ux-live-component": "^2.26",
         "symfony/validator": "7.3.*",
+        "symfony/workflow": "7.3.*",
         "symfony/yaml": "7.3.*",
         "symfonycasts/tailwind-bundle": "^0.10.0",
         "symfonycasts/verify-email-bundle": "^1.17",
@@ -83,6 +85,8 @@
         }
     },
     "require-dev": {
-        "symfony/maker-bundle": "^1.63"
+        "symfony/maker-bundle": "^1.63",
+        "symfony/stopwatch": "7.3.*",
+        "symfony/web-profiler-bundle": "7.3.*"
     }
 }
