@@ -22,6 +22,7 @@
         "symfony/mailer": "7.3.*",
         "symfony/runtime": "7.3.*",
         "symfony/security-bundle": "7.3.*",
+        "symfony/stimulus-bundle": "^2.26",
         "symfony/twig-bundle": "7.3.*",
         "symfony/ux-live-component": "^2.26",
         "symfony/validator": "7.3.*",
