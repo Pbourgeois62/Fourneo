@@ -4,10 +4,10 @@
 
 {% block body %}
 
-<h1 class="text-2xl font-bold mb-6 text-gray-800 bg-white py-4 px-6 rounded-lg">
+<h1 class="text-title">
 		{{ product is not null ? 'Modification du produit: ' ~ product.name : 'Création d\'un nouveau produit' }}
 </h1>
-
+<div class="main-container">
 {{ component('Form:registerProductForm', { product: product }) }}
-
+</div>
 {% endblock %}

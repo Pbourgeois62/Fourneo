@@ -2,6 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
 body {
     background-color: skyblue;
+}
+.text-title {
+  @apply text-4xl text-salmon font-extrabold p-4 mb-6 tracking-wide leading-snug text-center inline-block;
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+.item-card {
+  @apply relative border-2 border-golden rounded-lg p-4 bg-flour;
+}
+
+.main-container {
+  @apply container mx-auto py-8 px-6 rounded-lg shadow-md;
+}
+
+.text-subtitle {
+  @apply text-salmon text-base font-medium;
+}
+
+.text-label {
+  @apply text-coffee text-sm;
+}
+
+.btn-validation {
+    @apply inline-block bg-golden text-cream hover:bg-coffee hover:text-flour font-semibold py-2 px-4 rounded-md transition duration-200;
+  }
+
+@layer utilities {
+  [aria-selected="true"] {
+    color: theme('colors.golden') !important;
+    border-color: theme('colors.golden') !important;
+    background-color: theme('colors.cream') !important;
+    font-weight: 600;
+  }
 }

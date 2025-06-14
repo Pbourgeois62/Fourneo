@@ -4,8 +4,8 @@
 
 {% block body %}
 <div class="flex items-center justify-center min-h-screen animate-slide-in">
-    <div class="w-full max-w-md p-8 space-y-6 bg-slate-800 text-white rounded-lg shadow-md">
-        <h1 class="text-3xl font-bold text-center text-white">Connexion</h1>
+    <div class="w-full max-w-md p-8 space-y-6 bg-slate-800 text-cream rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold text-center text-cream">Connexion</h1>
 
         {% if error %}
             <div class="p-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
@@ -22,29 +22,29 @@
 
         <form method="post" class="space-y-4">
             <div>
-                <label for="inputEmail" class="block text-sm font-medium text-white">Adresse e-mail</label>
-                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="mt-1 block w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" autocomplete="email" required autofocus>
+                <label for="inputEmail" class="block text-sm font-medium text-cream">Adresse e-mail</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="mt-1 block w-full px-3 py-2 border text-coffee border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" autocomplete="email" required autofocus>
             </div>
 
             <div>
-                <label for="inputPassword" class="block text-sm font-medium text-white">Mot de passe</label>
-                <input type="password" name="password" id="inputPassword" class="mt-1 block w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" autocomplete="current-password" required>
+                <label for="inputPassword" class="block text-sm font-medium text-cream">Mot de passe</label>
+                <input type="password" name="password" id="inputPassword" class="mt-1 block w-full px-3 py-2 border text-coffee border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" autocomplete="current-password" required>
             </div>
 
             <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 
             <div class="flex items-center">
                 <input type="checkbox" name="_remember_me" id="remember_me" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                <label for="remember_me" class="ml-2 block text-sm text-white">Se souvenir de moi</label>
+                <label for="remember_me" class="ml-2 block text-sm text-cream">Se souvenir de moi</label>
             </div>
 
-            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-cream bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 Se connecter
             </button>
         </form>
         <div class="text-center">
-            <p class="text-sm text-white my-4">Vous souhaitez vous inscrire ?</p>
-                <a href="{{ path('app_register') }}" class="text-blue-600 hover:text-white">S'enregistrer</a>
+            <p class="text-sm text-cream my-4">Vous souhaitez vous inscrire ?</p>
+                <a href="{{ path('app_register') }}" class="text-blue-600 hover:text-cream">S'enregistrer</a>
             </div>		
     </div>
 </div>

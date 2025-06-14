@@ -5,66 +5,68 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container mx-auto bg-white py-8 px-6 rounded-lg shadow-md">
-		<h1 class="text-3xl font-bold mb-8 text-gray-800">Événements de vente</h1>
-		<div class="mt-8 text-right">
-			<a href="{{ path('sale_event_new') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">
-				<i class="bi bi-plus-circle mr-2"></i>Créer un événement
-			</a>
-		</div>
+	<h1 class="text-title">Événements de vente</h1>
+	<div
+		class="main-container">
 
 		{# Flowbite Tabs Component #}
-		<div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+		<div class="mb-4 border-b border-golden bg-floor text-coffee flex justify-between items-center">
 			<ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#sale-event-tabs-content" role="tablist">
+
 				<li class="me-2" role="presentation">
-					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="today-tab" data-tabs-target="#today-events" type="button" role="tab" aria-controls="today-events" aria-selected="false">
+					<button class="inline-block p-4 rounded-t-lg border-b-2 text-coffee bg-cream hover:text-coffee/80 hover:border-golden" id="today-tab" data-tabs-target="#today-events" type="button" role="tab" aria-controls="today-events" aria-selected="false">
 						Événements du jour ({{ eventsOfTheDay|length }})
 					</button>
 				</li>
+
 				<li class="me-2" role="presentation">
-					<button
-						class="inline-block p-4 border-b-2 rounded-t-lg" id="upcoming-tab" data-tabs-target="#upcoming-events" type="button" role="tab" aria-controls="upcoming-events" aria-selected="true">
-						{# Set this as true for default active tab #}
+					<button class="inline-block p-4 rounded-t-lg border-b-2 text-coffee bg-cream hover:text-coffee/80 hover:border-golden" id="upcoming-tab" data-tabs-target="#upcoming-events" type="button" role="tab" aria-controls="upcoming-events" aria-selected="true">
 						Événements à venir ({{ incomingEvents|length }})
 					</button>
 				</li>
+
 				<li class="me-2" role="presentation">
-					<button class="inline-block p-4 border-b-2 rounded-t-lg" id="closed-tab" data-tabs-target="#closed-events" type="button" role="tab" aria-controls="closed-events" aria-selected="false">
+					<button class="inline-block p-4 rounded-t-lg border-b-2 text-coffee bg-cream hover:text-coffee/80 hover:border-golden" id="closed-tab" data-tabs-target="#closed-events" type="button" role="tab" aria-controls="closed-events" aria-selected="false">
 						Événements terminés ({{ closedEvents|length }})
 					</button>
 				</li>
 			</ul>
+
+			<a href="{{ path('sale_event_new') }}" class="btn-validation">
+				<i class="bi bi-plus-circle mr-2"></i>Créer un événement
+			</a>
 		</div>
 
+
 		<div
-			id="sale-event-tabs-content">
+			id="sale-event-tabs-content" class="bg-cream p-4 rounded-sm">
 			{# Contenu pour les Événements du jour #}
-			<div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="today-events" role="tabpanel" aria-labelledby="today-tab">
+			<div class="hidden p-4 rounded-lg bg- " id="today-events" role="tabpanel" aria-labelledby="today-tab">
 				{% if eventsOfTheDay is not empty %}
 					<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 						{% for event in eventsOfTheDay %}
-							<div class="relative border border-gray-200 rounded-lg p-4 shadow-sm bg-blue-50 hover:shadow-md transition-shadow">
-								<h2 class="text-xl font-semibold text-gray-900 mb-2">{{ event.name }}</h2>
+							<div class="item-card">
+								<h2 class="text-coffee xl font-semibold mb-2">{{ event.name }}</h2>
 
 								{% if event.description %}
-									<p class="text-sm text-gray-600 italic mb-2">{{ event.description }}</p>
+									<p class="text-coffee sm italic mb-2">{{ event.description }}</p>
 								{% endif %}
 
-								<p class="text-sm text-gray-700 mb-1">
+								<p class="text-coffee sm text-coffee mb-1">
 									<strong>Adresse :</strong>
 									{{ event.address }}</p>
 
-								<p class="text-sm text-gray-700 mb-1">
+								<p class="text-coffee sm mb-1">
 									<strong>Début :</strong>
 									{{ event.startDate ? event.startDate|date('d/m/Y H:i') : 'Non défini' }}</p>
-								<p class="text-sm text-gray-700 mb-4">
+								<p class="text-coffee sm mb-4">
 									<strong>Fin :</strong>
 									{{ event.endDate ? event.endDate|date('d/m/Y H:i') : 'Non défini' }}</p>
 								<div>
 									{% if event.productEvents is not empty %}
-										<div class="mt-4 pt-4 border-t border-gray-200">
-											<h3 class="text-md font-semibold text-gray-800 mb-2">Produits mis en vente</h3>
-											<ul class="list-disc list-inside text-sm text-gray-700">
+										<div class="mt-4 pt-4 border-t border-">
+											<h3 class="text-coffee md font-semibold mb-2">Produits mis en vente</h3>
+											<ul class="list-disc list-inside text-coffee sm ">
 												{% for productEvent in event.productEvents %}
 													<li>
 														{{ productEvent.product.name }}
@@ -75,23 +77,23 @@
 											</ul>
 										</div>
 									{% else %}
-										<p class="text-sm text-gray-500 mt-4 pt-4 border-t border-gray-200">Aucun produit associé à cet événement.</p>
+										<p class="text-coffee sm text-coffee 0 mt-4 pt-4 border-t border-">Aucun produit associé à cet événement.</p>
 									{% endif %}
 
-									<div class="mt-4 pt-4 border-t border-gray-200 flex justify-end">
-										<a href="{{ path('sale_event_show', {id: event.id}) }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Gérer la vente</a>
+									<div class="mt-4 pt-4 border-t border- flex justify-end">
+										<a href="{{ path('sale_event_show', {id: event.id}) }}" class="px-4 py-2 bg-blue-600 text-coffee cream rounded-md hover:bg-blue-700 transition">Gérer la vente</a>
 									</div>
 								</div>
 
 								<div class="absolute top-2 right-2 flex gap-2">
-									<a href="{{ path('sale_event_edit', {id: event.id}) }}" class="text-blue-600 hover:text-blue-800" title="Modifier">
-										<i class="bi bi-pencil-square text-lg"></i>
+									<a href="{{ path('sale_event_edit', {id: event.id}) }}" class="text-coffee blue-600 hover:text-coffee blue-800" title="Modifier">
+										<i class="bi bi-pencil-square text-coffee lg"></i>
 									</a>
 									<form method="post" action="{{ path('sale_event_delete', {id: event.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">
 										<input type="hidden" name="_method" value="DELETE">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete_sale_event_' ~ event.id) }}">
-										<button type="submit" class="text-red-600 hover:text-red-800" title="Supprimer">
-											<i class="bi bi-trash text-lg"></i>
+										<button type="submit" class="text-coffee red-600 hover:text-coffee red-800" title="Supprimer">
+											<i class="bi bi-trash text-coffee lg"></i>
 										</button>
 									</form>
 								</div>
@@ -99,37 +101,37 @@
 						{% endfor %}
 					</div>
 				{% else %}
-					<p class="text-gray-600">Aucun événement prévu pour aujourd'hui.</p>
+					<p class="item-card ">Aucun événement prévu pour aujourd'hui.</p>
 				{% endif %}
 			</div>
 
 			{# Contenu pour les Événements à venir (Incoming) #}
-			<div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="upcoming-events" role="tabpanel" aria-labelledby="upcoming-tab">
+			<div class="hidden p-4 rounded-lg bg- " id="upcoming-events" role="tabpanel" aria-labelledby="upcoming-tab">
 				{% if incomingEvents is not empty %}
 					<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 						{% for event in incomingEvents %}
-							<div class="relative border border-gray-200 rounded-lg p-4 shadow-sm bg-gray-50 hover:shadow-md transition-shadow">
-								<h2 class="text-xl font-semibold text-gray-900 mb-2">{{ event.name }}</h2>
+							<div class="item-card">
+								<h2 class="text-coffee xl font-semibold  mb-2">{{ event.name }}</h2>
 
 								{% if event.description %}
-									<p class="text-sm text-gray-600 italic mb-2">{{ event.description }}</p>
+									<p class="text-coffee sm text-coffee  italic mb-2">{{ event.description }}</p>
 								{% endif %}
 
-								<p class="text-sm text-gray-700 mb-1">
+								<p class="text-coffee sm  mb-1">
 									<strong>Adresse :</strong>
 									{{ event.address }}</p>
 
-								<p class="text-sm text-gray-700 mb-1">
+								<p class="text-coffee sm  mb-1">
 									<strong>Début :</strong>
 									{{ event.startDate ? event.startDate|date('d/m/Y H:i') : 'Non défini' }}</p>
-								<p class="text-sm text-gray-700 mb-4">
+								<p class="text-coffee sm  mb-4">
 									<strong>Fin :</strong>
 									{{ event.endDate ? event.endDate|date('d/m/Y H:i') : 'Non défini' }}</p>
 
 								{% if event.productEvents is not empty %}
-									<div class="mt-4 pt-4 border-t border-gray-200">
-										<h3 class="text-md font-semibold text-gray-800 mb-2">Produits mis en vente</h3>
-										<ul class="list-disc list-inside text-sm text-gray-700">
+									<div class="mt-4 pt-4 border-t border-">
+										<h3 class="text-coffee md font-semibold  mb-2">Produits mis en vente</h3>
+										<ul class="list-disc list-inside text-coffee sm ">
 											{% for productEvent in event.productEvents %}
 												<li>
 													{{ productEvent.product.name }}
@@ -140,18 +142,18 @@
 										</ul>
 									</div>
 								{% else %}
-									<p class="text-sm text-gray-500 mt-4 pt-4 border-t border-gray-200">Aucun produit associé à cet événement.</p>
+									<p class="text-coffee sm text-coffee 0 mt-4 pt-4 border-t border-">Aucun produit associé à cet événement.</p>
 								{% endif %}
 
 								<div class="absolute top-2 right-2 flex gap-2">
-									<a href="{{ path('sale_event_edit', {id: event.id}) }}" class="text-blue-600 hover:text-blue-800" title="Modifier">
-										<i class="bi bi-pencil-square text-lg"></i>
+									<a href="{{ path('sale_event_edit', {id: event.id}) }}" class="text-coffee blue-600 hover:text-coffee blue-800" title="Modifier">
+										<i class="bi bi-pencil-square text-coffee lg"></i>
 									</a>
 									<form method="post" action="{{ path('sale_event_delete', {id: event.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">
 										<input type="hidden" name="_method" value="DELETE">
 										<input type="hidden" name="_token" value="{{ csrf_token('delete_sale_event_' ~ event.id) }}">
-										<button type="submit" class="text-red-600 hover:text-red-800" title="Supprimer">
-											<i class="bi bi-trash text-lg"></i>
+										<button type="submit" class="text-coffee red-600 hover:text-coffee red-800" title="Supprimer">
+											<i class="bi bi-trash text-coffee lg"></i>
 										</button>
 									</form>
 								</div>
@@ -159,67 +161,67 @@
 						{% endfor %}
 					</div>
 				{% else %}
-					<p class="text-gray-600">Aucun événement à venir.</p>
+					<p class="item-card ">Aucun événement à venir.</p>
 				{% endif %}
 			</div>
 
-			<div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="closed-events" role="tabpanel" aria-labelledby="closed-tab">
+			<div class="hidden p-4 rounded-lg bg- " id="closed-events" role="tabpanel" aria-labelledby="closed-tab">
 				{% if closedEvents is not empty %}
 					<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 						{% for event in closedEvents %}
-							<div class="relative border border-gray-200 rounded-lg p-4 shadow-sm bg-gray-100 hover:shadow-md transition-shadow">
-								<h2 class="text-xl font-semibold text-gray-900 mb-2">{{ event.name }}</h2>
+							<div class="item-card">
+								<h2 class="text-coffee xl font-semibold  mb-2">{{ event.name }}</h2>
 
 								{% if event.description %}
-									<p class="text-sm text-gray-600 italic mb-2">{{ event.description }}</p>
+									<p class="text-coffee sm text-coffee  italic mb-2">{{ event.description }}</p>
 								{% endif %}
 
-								<p class="text-sm text-gray-700 mb-1">
+								<p class="text-coffee sm  mb-1">
 									<strong>Adresse :</strong>
 									{{ event.address }}</p>
 
-								<p class="text-sm text-gray-700 mb-1">
+								<p class="text-coffee sm  mb-1">
 									<strong>Début :</strong>
 									{{ event.startDate ? event.startDate|date('d/m/Y H:i') : 'Non défini' }}</p>
-								<p class="text-sm text-gray-700 mb-4">
+								<p class="text-coffee sm  mb-4">
 									<strong>Fin :</strong>
 									{{ event.endDate ? event.endDate|date('d/m/Y H:i') : 'Non défini' }}</p>
 
 								{% if event.totalProductEventCount > 0 %}
-									<div class="mt-4 pt-4 border-t border-gray-200">
-										<h3 class="text-md font-semibold text-gray-800 mb-2">Bilan des produits :</h3>
-										<ul class="text-sm text-gray-700 space-y-1">
+									<div class="mt-4 pt-4 border-t border-">
+										<h3 class="text-coffee md font-semibold  mb-2">Bilan des produits :</h3>
+										<ul class="text-coffee sm  space-y-1">
 											<li>
-												<i class="bi bi-box-seam mr-2 text-gray-600"></i>
+												<i class="bi bi-box-seam mr-2 text-coffee "></i>
 												Total produits en vente :
-												<strong class="text-gray-900">{{ event.totalProductEventCount }}</strong>
+												<strong class="">{{ event.totalProductEventCount }}</strong>
 											</li>
 											<li>
-												<i class="bi bi-tag-fill mr-2 {% if event.outOfStockProductEventCount > 0 %}text-red-600{% else %}text-green-600{% endif %}"></i>
+												<i class="bi bi-tag-fill mr-2 {% if event.outOfStockProductEventCount > 0 %}text-coffee red-600{% else %}text-coffee green-600{% endif %}"></i>
 												Produits en rupture :
-												<strong class="{% if event.outOfStockProductEventCount > 0 %}text-red-700{% else %}text-green-700{% endif %}">{{ event.outOfStockProductEventCount }}</strong>
+												<strong class="{% if event.outOfStockProductEventCount > 0 %}text-coffee red-700{% else %}text-coffee green-700{% endif %}">{{ event.outOfStockProductEventCount }}</strong>
 												({{ event.outOfStockPercentage|number_format(0) }}%)
 											</li>
 											<li>
-												<i class="bi bi-archive-fill mr-2 {% if event.totalUnsoldQuantity > 0 %}text-yellow-600{% else %}text-green-600{% endif %}"></i>
+												<i class="bi bi-archive-fill mr-2 {% if event.totalUnsoldQuantity > 0 %}text-coffee yellow-600{% else %}text-coffee green-600{% endif %}"></i>
 												Quantité invendue :
-												<strong class="{% if event.totalUnsoldQuantity > 0 %}text-yellow-700{% else %}text-green-700{% endif %}">{{ event.totalUnsoldQuantity }}</strong>
+												<strong class="{% if event.totalUnsoldQuantity > 0 %}text-coffee yellow-700{% else %}text-coffee green-700{% endif %}">{{ event.totalUnsoldQuantity }}</strong>
 												({{ event.unsoldPercentage|number_format(0) }}%)
 											</li>
 										</ul>
 									</div>
 								{% else %}
-									<p class="text-sm text-gray-500 mt-4 pt-4 border-t border-gray-200">Aucun produit associé à cet événement.</p>
+									<p class="text-coffee sm text-coffee 0 mt-4 pt-4 border-t border-">Aucun produit associé à cet événement.</p>
 								{% endif %}
 
-								<div class="mt-4 pt-4 border-t border-gray-200 flex justify-end">
-									<a href="{{ path('sale_event_show', {id: event.id}) }}" class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition">Voir le bilan</a>
-								</div>								
+								<div class="mt-4 pt-4 border-t border- flex justify-end">
+									<a href="{{ path('sale_event_show', {id: event.id}) }}" class="px-4 py-2 bg- text-coffee cream rounded-md hover:bg-0 transition">Voir le bilan</a>
+								</div>
 							</div>
 						{% endfor %}
 					</div>
 				{% else %}
-					<p class="text-gray-600">Aucun événement terminé.</p>
+					<p class="text-coffee ">Aucun événement terminé.</p>
 				{% endif %}
 			</div>
 		</div>
