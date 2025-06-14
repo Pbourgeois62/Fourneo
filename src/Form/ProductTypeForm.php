@@ -2,51 +2,109 @@
 
 namespace App\Form;
 
-use App\Entity\Category; // Correct casing for Category entity
 use App\Entity\Product;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;   // For price
-use Symfony\Component\Form\Extension\Core\Type\TextType;    // For name, size
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Positive;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfonycasts\DynamicForms\DynamicFormBuilder;
+use Symfonycasts\DynamicForms\DependentField;
+use Symfony\Component\Validator\Constraints\Type;
 
 class ProductTypeForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $builder = new DynamicFormBuilder($builder);
+
         $builder
-            ->add('name', TextType::class, [ // Explicitly define TextType
+            ->add('name', TextType::class, [
                 'label' => 'Nom du produit',
+                'required' => true,
                 'attr' => [
                     'placeholder' => 'Entrez le nom du produit (ex: Croissant pur beurre)',
                 ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Le nom du produit est obligatoire.']),
+                    new Length([
+                        'min' => 2,
+                        'minMessage' => 'Le nom du produit doit contenir au moins {{ limit }} caractères.',
+                    ]),
+                ],
             ])
-            ->add('price', MoneyType::class, [ // Use MoneyType for prices
+            ->add('price', MoneyType::class, [
                 'label' => 'Prix',
-                'currency' => 'EUR', // Set currency, e.g., Euro
+                'required' => true,
+                'currency' => 'EUR',
                 'attr' => [
                     'placeholder' => 'Entrez le prix (ex: 2.34)',
                 ],
+                'constraints' => [
+                    new NotNull(['message' => 'Le prix est obligatoire.']),
+                    new Type([
+                        'type' => 'float',
+                        'message' => 'Le prix doit être un nombre valide.',
+                    ]),
+                    new Positive(['message' => 'Le prix doit être un nombre positif.']),
+                ],
             ])
-            ->add('size', TextType::class, [ // Explicitly define TextType
+            ->add('size', TextType::class, [
                 'label' => 'Taille',
-                'required' => false, // Assuming size might be optional
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Entrez la taille',
                 ],
+                'constraints' => [
+                    new Length([
+                        'max' => 10,
+                        'maxMessage' => 'La taille ne doit pas dépasser {{ limit }} caractères.',
+                    ]),
+                ],
             ])
-            ->add('categories', EntityType::class, [
-                'class' => Category::class, // Use correct casing for Category
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
                 'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true, // <--- THIS IS KEY for checkboxes!
                 'required' => false,
-                'label' => 'Catégories (Vous pouvez en séléctionner plusieurs)',
-                'placeholder' => 'Choisissez une ou plusieurs catégories', // Placeholder for select (if not expanded)
-                'help' => 'Sélectionnez les catégories auxquelles ce produit appartient.', // A helpful hint
+                'label' => 'Catégorie du produit',
+                'placeholder' => 'Choisissez une catégorie',
+                'help' => 'Sélectionnez la catégorie à laquelle ce produit appartient.',
+            ])
+            ->add('isNewCategory', CheckboxType::class, [
+                'label' => 'Ou souhaitez-vous créer une nouvelle catégorie ?',
+                'required' => false,
+                'mapped' => false,
             ])
         ;
+
+        $builder->addDependent('newCategory', 'isNewCategory', function (DependentField $field, ?bool $isNewCategory) {
+            if (!$isNewCategory) {
+                return;
+            }
+
+            $field->add(TextType::class, [
+                'label' => 'Nouvelle catégorie',
+                'required' => false,
+                'mapped' => false,
+                'attr' => [
+                    'placeholder' => 'Entrez le nom de la nouvelle catégorie',
+                ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Le nom de la nouvelle catégorie est requis.']),
+                    new Length([
+                        'min' => 2,
+                        'minMessage' => 'La nouvelle catégorie doit contenir au moins {{ limit }} caractères.',
+                    ]),
+                ],
+            ]);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

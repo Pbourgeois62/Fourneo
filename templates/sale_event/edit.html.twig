@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvel événement de vente - Fourneo
+{% block title %}{{ saleEvent is defined ? 'Edition' : 'Création' }} d'une Vente
 {% endblock %}
 
 {% block body %}
-	<h1 class="text-2xl font-bold mb-6 text-gray-800">
-		{{ sale_event is defined and sale_event ? 'Modifier un événement de vente' : 'Créer un nouvel événement de vente' }}
+	<h1 class="text-2xl font-bold mb-6 text-gray-800 bg-white py-4 px-6 rounded-lg">
+		{{ saleEvent is not null ? 'Modifier un événement de vente' : 'Créer un nouvel événement de vente' }}
 	</h1>
 	{{ component('Form:addProductsForm', { saleEvent: saleEvent }) }}
 {% endblock %}
