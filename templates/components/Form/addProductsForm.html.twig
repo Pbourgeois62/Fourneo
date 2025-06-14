@@ -1,6 +1,5 @@
 <div {{ attributes }} class="max-w-4xl mx-auto mt-8">
-	<div class="bg-white shadow-lg rounded-xl p-8 space-y-6">
-		<h1 class="text-2xl font-semibold text-gray-800">Créer un événement de vente</h1>
+	<div class="bg-white shadow-lg rounded-xl p-8 space-y-6">		
 
 		{{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
 
@@ -91,7 +90,7 @@
 			<a href="{{ path('sale_event_index') }}" class="text-gray-600 hover:text-gray-900 underline">
 				Annuler
 			</a>
-			<button type="submit" data-action="live#action:prevent" data-live-action-param="save" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+			<button type="submit" data-action="live#action:prevent" data-live-action-param="saveProduct" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
 				Enregistrer
 			</button>
 		</div>

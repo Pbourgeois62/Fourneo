@@ -18,18 +18,21 @@ class Category
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
+    // --- MODIFICATION ICI : RELATION OneToMany VERS Product ---
+    // Une catégorie peut avoir PLUSIEURS produits
     /**
      * @var Collection<int, Product>
      */
-    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'categories')]
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'category', orphanRemoval: false)] // 'category' est la propriété sur Product
     private Collection $products;
+    // --- FIN DE MODIFICATION ---
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->products = new ArrayCollection(); // Initialisation de la Collection
         $this->createdAt = new \DateTimeImmutable();
     }    
 
@@ -50,6 +53,7 @@ class Category
         return $this;
     }
 
+    // --- NOUVEAUX GETTERS/SETTERS POUR LA RELATION OneToMany ---
     /**
      * @return Collection<int, Product>
      */
@@ -62,7 +66,7 @@ class Category
     {
         if (!$this->products->contains($product)) {
             $this->products->add($product);
-            $product->addCategory($this);
+            $product->setCategory($this); // Associe le produit à cette catégorie
         }
 
         return $this;
@@ -71,11 +75,15 @@ class Category
     public function removeProduct(Product $product): static
     {
         if ($this->products->removeElement($product)) {
-            $product->removeCategory($this);
+            // set the owning side to null (unless already changed)
+            if ($product->getCategory() === $this) {
+                $product->setCategory(null); // Dissocie le produit de cette catégorie
+            }
         }
 
         return $this;
     }
+    // --- FIN DE MODIFICATION ---
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {

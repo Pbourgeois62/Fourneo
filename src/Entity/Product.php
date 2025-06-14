@@ -27,11 +27,9 @@ class Product
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    /**
-     * @var Collection<int, category>
-     */
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products')]
-    private Collection $categories;
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Category $category = null;
 
     /**
      * @var Collection<int, ProductEvent>
@@ -41,10 +39,9 @@ class Product
 
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
         $this->productEvents = new ArrayCollection();
-    }      
+    }       
 
     public function getId(): ?int
     {
@@ -87,29 +84,17 @@ class Product
         return $this;
     }
 
-    /**
-     * @return Collection<int, category>
-     */
-    public function getCategories(): Collection
+    public function getCategory(): ?Category
     {
-        return $this->categories;
+        return $this->category;
     }
 
-    public function addCategory(category $category): static
+    public function setCategory(?Category $category): static
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
-        }
+        $this->category = $category;
 
         return $this;
-    }
-
-    public function removeCategory(category $category): static
-    {
-        $this->categories->removeElement($category);
-
-        return $this;
-    }
+    }   
     
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -144,7 +129,6 @@ class Product
     public function removeProductEvent(ProductEvent $productEvent): static
     {
         if ($this->productEvents->removeElement($productEvent)) {
-            // set the owning side to null (unless already changed)
             if ($productEvent->getProduct() === $this) {
                 $productEvent->setProduct(null);
             }

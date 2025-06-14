@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Form\ProductTypeForm;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,22 +26,10 @@ final class ProductController extends AbstractController
     }
 
     #[Route('/new', name: 'product_new', methods: ['GET', 'POST'])]
-    public function create(Request $request, EntityManagerInterface $em): Response
+    public function createProduct(): Response
     {
-        $product = new Product();
-        $form = $this->createForm(ProductTypeForm::class, $product);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($product);
-            $em->flush();
-
-            $this->addFlash('success', 'Produit créé avec succès.');
-            return $this->redirectToRoute('product_index');
-        }
-
         return $this->render('product/edit.html.twig', [
-            'form' => $form,
+            'product' => null,
         ]);
     }
 
@@ -55,19 +42,9 @@ final class ProductController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'product_edit', methods: ['GET', 'POST'])]
-    public function edit(Product $product, Request $request, EntityManagerInterface $em): Response
+    public function editProduct(Product $product): Response
     {
-        $form = $this->createForm(ProductTypeForm::class, $product);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
-            $this->addFlash('success', 'Produit modifié avec succès.');
-            return $this->redirectToRoute('product_index');
-        }
-
         return $this->render('product/edit.html.twig', [
-            'form' => $form,
             'product' => $product,
         ]);
     }
@@ -81,11 +58,9 @@ final class ProductController extends AbstractController
                 $em->flush();
                 $this->addFlash('success', 'Produit supprimé avec succès.');
             } catch (ForeignKeyConstraintViolationException $e) {
-                // Option 1: Message générique
                 $this->addFlash('error', 'Impossible de supprimer ce produit car il est lié à des événements de vente.');
-                // Log l'exception pour le débogage (important !)
                 $logger->error('Failed to delete product due to foreign key constraint: ' . $e->getMessage(), ['product_id' => $product->getId()]);
-            } catch (\Exception $e) { // Pour toute autre exception imprévue
+            } catch (\Exception $e) {
                 $this->addFlash('error', 'Une erreur inattendue est survenue lors de la suppression du produit.');
                 $logger->error('An unexpected error occurred during product deletion: ' . $e->getMessage(), ['product_id' => $product->getId()]);
             }
