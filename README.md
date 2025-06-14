@@ -15,7 +15,7 @@ Elle facilite la réception des livraisons ainsi que la gestion des étiquettes 
 
 ## Environnement technique
 
-- Symfony 7.2
+- Symfony 7.3
 - Bootstrap (pour le front)
 - Docker (pour l'environnement de développement)
 - PHP 8.2 (contenu dans Docker)
