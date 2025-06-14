@@ -36,66 +36,55 @@
 		</div>
 
 		<div class="flex flex-column gap-4">
-			<h2 class="text-lg font-medium text-gray-700 mb-2">Ajouter des produits à la vente</h2>
-			{{ form_widget(form.productEvents.vars.button_add, { label: '+ Ajouter un produit', attr: { class: 'px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition' } }) }}
+			{{ form_widget(form.productEvents.vars.button_add, { label: '+ Ajouter un produit', attr: { class: 'px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition' } }) }}
 		</div>
 
 		<div class="flex flex-wrap gap-4">
-    {% for productForm in form.productEvents %}
-        {# Ajoutez le contrôleur Stimulus à la div parente de chaque carte produit #}
-        {# 'data-controller="quantity"' connecte ce bloc au contrôleur Stimulus #}
-        <div class="relative border rounded-xl p-4 bg-gray-50 w-full sm:w-[calc(50%-0.5rem)]"
-             data-controller="quantity">
+			{% for productForm in form.productEvents %}
+				<div class="relative border rounded-xl p-4 bg-gray-50 w-full sm:w-[calc(50%-0.5rem)]" data-controller="quantity">
 
-            {% if productForm.vars.button_delete is defined %}
-                <div class="absolute top-2 right-2 z-10">
-                    {{ form_widget(productForm.vars.button_delete, {
+					{% if productForm.vars.button_delete is defined %}
+						<div class="absolute top-2 right-2 z-10">
+							{{ form_widget(productForm.vars.button_delete, {
                         attr: {
                             type: 'button',
                             class: 'text-red-600 hover:text-red-800 p-0 focus:outline-none w-8 h-8 flex items-center justify-center rounded-full',
                             title: 'Supprimer ce produit',
                         }
                     }) }}
-                </div>
-            {% endif %}
+						</div>
+					{% endif %}
 
-            <div class="flex items-start gap-4">
-                <div class="flex-1">
-                    {{ form_row(productForm.product, {
+					<div class="flex items-start gap-4">
+						<div class="flex-1">
+							{{ form_row(productForm.product, {
                         label: 'Produit',
                         attr: { class: 'w-full' }
                     }) }}
-                </div>
-                <div class="w-24">
-                    {# Cible le champ de quantité avec data-quantity-target="quantityInput" #}
-                    {{ form_row(productForm.quantity, {
+						</div>
+						<div class="w-24">
+							{{ form_row(productForm.quantity, {
                         label: 'Qté',
                         attr: {
                             class: 'w-full text-center',
                             'data-quantity-target': 'quantityInput' 
                         }
                     }) }}
-                </div>
-            </div>
+						</div>
+					</div>
 
-            {# Nouveaux boutons d'incrémentation #}
-            <div class="flex justify-start gap-2 mt-2">
-                {% set increment_values = [1, 2, 5] %}
-                {% for value in increment_values %}
-                    <button type="button"
-                            class="px-3 py-1 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition text-sm font-medium"
-                            data-action="quantity#increment" 
-                            data-value="{{ value }}" 
-                            title="Ajouter {{ value }} à la quantité"
-                    >
-                        +{{ value }}
-                    </button>
-                {% endfor %}
-            </div>
+					<div class="flex justify-start gap-2 mt-2">
+						{% set increment_values = [1, 2, 5] %}
+						{% for value in increment_values %}
+							<button type="button" class="px-3 py-1 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition text-sm font-medium" data-action="quantity#increment" data-value="{{ value }}" title="Ajouter {{ value }} à la quantité">
+								+{{ value }}
+							</button>
+						{% endfor %}
+					</div>
 
-        </div>
-    {% endfor %}
-</div>
+				</div>
+			{% endfor %}
+		</div>
 
 
 		<div class="pt-4 flex justify-end gap-4">

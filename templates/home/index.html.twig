@@ -1,50 +1,85 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Bienvenue sur Fourneo !{% endblock %}
+{% block title %}Bienvenue sur Fourneo !
+{% endblock %}
 
 {% block body %}
-<div class="flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-3xl w-full bg-white rounded-lg shadow-md p-8 space-y-6 text-center">
-        <h1 class="text-4xl font-extrabold text-gray-900 mb-4">
-            Bienvenue sur Fourneo ! <span class="text-blue-600">🚀</span>
-        </h1>
+	<div class="flex flex-col items-center justify-center min-h-screen">
+		<h1 class="text-4xl font-extrabold bg-white text-gray-900 mb-6 p-4 rounded-lg">
+			Bienvenue sur votre tableau de bord
+			<span class="text-blue-600">🚀</span>
+		</h1>
+		<div class="max-w-4xl w-full bg-white rounded-lg shadow-xl p-8 space-y-8 text-center">
 
-        <p class="text-lg text-gray-700 leading-relaxed">
-            Fourneo est votre plateforme dédiée à la gestion simplifiée de vos tâches et projets.
-            Organisez, collaborez et réussissez vos objectifs avec nous !
-        </p>
+			<div class="space-y-6 text-left">
+				<h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Événements du jour</h2>
 
-        <div class="mt-8 space-y-4">
-            <h2 class="text-2xl font-semibold text-gray-800">Commencez dès maintenant :</h2>
-            <ul class="list-disc list-inside text-gray-600 space-y-2 mx-auto max-w-sm">
-                <li class="flex items-center justify-center">
-                    <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    Explorez vos <span class="font-medium text-gray-800 ml-1">projets actifs</span>
-                </li>
-                <li class="flex items-center justify-center">
-                    <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    Ajoutez de <span class="font-medium text-gray-800 ml-1">nouvelles tâches</span>
-                </li>
-                <li class="flex items-center justify-center">
-                    <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    Invitez des <span class="font-medium text-gray-800 ml-1">collaborateurs</span>
-                </li>
-            </ul>
-        </div>
+				{% if todayEvents is not empty %}
+					<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+						{% for saleEvent in todayEvents %}
+							<div class="relative bg-white border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+								<h3 class="text-xl font-semibold text-gray-900 mb-2">{{ saleEvent.name }}</h3>
 
-        {# Example of conditional content based on user login status #}
-        {% if app.user %}
-            <p class="text-md text-gray-600 mt-6">
-                Heureux de vous revoir, <span class="font-semibold text-blue-700">{{ app.user.userIdentifier }}</span> !
-                Rendez-vous sur votre <a href="#" class="text-blue-600 hover:underline font-medium">tableau de bord</a> pour commencer.
-            </p>
-        {% else %}
-            <p class="text-md text-gray-600 mt-6">
-                Nouveau sur Fourneo ?
-                <a href="{{ path('app_register') }}" class="text-blue-600 hover:underline font-medium">Créez un compte</a> ou
-                <a href="{{ path('app_login') }}" class="text-blue-600 hover:underline font-medium">connectez-vous</a> !
-            </p>
-        {% endif %}        
-    </div>
-</div>
+								{% if saleEvent.description %}
+									<p class="text-sm text-gray-600 italic mb-3 line-clamp-2">{{ saleEvent.description }}</p>
+								{% endif %}
+
+								<div class="text-sm text-gray-700 space-y-1 mb-4">
+									<p>
+										<i class="bi bi-geo-alt-fill mr-2 text-gray-500"></i>
+										<strong>Adresse :</strong>
+										{{ saleEvent.address }}
+									</p>
+									<p>
+										<i class="bi bi-calendar-event-fill mr-2 text-gray-500"></i>
+										{# MODIFICATION ICI: Afficher uniquement l'heure #}
+										<strong>Début :</strong>
+										{{ saleEvent.startDate ? saleEvent.startDate|date('H:i') : 'Non défini' }}
+									</p>
+									<p>
+										<i class="bi bi-calendar-check-fill mr-2 text-gray-500"></i>
+										{# MODIFICATION ICI: Afficher uniquement l'heure #}
+										<strong>Fin :</strong>
+										{{ saleEvent.endDate ? saleEvent.endDate|date('H:i') : 'Non défini' }}
+									</p>
+								</div>
+
+								{% if saleEvent.productEvents is not empty %}
+									<div class="mt-4 pt-4 border-t border-gray-200">
+										<p class="text-md font-medium text-gray-800">
+											<i class="bi bi-box-seam-fill mr-2 text-blue-600"></i>
+											Produits en vente :
+											<strong class="text-blue-700">{{ saleEvent.productEvents|length }}</strong>
+										</p>
+									</div>
+								{% else %}
+									<p class="text-sm text-gray-500 mt-4 pt-4 border-t border-gray-200">Aucun produit associé.</p>
+								{% endif %}
+
+								<div class="mt-6 flex justify-end">
+									<a href="{{ path('sale_event_show', {id: saleEvent.id}) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium text-sm rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+										<i class="bi bi-eye-fill mr-2"></i>
+										Gérer la vente
+									</a>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				{% else %}
+					<div class="bg-blue-50 border-l-4 border-blue-400 p-4">
+						<div class="flex">
+							<div class="flex-shrink-0">
+								<i class="bi bi-info-circle-fill text-blue-500 text-xl"></i>
+							</div>
+							<div class="ml-3">
+								<p class="text-sm text-blue-700">
+									Aucun événement de vente n'est prévu pour demain.
+								</p>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 {% endblock %}
