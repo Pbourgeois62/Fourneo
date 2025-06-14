@@ -7,9 +7,8 @@ Elle facilite la réception des livraisons ainsi que la gestion des étiquettes 
 
 ## Fonctionnalités principales
 
-- Réception et gestion des livraisons
-- Prise de photos et enregistrement des etiquettes produits
-- Gestion des allergènes
+- Enregistrement de produits
+- Création d'événements de vente
 
 ---
 
