@@ -4,60 +4,54 @@
 {% endblock %}
 
 {% block body %}
-	<div class="flex flex-col items-center justify-center min-h-screen">
-		<h1 class="text-4xl font-extrabold bg-white text-gray-900 mb-6 p-4 rounded-lg">
-			Bienvenue sur votre tableau de bord
-			<span class="text-blue-600">🚀</span>
-		</h1>
-		<div class="max-w-4xl w-full bg-white rounded-lg shadow-xl p-8 space-y-8 text-center">
-
+	<h1 class="text-title">Bienvenue sur votre tableau de bord</h1>
+	<div class="main-container">
+		<div class="item-card">
 			<div class="space-y-6 text-left">
-				<h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Événements du jour</h2>
+				<h2 class="text-2xl font-bold text-coffee border-b pb-3 mb-4">Événements du jour</h2>
 
 				{% if todayEvents is not empty %}
 					<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 						{% for saleEvent in todayEvents %}
-							<div class="relative bg-white border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-								<h3 class="text-xl font-semibold text-gray-900 mb-2">{{ saleEvent.name }}</h3>
+							<div class="relative bg-flour border border-golden/30 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+								<h3 class="text-xl font-semibold text-coffee mb-2">{{ saleEvent.name }}</h3>
 
 								{% if saleEvent.description %}
-									<p class="text-sm text-gray-600 italic mb-3 line-clamp-2">{{ saleEvent.description }}</p>
+									<p class="text-sm text-salmon italic mb-3 line-clamp-2">{{ saleEvent.description }}</p>
 								{% endif %}
 
-								<div class="text-sm text-gray-700 space-y-1 mb-4">
+								<div class="text-sm text-coffee space-y-1 mb-4">
 									<p>
-										<i class="bi bi-geo-alt-fill mr-2 text-gray-500"></i>
+										<i class="bi bi-geo-alt-fill mr-2 text-golden"></i>
 										<strong>Adresse :</strong>
 										{{ saleEvent.address }}
 									</p>
 									<p>
-										<i class="bi bi-calendar-event-fill mr-2 text-gray-500"></i>
-										{# MODIFICATION ICI: Afficher uniquement l'heure #}
+										<i class="bi bi-calendar-event-fill mr-2 text-golden"></i>
 										<strong>Début :</strong>
 										{{ saleEvent.startDate ? saleEvent.startDate|date('H:i') : 'Non défini' }}
 									</p>
 									<p>
-										<i class="bi bi-calendar-check-fill mr-2 text-gray-500"></i>
-										{# MODIFICATION ICI: Afficher uniquement l'heure #}
+										<i class="bi bi-calendar-check-fill mr-2 text-golden"></i>
 										<strong>Fin :</strong>
 										{{ saleEvent.endDate ? saleEvent.endDate|date('H:i') : 'Non défini' }}
 									</p>
 								</div>
 
 								{% if saleEvent.productEvents is not empty %}
-									<div class="mt-4 pt-4 border-t border-gray-200">
-										<p class="text-md font-medium text-gray-800">
-											<i class="bi bi-box-seam-fill mr-2 text-blue-600"></i>
+									<div class="mt-4 pt-4 border-t border-golden/30">
+										<p class="text-md font-medium text-coffee">
+											<i class="bi bi-box-seam-fill mr-2 text-golden"></i>
 											Produits en vente :
-											<strong class="text-blue-700">{{ saleEvent.productEvents|length }}</strong>
+											<strong class="text-golden">{{ saleEvent.productEvents|length }}</strong>
 										</p>
 									</div>
 								{% else %}
-									<p class="text-sm text-gray-500 mt-4 pt-4 border-t border-gray-200">Aucun produit associé.</p>
+									<p class="text-sm text-salmon mt-4 pt-4 border-t border-golden/30">Aucun produit associé.</p>
 								{% endif %}
 
 								<div class="mt-6 flex justify-end">
-									<a href="{{ path('sale_event_show', {id: saleEvent.id}) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium text-sm rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+									<a href="{{ path('sale_event_show', {id: saleEvent.id}) }}" class="inline-flex items-center px-4 py-2 bg-golden text-flour font-medium text-sm rounded-md shadow-sm hover:bg-sunrise focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-golden transition-colors duration-200">
 										<i class="bi bi-eye-fill mr-2"></i>
 										Gérer la vente
 									</a>
@@ -66,14 +60,14 @@
 						{% endfor %}
 					</div>
 				{% else %}
-					<div class="bg-blue-50 border-l-4 border-blue-400 p-4">
+					<div class="border-2 border-l-4 border-salmon p-4">
 						<div class="flex">
 							<div class="flex-shrink-0">
-								<i class="bi bi-info-circle-fill text-blue-500 text-xl"></i>
+								<i class="bi bi-info-circle-fill text-salmon text-xl"></i>
 							</div>
 							<div class="ml-3">
-								<p class="text-sm text-blue-700">
-									Aucun événement de vente n'est prévu pour demain.
+								<p class="text-sm text-coffee">
+									Aucun événement de vente n'est prévu aujourd'hui.
 								</p>
 							</div>
 						</div>
@@ -82,4 +76,5 @@
 			</div>
 		</div>
 	</div>
+
 {% endblock %}

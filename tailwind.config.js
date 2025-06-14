@@ -6,6 +6,17 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif'],
+      },
+      colors: {
+        golden: ' #F6C867',    
+        cream: ' #FFF4E0',     
+        coffee: ' #5C3E1F',
+        salmon: ' #E67E53',    
+        flour: ' #FAF9F6',     
+        sunrise: ' #FFE8A3',   
+      },
       keyframes: {
         'slide-in': {
           '0%': {

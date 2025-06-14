@@ -1,41 +1,41 @@
-<div {{ attributes }} class="max-w-4xl mx-auto mt-8">
-	<div class="bg-white shadow-lg rounded-xl p-8 space-y-6">		
+<div {{ attributes }} class="px-20">
+	<div class="item-card">		
 
 		{{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
 
 		<div>
-			{{ form_label(form.name, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+			{{ form_label(form.name, null, {'label_attr': {'class': 'block text-sm font-medium text-coffee'}}) }}
 			{{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm'}}) }}
 			{{ form_errors(form.name) }}
 		</div>
 
 		<div>
-			{{ form_label(form.description, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+			{{ form_label(form.description, null, {'label_attr': {'class': 'block text-sm font-medium text-coffee'}}) }}
 			{{ form_widget(form.description, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm'}}) }}
 			{{ form_errors(form.description) }}
 		</div>
 
 		<div>
-			{{ form_label(form.address, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+			{{ form_label(form.address, null, {'label_attr': {'class': 'block text-sm font-medium text-coffee'}}) }}
 			{{ form_widget(form.address, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm'}}) }}
 			{{ form_errors(form.address) }}
 		</div>
 
 		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 			<div>
-				{{ form_label(form.startDate, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+				{{ form_label(form.startDate, null, {'label_attr': {'class': 'block text-sm font-medium text-coffee'}}) }}
 				{{ form_widget(form.startDate, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm'}}) }}
 				{{ form_errors(form.startDate) }}
 			</div>
 			<div>
-				{{ form_label(form.endDate, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+				{{ form_label(form.endDate, null, {'label_attr': {'class': 'block text-sm font-medium text-coffee'}}) }}
 				{{ form_widget(form.endDate, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm'}}) }}
 				{{ form_errors(form.endDate) }}
 			</div>
 		</div>
 
 		<div class="flex flex-column gap-4">
-			{{ form_widget(form.productEvents.vars.button_add, { label: '+ Ajouter un produit', attr: { class: 'px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition' } }) }}
+			{{ form_widget(form.productEvents.vars.button_add, { label: '+ Ajouter un produit', attr: { class: 'px-4 py-2 bg-blue-600 text-cream font-semibold rounded-md hover:bg-blue-700 transition' } }) }}
 		</div>
 
 		<div class="flex flex-wrap gap-4">
@@ -75,7 +75,7 @@
 					<div class="flex justify-start gap-2 mt-2">
 						{% set increment_values = [1, 2, 5] %}
 						{% for value in increment_values %}
-							<button type="button" class="px-3 py-1 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition text-sm font-medium" data-action="quantity#increment" data-value="{{ value }}" title="Ajouter {{ value }} à la quantité">
+							<button type="button" class="px-3 py-1 bg-gray-200 text-coffee rounded-md hover:bg-gray-300 transition text-sm font-medium" data-action="quantity#increment" data-value="{{ value }}" title="Ajouter {{ value }} à la quantité">
 								+{{ value }}
 							</button>
 						{% endfor %}
@@ -86,11 +86,11 @@
 		</div>
 
 
-		<div class="pt-4 flex justify-end gap-4">
-			<a href="{{ path('sale_event_index') }}" class="text-gray-600 hover:text-gray-900 underline">
+		<div class="flex items-center justify-between">
+			<a href="{{ path('sale_event_index') }}" class="text-gray-600 hover:text-coffee underline">
 				Annuler
 			</a>
-			<button type="submit" data-action="live#action:prevent" data-live-action-param="saveProduct" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+			<button type="submit" data-action="live#action:prevent" data-live-action-param="save" class="btn-validation">
 				Enregistrer
 			</button>
 		</div>

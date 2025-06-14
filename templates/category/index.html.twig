@@ -1,47 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des catégories{% endblock %}
+{% block title %}Liste des catégories
+{% endblock %}
 
 {% block body %}
-<div class="container mx-auto bg-white py-8 px-6 rounded-lg shadow-md">
-    <h1 class="text-3xl font-bold mb-8 text-gray-800">Liste des catégories</h1>
+	<h1 class="text-title">Liste des catégories</h1>
+	<div class="main-container">
+		{% if categories is not empty %}
+			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{% for category in categories %}
+					<div
+						class="item-card">
+						<!-- Nom catégorie -->
+						<h2 class="text-xl font-semibold text-coffee mb-2">{{ category.name }}</h2>
 
-    {% if categories is not empty %}
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {% for category in categories %}
-                <div class="relative border border-gray-200 rounded-lg p-4 shadow-sm bg-gray-50 hover:shadow-md transition-shadow">
-                    <!-- Nom catégorie -->
-                    <h2 class="text-xl font-semibold text-gray-900 mb-2">{{ category.name }}</h2>
+						<!-- Description -->
+						{% if category.description is defined and category.description %}
+							<p class="text-sm text-coffee mb-4">{{ category.description }}</p>
+						{% endif %}
 
-                    <!-- Description si tu en as -->
-                    {% if category.description is defined and category.description %}
-                        <p class="text-sm text-gray-700 mb-4">{{ category.description }}</p>
-                    {% endif %}
+						<!-- Actions -->
+						<div class="absolute top-2 right-2 flex space-x-2">
+							<a href="{{ path('category_edit', {id: category.id}) }}" class="text-golden hover:text-coffee transition-colors duration-300 ease-in-out" aria-label="Modifier la catégorie {{ category.name }}">
+								<i class="bi bi-pencil-square text-lg"></i>
+							</a>
 
-                    <!-- Actions -->
-                    <div class="absolute top-2 right-2 flex gap-2">
-                        <a href="{{ path('category_edit', {id: category.id}) }}" class="text-blue-600 hover:text-blue-800" title="Modifier">
-                            <i class="bi bi-pencil-square text-lg"></i>
-                        </a>
-                        <form method="post" action="{{ path('category_delete', {id: category.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete_category_' ~ category.id) }}">
-                            <button type="submit" class="text-red-600 hover:text-red-800" title="Supprimer">
-                                <i class="bi bi-trash text-lg"></i>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p class="text-gray-600">Aucune catégorie disponible.</p>
-    {% endif %}
+							<form method="post" action="{{ path('category_delete', {id: category.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');" class="inline">
+								<input type="hidden" name="_method" value="DELETE"/>
+								<input type="hidden" name="_token" value="{{ csrf_token('delete_category_' ~ category.id) }}"/>
+								<button type="submit" class="text-salmon hover:text-red-700" aria-label="Supprimer la catégorie {{ category.name }}">
+									<i class="bi bi-trash text-lg"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% else %}
+			<p class="text-coffee">Aucune catégorie disponible.</p>
+		{% endif %}
 
-    <div class="mt-8 text-right">
-        <a href="{{ path('category_new') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">
-            <i class="bi bi-plus-circle mr-2"></i>Créer une catégorie
-        </a>
-    </div>
-</div>
+		<div class="mt-8 text-right">
+			<a href="{{ path('category_new') }}" class="btn-validation">
+				<i class="bi bi-plus-circle mr-2"></i>Créer une catégorie
+			</a>
+		</div>
+	</div>
 {% endblock %}
