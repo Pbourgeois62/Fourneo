@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Entity\SaleEvent;
+use App\Entity\ProductEvent;
 use App\Repository\SaleEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Form\SaleEventUnsoldQuantityFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,8 +21,14 @@ final class SaleEventController extends AbstractController
     #[Route('', name: 'sale_event_index', methods: ['GET'])]
     public function index(SaleEventRepository $saleEventRepository): Response
     {
+        $today = new \DateTimeImmutable();
+        $incomingEvents = $saleEventRepository->findIncomingEvents();
+        $eventsOfTheDay = $saleEventRepository->findEventsForSpecificDate($today);
+        $closedEvents = $saleEventRepository->findClosedEvents();
         return $this->render('sale_event/index.html.twig', [
-            'sale_events' => $saleEventRepository->findBy([], ['startDate' => 'ASC']),
+            'incomingEvents' => $incomingEvents,
+            'eventsOfTheDay' => $eventsOfTheDay,
+            'closedEvents' => $closedEvents
         ]);
     }
 
@@ -37,11 +46,33 @@ final class SaleEventController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'sale_event_show', methods: ['GET'])]
-    public function show(SaleEvent $saleEvent): Response
+    #[Route('/{id}', name: 'sale_event_show', methods: ['GET', 'POST'])]
+    public function show(SaleEvent $saleEvent, Request $request, EntityManagerInterface $entityManager): Response
     {
+        $form = $this->createForm(SaleEventUnsoldQuantityFormType::class, [
+            'productEvents' => $saleEvent->getProductEvents()->toArray()
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+            foreach ($formData['productEvents'] as $productEvent) {
+                if ($productEvent->getUnsoldQuantity() === 0 && $productEvent->getOutOfStockDateTime() === null) {
+                    $productEvent->setOutOfStockDateTime(new \DateTimeImmutable());
+                }
+            }
+
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Les quantités invendues ont été mises à jour.');
+
+            return $this->redirectToRoute('sale_event_show', ['id' => $saleEvent->getId()]);
+        }
+
         return $this->render('sale_event/show.html.twig', [
             'sale_event' => $saleEvent,
+            'unsold_form' => $form
         ]);
     }
 
@@ -54,5 +85,25 @@ final class SaleEventController extends AbstractController
             $this->addFlash('success', 'Événement de vente supprimé avec succès.');
         }
         return $this->redirectToRoute('sale_event_index');
+    }
+
+    #[Route('/{id}/product/out-of-stock', name: 'sale_event_product_event_out_of_stock')]
+    public function markProductEventOutOfStock(
+        ProductEvent $productEvent,
+        EntityManagerInterface $entityManager
+    ): Response {
+
+        $productEvent->markAsOutOfStockForEvent();
+
+        $saleEventId = $productEvent->getEvent()->getId();
+
+        $entityManager->flush();
+
+        $this->addFlash('success', sprintf(
+            'Le produit "%s" a été marqué comme en rupture de stock pour cet événement.',
+            $productEvent->getProduct()->getName()
+        ));
+
+        return $this->redirectToRoute('sale_event_show', ['id' => $saleEventId]);
     }
 }

@@ -31,10 +31,7 @@ class SaleEvent
     private ?\DateTimeImmutable $startDate;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $endDate;
-
-    #[ORM\Column]
-    private ?string $status = 'incoming';
+    private ?\DateTimeImmutable $endDate;    
 
     /**
      * @var Collection<int, ProductEvent>
@@ -111,19 +108,7 @@ class SaleEvent
         $this->endDate = $endDate;
 
         return $this;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): static
-    {
-        $this->status = $status;
-
-        return $this;
-    }
+    }    
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -165,5 +150,69 @@ class SaleEvent
         }
 
         return $this;
+    }
+
+    /**
+     * @return int Le nombre total de ProductEvents associés à cette vente.
+     */
+    public function getTotalProductEventCount(): int
+    {
+        return $this->productEvents->count();
+    }
+
+    /**
+     * @return int Le nombre de ProductEvents pour lesquels unsoldQuantity est 0.
+     */
+    public function getOutOfStockProductEventCount(): int
+    {
+        $count = 0;
+        foreach ($this->productEvents as $productEvent) {
+            if ($productEvent->getUnsoldQuantity() === 0) {
+                $count++;
+            }
+        }
+        return $count;
+    }
+
+    /**
+     * @return int La somme des quantités invendues pour tous les ProductEvents.
+     */
+    public function getTotalUnsoldQuantity(): int
+    {
+        $totalUnsold = 0;
+        foreach ($this->productEvents as $productEvent) {
+            // Assurez-vous que unsoldQuantity n'est pas null avant d'additionner
+            $totalUnsold += $productEvent->getUnsoldQuantity() ?? 0;
+        }
+        return $totalUnsold;
+    }
+
+    /**
+     * @return float Le pourcentage de produits invendus par rapport à la quantité initiale totale.
+     */
+    public function getUnsoldPercentage(): float
+    {
+        $totalInitialQuantity = 0;
+        foreach ($this->productEvents as $productEvent) {
+            $totalInitialQuantity += $productEvent->getQuantity();
+        }
+
+        if ($totalInitialQuantity === 0) {
+            return 0.0; // Évite la division par zéro
+        }
+
+        return ($this->getTotalUnsoldQuantity() / $totalInitialQuantity) * 100;
+    }
+
+    /**
+     * @return float Le pourcentage de produits en rupture de stock.
+     */
+    public function getOutOfStockPercentage(): float
+    {
+        $totalProductEvents = $this->getTotalProductEventCount();
+        if ($totalProductEvents === 0) {
+            return 0.0;
+        }
+        return ($this->getOutOfStockProductEventCount() / $totalProductEvents) * 100;
     }
 }

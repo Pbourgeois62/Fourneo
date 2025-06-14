@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProductEventRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductEventRepository::class)]
@@ -23,6 +24,12 @@ class ProductEvent
 
     #[ORM\Column]
     private ?int $quantity = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $outOfStockDateTime = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $unsoldQuantity = null;
 
     public function getId(): ?int
     {
@@ -61,6 +68,38 @@ class ProductEvent
     public function setQuantity(int $quantity): static
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+    
+    public function getOutOfStockDateTime(): ?DateTimeImmutable
+    {
+        return $this->outOfStockDateTime;
+    }
+
+    public function setOutOfStockDateTime(?\DateTimeImmutable $outOfStockDateTime): static
+    {
+        $this->outOfStockDateTime = $outOfStockDateTime;
+        return $this;
+    }
+
+    public function markAsOutOfStockForEvent(): static
+    {
+        $this->setUnsoldQuantity(0);
+        if ($this->outOfStockDateTime === null) { 
+            $this->setOutOfStockDateTime(new DateTimeImmutable());
+        }
+        return $this;
+    }
+
+    public function getUnsoldQuantity(): ?int
+    {
+        return $this->unsoldQuantity;
+    }
+
+    public function setUnsoldQuantity(int $unsoldQuantity): static
+    {
+        $this->unsoldQuantity = $unsoldQuantity;
 
         return $this;
     }
