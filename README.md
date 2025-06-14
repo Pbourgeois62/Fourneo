@@ -1,14 +1,13 @@
 # Fourneo
 
-Fourneo est une application web basée sur Symfony 7.2 et Bootstrap, conçue pour les artisans boulangers.
-Elle facilite la réception des livraisons ainsi que la gestion des étiquettes produits et des allergènes associés.
-
+Fourneo est une application web moderne conçue pour accompagner les artisans boulangers au quotidien. Développée avec Symfony 7.2 et Bootstrap, elle vise à simplifier et optimiser plusieurs aspects essentiels du métier.
 ---
 
 ## Fonctionnalités principales
 
 - Enregistrement de produits
 - Création d'événements de vente
+- WIP !
 
 ---
 
