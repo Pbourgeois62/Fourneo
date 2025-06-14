@@ -1,4 +1,4 @@
-# Fourneo
+# Fourneo ![Logo Fourneo](logo.png)
 
 Fourneo est une application web moderne conçue pour accompagner les artisans boulangers au quotidien. Elle vise à simplifier et optimiser plusieurs aspects essentiels du métier.
 ---
