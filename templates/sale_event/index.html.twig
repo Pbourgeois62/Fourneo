@@ -81,12 +81,12 @@
 									{% endif %}
 
 									<div class="mt-4 pt-4 border-t border- flex justify-end">
-										<a href="{{ path('sale_event_show', {id: event.id}) }}" class="px-4 py-2 bg-blue-600 text-coffee cream rounded-md hover:bg-blue-700 transition">Gérer la vente</a>
+										<a href="{{ path('sale_event_show', {id: event.id}) }}" class="btn-validation">Gérer la vente</a>
 									</div>
 								</div>
 
 								<div class="absolute top-2 right-2 flex gap-2">
-									<a href="{{ path('sale_event_edit', {id: event.id}) }}" class="text-coffee blue-600 hover:text-coffee blue-800" title="Modifier">
+									<a href="{{ path('sale_event_edit', {id: event.id}) }}" class="btn-edit" title="Modifier">
 										<i class="bi bi-pencil-square text-coffee lg"></i>
 									</a>
 									<form method="post" action="{{ path('sale_event_delete', {id: event.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">
@@ -146,7 +146,7 @@
 								{% endif %}
 
 								<div class="absolute top-2 right-2 flex gap-2">
-									<a href="{{ path('sale_event_edit', {id: event.id}) }}" class="text-coffee blue-600 hover:text-coffee blue-800" title="Modifier">
+									<a href="{{ path('sale_event_edit', {id: event.id}) }}" class="btn-edit" title="Modifier">
 										<i class="bi bi-pencil-square text-coffee lg"></i>
 									</a>
 									<form method="post" action="{{ path('sale_event_delete', {id: event.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">
@@ -215,7 +215,7 @@
 								{% endif %}
 
 								<div class="mt-4 pt-4 border-t border- flex justify-end">
-									<a href="{{ path('sale_event_show', {id: event.id}) }}" class="px-4 py-2 bg- text-coffee cream rounded-md hover:bg-0 transition">Voir le bilan</a>
+									<a href="{{ path('sale_event_show', {id: event.id}) }}" class="btn-validation">Voir le bilan</a>
 								</div>
 							</div>
 						{% endfor %}

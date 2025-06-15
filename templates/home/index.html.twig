@@ -51,7 +51,7 @@
 								{% endif %}
 
 								<div class="mt-6 flex justify-end">
-									<a href="{{ path('sale_event_show', {id: saleEvent.id}) }}" class="inline-flex items-center px-4 py-2 bg-golden text-flour font-medium text-sm rounded-md shadow-sm hover:bg-sunrise focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-golden transition-colors duration-200">
+									<a href="{{ path('sale_event_show', {id: saleEvent.id}) }}" class="btn-validation">
 										<i class="bi bi-eye-fill mr-2"></i>
 										Gérer la vente
 									</a>
@@ -76,5 +76,4 @@
 			</div>
 		</div>
 	</div>
-
 {% endblock %}

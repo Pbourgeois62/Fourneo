@@ -35,7 +35,7 @@
 
 						<!-- Actions -->
 						<div class="absolute top-2 right-2 flex gap-2">
-							<a href="{{ path('product_edit', {id: product.id}) }}" class="text-golden hover:text-coffee transition-colors duration-300 ease-in-out" title="Modifier">
+							<a href="{{ path('product_edit', {id: product.id}) }}" class="btn-edit" title="Modifier">
 								<i class="bi bi-pencil-square text-lg"></i>
 							</a>
 							<form method="post" action="{{ path('product_delete', {id: product.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">

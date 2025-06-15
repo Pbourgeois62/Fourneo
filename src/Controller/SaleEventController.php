@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
 use App\Entity\SaleEvent;
 use App\Entity\ProductEvent;
 use App\Repository\SaleEventRepository;
@@ -49,9 +48,10 @@ final class SaleEventController extends AbstractController
     #[Route('/{id}', name: 'sale_event_show', methods: ['GET', 'POST'])]
     public function show(SaleEvent $saleEvent, Request $request, EntityManagerInterface $entityManager): Response
     {
+        $productEvents = $saleEvent->getProductEvents()->toArray();
         $form = $this->createForm(SaleEventUnsoldQuantityFormType::class, [
-            'productEvents' => $saleEvent->getProductEvents()->toArray()
-        ]);
+            'productEvents' => $productEvents
+        ]);      
 
         $form->handleRequest($request);
 
@@ -60,6 +60,10 @@ final class SaleEventController extends AbstractController
             foreach ($formData['productEvents'] as $productEvent) {
                 if ($productEvent->getUnsoldQuantity() === 0 && $productEvent->getOutOfStockDateTime() === null) {
                     $productEvent->setOutOfStockDateTime(new \DateTimeImmutable());
+                }
+                if ($productEvent->getUnsoldQuantity() !== null && $productEvent->getProduct() !== null) {
+                    $unsoldPrice = $productEvent->getUnsoldQuantity() * $productEvent->getProduct()->getPrice();
+                    $productEvent->setUnsoldPrice($unsoldPrice);
                 }
             }
 
@@ -72,7 +76,7 @@ final class SaleEventController extends AbstractController
 
         return $this->render('sale_event/show.html.twig', [
             'sale_event' => $saleEvent,
-            'unsold_form' => $form
+            'unsold_form' => $form,            
         ]);
     }
 
@@ -94,6 +98,7 @@ final class SaleEventController extends AbstractController
     ): Response {
 
         $productEvent->markAsOutOfStockForEvent();
+        $productEvent->setUnsoldPrice(0);
 
         $saleEventId = $productEvent->getEvent()->getId();
 
