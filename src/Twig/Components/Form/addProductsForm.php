@@ -19,7 +19,7 @@ class addProductsForm extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
-    use LiveCollectionTrait;    
+    use LiveCollectionTrait;
 
     public function __construct() {}
 
@@ -38,9 +38,15 @@ class addProductsForm extends AbstractController
 
         if (!$this->getForm()->isValid()) {
             $this->addFlash('error', 'Erreurs de validation, veuillez corriger les champs.');
-            return; 
+            return;
         }
         $saleEvent = $this->getForm()->getData();
+        foreach ($saleEvent->getProductEvents() as $productEvent) {
+            if ($productEvent->getUnsoldQuantity() === null) {
+                $productEvent->updateLotPrice();
+                $productEvent->setUnsoldQuantity($productEvent->getQuantity());
+            }
+        }
         $entityManager->persist($saleEvent);
         $entityManager->flush();
 

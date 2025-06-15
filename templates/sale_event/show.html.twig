@@ -6,114 +6,98 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container mx-auto bg-white py-8 px-6 rounded-lg shadow-md">
-		<div class="flex justify-between items-center mb-6">
-			<h1 class="text-3xl font-bold text-coffee">Détails de l'événement</h1>
-			<div>
-				<a href="{{ path('sale_event_edit', {'id': sale_event.id}) }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-cream rounded-md hover:bg-blue-700 transition">
-					<i class="bi bi-pencil-square mr-2"></i>Modifier
-				</a>
-				<a href="{{ path('sale_event_index') }}" class="inline-flex items-center ml-4 px-4 py-2 bg-gray-200 text-coffee rounded-md hover:bg-gray-300 transition">
+	<h1 class="text-title">Détails de l'événement</h1>
+	<div class="main-container bg-flour">
+		<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+			<h2 class="text-2xl font-semibold text-coffee mb-4">{{ sale_event.name }}</h2>
+			<div class="space-x-4">
+				<a href="{{ path('sale_event_index') }}" class="btn-back">
 					<i class="bi bi-arrow-left mr-2"></i>Retour à la liste
+				</a>
+				<a href="{{ path('sale_event_edit', {'id': sale_event.id}) }}" class="btn-validation">
+					<i class="bi bi-pencil-square mr-2"></i>Modifier
 				</a>
 			</div>
 		</div>
+		<div class="flex justify-between items-center mb-6"></div>
+		<p class="text-coffee mb-2">
+			<strong class="font-medium text-coffee">Description :</strong>
+			{{ sale_event.description|default('N/A') }}</p>
+		<p class="text-coffee mb-2">
+			<strong class="font-medium text-coffee">Adresse :</strong>
+			{{ sale_event.address|default('N/A') }}</p>
+		<p class="text-coffee mb-2">
+			<strong class="font-medium text-coffee">Début :</strong>
+			{{ sale_event.startDate ? sale_event.startDate|date('d/m/Y H:i') : 'Non défini' }}</p>
+		<p class="text-coffee mb-2">
+			<strong class="font-medium text-coffee">Fin :</strong>
+			{{ sale_event.endDate ? sale_event.endDate|date('d/m/Y H:i') : 'Non défini' }}</p>
 
-		<div class="bg-gray-50 p-6 rounded-lg shadow-inner mb-8">
-			<h2 class="text-2xl font-semibold text-coffee mb-4">{{ sale_event.name }}</h2>
-
-			<p class="text-coffee mb-2">
-				<strong class="font-medium text-coffee">Description :</strong>
-				{{ sale_event.description|default('N/A') }}
-			</p>
-			<p class="text-coffee mb-2">
-				<strong class="font-medium text-coffee">Adresse :</strong>
-				{{ sale_event.address|default('N/A') }}
-			</p>
-			<p class="text-coffee mb-2">
-				<strong class="font-medium text-coffee">Début :</strong>
-				{{ sale_event.startDate ? sale_event.startDate|date('d/m/Y H:i') : 'Non défini' }}
-			</p>
-			<p class="text-coffee mb-2">
-				<strong class="font-medium text-coffee">Fin :</strong>
-				{{ sale_event.endDate ? sale_event.endDate|date('d/m/Y H:i') : 'Non défini' }}
-			</p>
-		</div>
-
-		---
 
 		<h2 class="text-2xl font-semibold text-coffee mb-4">Produits associés</h2>
+
 		{% if sale_event.productEvents is not empty %}
-			{# IMPORTANT: Le formulaire principal doit envelopper tout le tableau #}
 			{{ form_start(unsold_form) }}
 			<div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-				<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-					<thead class="text-xs text-coffee uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+				<table class="w-full text-sm text-left">
+					<thead class="text-xs text-coffee uppercase bg-coffee text-flour">
 						<tr>
-							<th scope="col" class="py-3 px-6">
-								Nom du produit
-							</th>
-							<th scope="col" class="py-3 px-6 text-center">
-								Quantité Initiale
-							</th>
-							<th scope="col" class="py-3 px-6 text-center">
-								Invendus
-							</th>
-							<th
-								scope="col" class="py-3 px-6 text-center">
-								{# Centré la colonne Actions #}
-								Actions
-							</th>
+							<th class="py-3 px-6">Nom du produit</th>
+							<th class="py-3 px-6 text-center">Quantité Initiale</th>
+							<th class="py-3 px-6 text-center">Invendus</th>
+							<th class="py-3 px-6 text-center">Prix unitaire</th>
+							<th class="py-3 px-6 text-center">Prix du lot</th>
+							<th class="py-3 px-6 text-center">Gains</th>
+							<th class="py-3 px-6 text-center">Pertes</th>
+							<th class="py-3 px-6 text-center">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
-						{# BOUCLER SUR LA COLLECTION DE FORMULAIRES, PAS DIRECTEMENT SUR LA COLLECTION D'ENTITÉS #}
 						{% for productEventForm in unsold_form.productEvents %}
-							{# On récupère l'entité ProductEvent sous-jacente pour afficher les données non-modifiables #}
 							{% set productEvent = productEventForm.vars.data %}
-							<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-								<td scope="row" class="py-4 px-6 font-medium text-coffee whitespace-nowrap dark:text-cream">
+							<tr class="bg-white border-b hover:bg-gray-50">
+								<td class="py-4 px-6 font-medium text-coffee whitespace-nowrap">
 									{{ productEvent.product.name }}
 								</td>
 								<td class="py-4 px-6 text-center">
 									{{ productEvent.quantity }}
 								</td>
-								<td
-									class="py-4 px-6 text-center">
-									{# ICI, ON AFFICHE LE CHAMP DU FORMULAIRE POUR LES INVENUS #}
-									{{ form_widget(productEventForm.unsoldQuantity) }}
-									{% if productEvent.unsoldQuantity == 0 %}
-										<span class="text-red-600 text-xs block mt-1">(Épuisé)</span>
-										{# Ajouté 'block mt-1' pour un meilleur affichage #}
-									{% endif %}
-									{# Afficher les erreurs de validation si le champ 'unsoldQuantity' en a #}
+								<td class="py-4 px-6 text-center">
+									{{ form_widget(productEventForm.unsoldQuantity) }}									
 									{{ form_errors(productEventForm.unsoldQuantity) }}
 								</td>
-								<td
-									class="py-4 px-6 text-center">
-									{# "Rupture" via modification du champ 'Invendus' à 0 #}
+								<td class="py-4 px-6 text-center">
+									{{ productEvent.product.price|number_format(2, ',', ' ') }}
+									€
+								</td>
+								<td class="py-4 px-6 text-center">{{ productEvent.lotPrice|number_format(2, ',', ' ') }}</td>
+								<td class="py-4 px-6 text-center">
+									{{ (productEvent.lotPrice - productEvent.unsoldPrice)|number_format(2, ',', ' ') }}
+								</td>
+								<td class="py-4 px-6 text-center">{{ productEvent.unsoldPrice|number_format(2, ',', ' ') }}</td>
+								<td class="py-4 px-6 text-center">
 									{% if productEvent.unsoldQuantity is same as(0) %}
-										<span class="text-gray-500 text-sm italic mr-2">Épuisé</span>
-
+										<span class="text-red text-sm italic mr-2">Épuisé</span>
 									{% else %}
-										<a href="{{ path('sale_event_product_event_out_of_stock', {'id': productEvent.id}) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-sm block mt-2">
+										<a href="{{ path('sale_event_product_event_out_of_stock', {'id': productEvent.id}) }}" class="btn-action">
 											Rupture
-										{% endif %}
-										{% if productEvent.unsoldQuantity == 0 and productEvent.outOfStockDateTime %}
-											<div class="text-xs text-gray-400 mt-1">
-												depuis le
-												{{ productEvent.outOfStockDateTime|date('d/m/Y H:i') }}</div>
-										{% endif %}
-									</td>
+										</a>
+									{% endif %}
+									{% if productEvent.unsoldQuantity == 0 and productEvent.outOfStockDateTime %}
+										<div class="text-xs text-gray-400 mt-1">
+											depuis le
+											{{ productEvent.outOfStockDateTime|date('d/m/Y H:i') }}
+										</div>
+									{% endif %}
 								</td>
 							</tr>
 						{% endfor %}
 					</tbody>
 				</table>
 			</div>
-			{# Bouton de soumission du formulaire global #}
+
 			<div class="mt-6 flex justify-end">
-				<button type="submit" class="px-6 py-2 bg-green-600 text-cream rounded-md hover:bg-green-700 transition">
+				<button type="submit" class="btn-validation">
 					Enregistrer les invendus
 				</button>
 			</div>

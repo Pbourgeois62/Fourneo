@@ -23,13 +23,19 @@ class ProductEvent
     private ?SaleEvent $event = null;
 
     #[ORM\Column]
-    private ?int $quantity = null;
+    private ?int $quantity;
 
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $outOfStockDateTime = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $unsoldQuantity = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $lotPrice = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $unsoldPrice = null;    
 
     public function getId(): ?int
     {
@@ -71,7 +77,7 @@ class ProductEvent
 
         return $this;
     }
-    
+
     public function getOutOfStockDateTime(): ?DateTimeImmutable
     {
         return $this->outOfStockDateTime;
@@ -86,7 +92,7 @@ class ProductEvent
     public function markAsOutOfStockForEvent(): static
     {
         $this->setUnsoldQuantity(0);
-        if ($this->outOfStockDateTime === null) { 
+        if ($this->outOfStockDateTime === null) {
             $this->setOutOfStockDateTime(new DateTimeImmutable());
         }
         return $this;
@@ -97,10 +103,40 @@ class ProductEvent
         return $this->unsoldQuantity;
     }
 
-    public function setUnsoldQuantity(int $unsoldQuantity): static
+    public function setUnsoldQuantity(?int $unsoldQuantity): static
     {
         $this->unsoldQuantity = $unsoldQuantity;
 
+        return $this;
+    }
+
+    public function getUnsoldPrice(): ?float
+    {
+        return $this->unsoldPrice;
+    }    
+
+    public function setUnsoldPrice(?float $unsoldPrice): static
+    {
+        $this->unsoldPrice = $unsoldPrice;
+
+        return $this;
+    }
+
+    public function getLotPrice(): ?float
+    {
+        return $this->lotPrice;
+    }
+
+    public function setLotPrice(float $lotPrice): static
+    {
+        $this->lotPrice = $lotPrice;
+
+        return $this;
+    }
+
+    public function updateLotPrice(): static
+    {
+        $this->lotPrice = $this->getQuantity() * $this->getProduct()->getPrice();
         return $this;
     }
 }
