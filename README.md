@@ -33,11 +33,20 @@ Pour faire tourner Fourneo en local, suivez ces étapes simples.
 
 ### Prérequis
 
-Assurez-vous d'avoir [Docker](https://www.docker.com/get-started) installé et fonctionnel sur votre machine.
+Avoir [Docker](https://www.docker.com/get-started) node.js et npm d'installés sur votre machine.
 
 ### Commandes utiles
 
-Une fois les prérequis satisfaits, lancez l'application en mode développement avec cette unique commande :
+Une fois les prérequis satisfaits:
 
-```bash
-npm run docker-start
+* Executer le script **docker-start** pour monter les images
+* Executer le script **tailwind** pour compiler les assets tailwind CSS
+* Pour stopper les containers et les supprimer, faire **docker-stop**
+* Executer **frankenphp** pour travailler directement dans l'image php.
+* En mode dev, exécuter:
+```
+php bin/console d:m:m
+```
+Afin d'exécuter les migrations
+
+
