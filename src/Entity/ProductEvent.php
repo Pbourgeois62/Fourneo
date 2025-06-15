@@ -138,5 +138,5 @@ class ProductEvent
     {
         $this->lotPrice = $this->getQuantity() * $this->getProduct()->getPrice();
         return $this;
-    }
+    }   
 }

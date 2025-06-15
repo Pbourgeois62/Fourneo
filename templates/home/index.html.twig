@@ -45,6 +45,11 @@
 											Produits en vente :
 											<strong class="text-golden">{{ saleEvent.productEvents|length }}</strong>
 										</p>
+										<p class="text-md font-medium text-coffee">
+											<i class="bi bi-box-seam-fill mr-2 text-golden"></i>
+											Enveloppe :
+											<strong class="text-golden">{{ saleEvent.totalRevenue|number_format(2, ',', ' ') }} €</strong>
+										</p>
 									</div>
 								{% else %}
 									<p class="text-sm text-salmon mt-4 pt-4 border-t border-golden/30">Aucun produit associé.</p>

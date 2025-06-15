@@ -215,4 +215,13 @@ class SaleEvent
         }
         return ($this->getOutOfStockProductEventCount() / $totalProductEvents) * 100;
     }
+
+     public function getTotalRevenue(): ?float
+    {
+        $totalRevenue = 0;
+        foreach ($this->productEvents as $productEvent) {
+            $totalRevenue += $productEvent->getLotPrice();
+        }
+        return $totalRevenue;
+    }
 }
