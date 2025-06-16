@@ -32,22 +32,20 @@
   @apply text-coffee text-sm;
 }
 
-.btn-validation {
-    @apply inline-block bg-golden text-cream hover:bg-coffee hover:text-flour font-semibold py-2 px-4 rounded-md transition duration-200;
-  }
-
 .btn-edit {
-  @apply text-golden hover:text-coffee transition-colors duration-300 ease-in-out;
+  @apply text-skyblue hover:text-coffee transition-colors duration-300 ease-in-out;
+}
+
+.btn-validation {
+  @apply inline-block bg-skyblue text-flour hover:bg-coffee hover:text-golden hover:border-golden font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out;
 }
 
 .btn-action {
-  @apply inline-block border-2 border-golden bg-cream text-salmon hover:bg-golden hover:text-floor hover:border-salmon font-semibold py-2 px-4 rounded-md transition duration-200;
+  @apply inline-block border-2 border-flour bg-mossgreen text-flour hover:bg-golden hover:text-salmon hover:border-salmon font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out;
 }
 
-.btn-back {
-  @apply inline-flex items-center gap-2 border-2 border-golden bg-cream text-salmon 
-    hover:bg-golden hover:text-floor hover:border-salmon 
-    font-semibold px-4 py-2 rounded-md transition duration-200;
+.btn-return {
+  @apply inline-block border-2 border-gray-500 bg-gray-300 text-coffee hover:bg-gray-200 hover:text-salmon hover:border-salmon font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out;
 }
 
 @layer utilities {

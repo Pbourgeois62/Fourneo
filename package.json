@@ -2,7 +2,7 @@
     "scripts": {
     "docker-start": "clear && docker-compose up -d --build",
     "docker-stop": "clear && docker-compose down",
-    "frankenphp": "docker exec -it fourneo-php-1 bash",
-    "tailwind": "clear && docker exec -it fourneo-php-1 bash -c 'php bin/console tailwind:build --watch'"    
+    "frankenphp": "docker exec -it testfourneodemerde-php-1 bash",
+    "tailwind": "clear && docker exec -it testfourneodemerde-php-1 bash -c 'php bin/console tailwind:build --watch'"    
   }
 }
