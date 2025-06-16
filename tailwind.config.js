@@ -10,12 +10,14 @@ module.exports = {
         montserrat: ['Montserrat', 'sans-serif'],
       },
       colors: {
-        golden: ' #F6C867',    
-        cream: ' #FFF4E0',     
+        golden: ' #F6C867',
+        cream: ' #FFF4E0',
         coffee: ' #5C3E1F',
-        salmon: ' #E67E53',    
-        flour: ' #FAF9F6',     
-        sunrise: ' #FFE8A3',   
+        salmon: ' #E67E53',
+        flour: ' #FAF9F6',
+        skyblue: '#89B6DC',     // bleu doux pour validation
+        mossgreen: '#8DB580',   // vert naturel pour action
+        pebble: '#D3D3D3',
       },
       keyframes: {
         'slide-in': {

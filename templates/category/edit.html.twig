@@ -23,13 +23,13 @@
 			{{ form_errors(form.name) }}
 		</div>
 
-		<div class="flex items-center justify-between">
-			<button type="submit" class="bg-blue-600 hover:bg-blue-700 text-cream font-semibold py-2 px-5 rounded-lg transition-colors duration-200">
-				{{ category is defined and category ? 'Modifier' : 'Créer' }}
-			</button>
-			<a href="{{ path('category_index') }}" class="btn-back">
-				Retour à la liste
+		<div class="flex justify-end space-x-4">
+			<a href="{{ path('category_index') }}" class="btn-return">
+				<i class="bi bi-arrow-left mr-2"></i>Retour
 			</a>
+			<button type="submit" class="btn-validation">
+				Enregistrer
+			</button>
 		</div>
 
 		{{ form_end(form) }}

@@ -1,5 +1,5 @@
-<div {{ attributes }} class="px-20">
-	<div class="item-card">		
+<div {{ attributes }}>
+	<div class="item-card">
 
 		{{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
 
@@ -35,7 +35,7 @@
 		</div>
 
 		<div class="flex flex-column gap-4">
-			{{ form_widget(form.productEvents.vars.button_add, { label: '+ Ajouter un produit', attr: { class: 'px-4 py-2 bg-blue-600 text-cream font-semibold rounded-md hover:bg-blue-700 transition' } }) }}
+			{{ form_widget(form.productEvents.vars.button_add, { label: '+ Ajouter un produit', attr: { class: 'btn-action' } }) }}
 		</div>
 
 		<div class="flex flex-wrap gap-4">
@@ -86,9 +86,9 @@
 		</div>
 
 
-		<div class="flex items-center justify-between">
-			<a href="{{ path('sale_event_index') }}" class="text-gray-600 hover:text-coffee underline">
-				Annuler
+		<div class="flex justify-end space-x-4">
+			<a href="{{ path('sale_event_index') }}" class="btn-return">
+				<i class="bi bi-arrow-left mr-2"></i>Retour
 			</a>
 			<button type="submit" data-action="live#action:prevent" data-live-action-param="save" class="btn-validation">
 				Enregistrer

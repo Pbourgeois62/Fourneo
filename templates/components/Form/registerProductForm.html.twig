@@ -47,12 +47,12 @@
 		{% endif %}
 	</div>
 
-	<div class="flex items-center justify-between">
-		<a href="{{ path('product_index') }}" class="btn-back">
-			Retour à la liste
+	<div class="flex justify-end space-x-4">
+		<a href="{{ path('product_index') }}" class="btn-return">
+			<i class="bi bi-arrow-left mr-2"></i>Retour
 		</a>
 		<button type="button" data-action="live#action:prevent" data-live-action-param="save" class="btn-validation">
-			{{ product is defined and product ? 'Modifier' : 'Créer' }}
+			Enregistrer
 		</button>
 	</div>
 
