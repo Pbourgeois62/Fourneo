@@ -1,0 +1,79 @@
+<div {{ attributes }}>
+    <div class="mb-6">
+        {{ form_start(form) }}
+
+        {{ form_row(form.status, {
+    attr: {
+        'data-action': 'live#action',
+        'data-live-action-param': 'filterByStatus',
+        'class': 'block mx-auto w-full md:w-[30%] rounded-md border border-gray-300 bg-white py-2 px-3 focus:border-coffee focus:ring focus:ring-golden text-coffee'
+            }
+        }) }}
+
+        {{ form_end(form) }}
+    </div> 
+
+    {% if saleEvents is not empty %}
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {% for event in saleEvents %}
+                <div class="item-card relative p-4 border rounded mb-6 shadow-sm">
+                    <h2 class="text-coffee xl font-semibold mb-2">{{ event.name }}</h2>
+
+                    {% if event.description %}
+                        <p class="text-coffee sm italic mb-2">{{ event.description }}</p>
+                    {% endif %}
+
+                    <p class="text-coffee sm mb-1">
+                        <strong>Adresse :</strong> {{ event.address }}
+                    </p>
+
+                    <p class="text-coffee sm mb-1">
+                        <strong>Début :</strong> {{ event.startDate ? event.startDate|date('d/m/Y H:i') : 'Non défini' }}
+                    </p>
+
+                    <p class="text-coffee sm mb-4">
+                        <strong>Fin :</strong> {{ event.endDate ? event.endDate|date('d/m/Y H:i') : 'Non défini' }}
+                    </p>
+
+                    <div>
+                        {% if event.productEvents is not empty %}
+                            <div class="mt-4 pt-4 border-t border-gray-300">
+                                <h3 class="text-coffee md font-semibold mb-2">Produits mis en vente</h3>
+                                <ul class="list-disc list-inside text-coffee sm">
+                                    {% for productEvent in event.productEvents %}
+                                        <li>
+                                            {{ productEvent.product.name }} - Quantité: {{ productEvent.quantity }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% else %}
+                            <p class="text-coffee sm mt-4 pt-4 border-t border-gray-300">
+                                Aucun produit associé à cet événement.
+                            </p>
+                        {% endif %}
+
+                        <div class="mt-4 pt-4 border-t border-gray-300 flex justify-end">
+                            <a href="{{ path('sale_event_show', {id: event.id}) }}" class="btn-validation">Gérer la vente</a>
+                        </div>
+                    </div>
+
+                    <div class="absolute top-2 right-2 flex gap-2">
+                        <a href="{{ path('sale_event_edit', {id: event.id}) }}" class="btn-edit" title="Modifier">
+                            <i class="bi bi-pencil-square text-coffee lg"></i>
+                        </a>
+                        <form method="post" action="{{ path('sale_event_delete', {id: event.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_sale_event_' ~ event.id) }}">
+                            <button type="submit" class="text-coffee hover:text-red-600" title="Supprimer">
+                                <i class="bi bi-trash text-coffee lg"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucun événement trouvé pour ce statut.</p>
+    {% endif %}
+</div>

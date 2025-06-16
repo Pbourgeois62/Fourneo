@@ -37,7 +37,7 @@
 					{% include('partials/_navbar.html.twig') %}
 				</header>
 			{% endif %}
-			<main class="p-2 md:p-8 flex flex-col items-center justify-start flex-grow container">
+			<main class="p-2 md:p-8 flex flex-col items-center justify-start flex-grow container" id="swup"data-controller="symfony--ux-swup--swup">
 				{{ include('partials/_flash_messages.html.twig') }}
 				{% block body %}{% endblock %}
 			</main>

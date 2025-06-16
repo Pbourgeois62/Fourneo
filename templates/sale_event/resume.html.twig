@@ -51,7 +51,13 @@
 								{{ productEvent.quantity }}</p>
 							<p>
 								<strong>Invendus :</strong>
-								{{ productEvent.unsoldQuantity }}</p>
+								{% if productEvent.unsoldQuantity is same as(0) %}
+									<span class="inline-block bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded">
+										Épuisé à {{ productEvent.outOfStockDateTime|date('H:i') }}							
+									</span>
+								{% else %}
+									{{ productEvent.unsoldQuantity }}</p>
+							{% endif %}
 							<p>
 								<strong>Prix unitaire :</strong>
 								{{ productEvent.product.price|number_format(2, ',', ' ') }}
@@ -69,18 +75,6 @@
 								{{ productEvent.unsoldPrice|number_format(2, ',', ' ') }}
 								€</p>
 
-							{% if productEvent.unsoldQuantity is same as(0) %}
-								<span class="inline-block bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded">
-									Épuisé
-								</span>
-							{% endif %}
-
-							{% if productEvent.unsoldQuantity == 0 and productEvent.outOfStockDateTime %}
-								<p class="text-xs text-gray-400">
-									à
-									{{ productEvent.outOfStockDateTime|date('H:i') }}
-								</p>
-							{% endif %}
 						</div>
 					</div>
 				{% endfor %}
