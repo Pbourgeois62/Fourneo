@@ -86,5 +86,49 @@ class SaleEventRepository extends ServiceEntityRepository
             ->orderBy('s.endDate', 'DESC')
             ->getQuery()
             ->getResult();
-    }    
+    }
+
+    /**
+     * @return SaleEvent[] Returns an array of SaleEvent objects for past events
+     */
+    public function findPassedSaleEvents(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.startDate < :now')
+            ->setParameter('now', new \DateTimeImmutable())
+            ->orderBy('s.startDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return SaleEvent[] Returns an array of SaleEvent objects for today's events
+     */
+    public function findTodaySaleEvents(): array
+    {
+        $todayStart = new \DateTimeImmutable('today');
+        $todayEnd = new \DateTimeImmutable('tomorrow');
+
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.startDate >= :todayStart')
+            ->andWhere('s.startDate < :todayEnd')
+            ->setParameter('todayStart', $todayStart)
+            ->setParameter('todayEnd', $todayEnd)
+            ->orderBy('s.startDate', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return SaleEvent[] Returns an array of SaleEvent objects for incoming events
+     */
+    public function findIncomingSaleEvents(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.startDate >= :now')
+            ->setParameter('now', new \DateTimeImmutable('tomorrow')) // À partir de demain
+            ->orderBy('s.startDate', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
