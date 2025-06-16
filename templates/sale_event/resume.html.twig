@@ -1,0 +1,92 @@
+{# templates/sale_event/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Résumé de l'événement :
+	{{ saleEvent.name }}
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-title">Résumé de l'événement</h1>
+
+
+	<div class="main-container bg-flour p-8">
+		<div class="flex justify-between items-center">
+			<h2 class="text-2xl font-semibold text-coffee mb-6">{{ saleEvent.name }}</h2>
+			<div class="flex justify-end space-x-4">
+				<a href="{{ path('sale_event_index') }}" class="btn-return">
+					<i class="bi bi-arrow-left mr-2"></i>Retour
+				</a>
+			</div>
+		</div>
+
+		<p class="text-coffee mb-2 max-w-prose">
+			<strong class="font-medium text-coffee">Description :</strong>
+			{{ saleEvent.description|default('N/A') }}
+		</p>
+		<p class="text-coffee mb-2 max-w-prose">
+			<strong class="font-medium text-coffee">Adresse :</strong>
+			{{ saleEvent.address|default('N/A') }}
+		</p>
+		<p class="text-coffee mb-2 max-w-prose">
+			<strong class="font-medium text-coffee">Début :</strong>
+			{{ saleEvent.startDate ? saleEvent.startDate|date('d/m/Y H:i') : 'Non défini' }}
+		</p>
+		<p class="text-coffee mb-2 max-w-prose">
+			<strong class="font-medium text-coffee">Fin :</strong>
+			{{ saleEvent.endDate ? saleEvent.endDate|date('d/m/Y H:i') : 'Non défini' }}
+		</p>
+
+		<h2 class="text-2xl font-semibold text-coffee mb-8 mt-6">Produits associés</h2>
+
+		{% if saleEvent.productEvents is not empty %}
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+				{% for productEvent in saleEvent.productEvents %}
+					<div class="bg-white rounded-xl shadow p-4 border border-gray-200">
+						<h3 class="text-lg font-semibold text-coffee mb-2">
+							{{ productEvent.product.name }}
+						</h3>
+						<div class="text-sm text-coffee space-y-1">
+							<p>
+								<strong>Quantité initiale :</strong>
+								{{ productEvent.quantity }}</p>
+							<p>
+								<strong>Invendus :</strong>
+								{{ productEvent.unsoldQuantity }}</p>
+							<p>
+								<strong>Prix unitaire :</strong>
+								{{ productEvent.product.price|number_format(2, ',', ' ') }}
+								€</p>
+							<p>
+								<strong>Prix du lot :</strong>
+								{{ productEvent.lotPrice|number_format(2, ',', ' ') }}
+								€</p>
+							<p>
+								<strong>Gains :</strong>
+								{{ (productEvent.lotPrice - productEvent.unsoldPrice)|number_format(2, ',', ' ') }}
+								€</p>
+							<p>
+								<strong>Pertes :</strong>
+								{{ productEvent.unsoldPrice|number_format(2, ',', ' ') }}
+								€</p>
+
+							{% if productEvent.unsoldQuantity is same as(0) %}
+								<span class="inline-block bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded">
+									Épuisé
+								</span>
+							{% endif %}
+
+							{% if productEvent.unsoldQuantity == 0 and productEvent.outOfStockDateTime %}
+								<p class="text-xs text-gray-400">
+									à
+									{{ productEvent.outOfStockDateTime|date('H:i') }}
+								</p>
+							{% endif %}
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% else %}
+			<p class="text-gray-600">Aucun produit n'est associé à cet événement.</p>
+		{% endif %}
+	</div>
+{% endblock %}

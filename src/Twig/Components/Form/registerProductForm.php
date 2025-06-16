@@ -44,13 +44,15 @@ class registerProductForm extends AbstractController
             return;
         }
         $product = $this->getForm()->getData();
-        $newCategoryName = $this->getForm()->get('newCategory')->getData();
-        if ($newCategoryName) {
+      
+        if ($this->getForm()->get('isNewCategory')->getData()) {
             $newCategory = new Category();
-            $newCategory->setName($newCategoryName);
+            $newCategory->setName($this->getForm()->get('newCategory')->getData());
             $product->setCategory($newCategory);
+            $entityManager->persist($newCategory);
         }
-        $entityManager->persist($newCategory);
+       
+        
         $entityManager->persist($product);
         $entityManager->flush();
 

@@ -35,7 +35,10 @@ class ProductEvent
     private ?float $lotPrice = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $unsoldPrice = null;    
+    private ?float $unsoldPrice = null;
+    
+    #[ORM\Column(nullable: true)]
+    private ?float $benefit = null; 
 
     public function getId(): ?int
     {
@@ -76,27 +79,7 @@ class ProductEvent
         $this->quantity = $quantity;
 
         return $this;
-    }
-
-    public function getOutOfStockDateTime(): ?DateTimeImmutable
-    {
-        return $this->outOfStockDateTime;
-    }
-
-    public function setOutOfStockDateTime(?\DateTimeImmutable $outOfStockDateTime): static
-    {
-        $this->outOfStockDateTime = $outOfStockDateTime;
-        return $this;
-    }
-
-    public function markAsOutOfStockForEvent(): static
-    {
-        $this->setUnsoldQuantity(0);
-        if ($this->outOfStockDateTime === null) {
-            $this->setOutOfStockDateTime(new DateTimeImmutable());
-        }
-        return $this;
-    }
+    }     
 
     public function getUnsoldQuantity(): ?int
     {
@@ -139,4 +122,44 @@ class ProductEvent
         $this->lotPrice = $this->getQuantity() * $this->getProduct()->getPrice();
         return $this;
     }   
+
+    /**
+     * Get the value of benefit
+     */ 
+    public function getBenefit()
+    {
+        return $this->benefit;
+    }
+
+    /**
+     * Set the value of benefit
+     *
+     * @return  self
+     */ 
+    public function setBenefit($benefit)
+    {
+        $this->benefit = $benefit;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of outOfStockDateTime
+     */ 
+    public function getOutOfStockDateTime()
+    {
+        return $this->outOfStockDateTime;
+    }
+
+    /**
+     * Set the value of outOfStockDateTime
+     *
+     * @return  self
+     */ 
+    public function setOutOfStockDateTime($outOfStockDateTime)
+    {
+        $this->outOfStockDateTime = $outOfStockDateTime;
+
+        return $this;
+    }
 }

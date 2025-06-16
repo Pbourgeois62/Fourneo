@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use App\Form\ProductEventFormType; // Assurez-vous d'importer votre ProductEventType
 
-class SaleEventUnsoldQuantityFormType extends AbstractType
+class test extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
