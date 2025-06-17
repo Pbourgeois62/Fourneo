@@ -14,6 +14,23 @@
 						<!-- Nom produit -->
 						<h2 class="text-xl font-semibold text-coffee mb-2">{{ product.name }}</h2>
 
+						<!-- Allergènes -->
+						{% if product.allergens is not empty %}
+							<div class="mb-3">
+								<strong class="text-sm text-coffee block mb-1">Allergènes :</strong>
+								<ul class="flex flex-wrap gap-2">
+									{% for allergen in product.allergens %}
+										<li>
+											<span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full border border-red-200 cursor-help" title="{{ allergen.description }}">
+												{{ allergen.name }}
+											</span>
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+						{% endif %}
+
+
 						<!-- Détails -->
 						<p class="text-sm text-coffee mb-1">
 							<strong>Taille :</strong>
@@ -24,6 +41,7 @@
 							{{ product.price }}
 							€
 						</p>
+
 
 						<!-- Catégories -->
 						<p class="text-sm text-coffee mb-4">

@@ -37,10 +37,17 @@ class Product
     #[ORM\OneToMany(targetEntity: ProductEvent::class, mappedBy: 'product')]
     private Collection $productEvents;
 
+    /**
+     * @var Collection<int, Allergen>
+     */
+    #[ORM\ManyToMany(targetEntity: Allergen::class, inversedBy: 'products')]
+    private Collection $allergens;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->productEvents = new ArrayCollection();
+        $this->allergens = new ArrayCollection();
     }       
 
     public function getId(): ?int
@@ -133,6 +140,30 @@ class Product
                 $productEvent->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Allergen>
+     */
+    public function getAllergens(): Collection
+    {
+        return $this->allergens;
+    }
+
+    public function addAllergen(Allergen $allergen): static
+    {
+        if (!$this->allergens->contains($allergen)) {
+            $this->allergens->add($allergen);
+        }
+
+        return $this;
+    }
+
+    public function removeAllergen(Allergen $allergen): static
+    {
+        $this->allergens->removeElement($allergen);
 
         return $this;
     }
