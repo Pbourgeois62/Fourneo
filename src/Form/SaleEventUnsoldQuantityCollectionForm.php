@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\SaleEvent;
 use App\Form\ProductEventFormType;
+use App\Form\SaleEventAutocompeteField;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,7 +22,8 @@ class SaleEventUnsoldQuantityCollectionForm extends AbstractType
                 'allow_add' => false,
                 'allow_delete' => false,
                 'by_reference' => false,
-            ]);
+            ])           
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -31,7 +33,7 @@ class SaleEventUnsoldQuantityCollectionForm extends AbstractType
             'data_class' => SaleEvent::class,
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
-            'csrf_token_id'   => 'products_event_form_submission',           
+            'csrf_token_id'   => 'products_event_form_submission',
         ]);
     }
 }

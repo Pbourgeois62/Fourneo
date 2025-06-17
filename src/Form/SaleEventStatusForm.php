@@ -6,12 +6,16 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfonycasts\DynamicForms\DependentField;
+use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 class SaleEventStatusForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('status', ChoiceType::class, [
+        $dynamicBuilder = new DynamicFormBuilder($builder);
+
+        $dynamicBuilder->add('status', ChoiceType::class, [
             'choices' => [
                 'Passé' => 'passed',
                 "Aujourd'hui" => 'today',
@@ -21,6 +25,18 @@ class SaleEventStatusForm extends AbstractType
             'required' => false,
             'mapped' => true,
         ]);
+
+        $dynamicBuilder->addDependent('status', 'chosen', function (DependentField $field, ?string $status) {
+            if (null === $status) {
+                return;
+            }
+
+            $field->add(SaleEventAutocompeteField::class, [
+                'label' => 'Produits associés',
+                'required' => false,                
+                'status' => $status,
+            ]);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

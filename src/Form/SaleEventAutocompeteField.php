@@ -10,7 +10,7 @@ use Symfony\UX\Autocomplete\Form\AsEntityAutocompleteField;
 use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
 
 #[AsEntityAutocompleteField]
-class AutoCompleteSaleEvent extends AbstractType
+class SaleEventAutocompeteField extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
