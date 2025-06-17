@@ -1,6 +1,12 @@
 <div {{ attributes }}>
     {{ form_start(form) }}
     <div class="overflow-x-auto shadow-md rounded-md">
+    <div>
+        {{ form_widget(form.weather, {
+            'attr': {
+                'class': 'text-sm md:text-base md:w-1/2 rounded-md border-gray-300 mx-4 mb-4'
+            }
+    })}}
         <table class="w-full text-xs md:text-sm text-left text-coffee">
             <thead class="text-xs uppercase bg-coffee text-flour">
                 <tr>
@@ -22,7 +28,7 @@
                         <td class="py-3 px-3 md:py-4 md:px-6 text-center">
                             {{ form_widget(productEventForm.unsoldQuantity, {
                                 'attr': {
-                                    'class': 'w-20 text-center text-sm md:text-base'
+                                    'class': 'w-20 text-center text-sm md:text-base rounded-md'
                                 }
                             }) }}
                             {{ form_errors(productEventForm.unsoldQuantity) }}

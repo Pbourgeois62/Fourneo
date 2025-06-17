@@ -27,7 +27,7 @@ class SaleEventUnsoldQuantityCollectionForm extends AbstractType
                 'label' => false,
                 'required' => false,
                 'mapped' => false,
-                'attr' => ['placeholder' => 'Entrer le temps observé ...']
+                'attr' => ['placeholder' => 'Optionnel: indiquer la météo ...']
             ])
         ;
     }
