@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des allergènes{% endblock %}
+
+{% block body %}
+	<h1 class="text-title">Liste des allergènes</h1>
+	<div class="main-container">
+		{% if allergens is not empty %}
+			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{% for allergen in allergens %}
+					<div class="item-card">
+						<!-- Nom de l'allergène -->
+						<h2 class="text-xl font-semibold text-coffee mb-2">{{ allergen.name }}</h2>
+
+						<!-- Description (optionnelle) -->
+						{% if allergen.description is defined and allergen.description %}
+							<p class="text-sm text-coffee mb-4">{{ allergen.description }}</p>
+						{% endif %}
+
+						<!-- Actions -->
+						<div class="absolute top-2 right-2 flex space-x-2">
+							<a href="{{ path('allergen_edit', {id: allergen.id}) }}" class="btn-edit" aria-label="Modifier l’allergène {{ allergen.name }}">
+								<i class="bi bi-pencil-square text-lg"></i>
+							</a>
+
+							<form method="post" action="{{ path('allergen_delete', {id: allergen.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');" class="inline">
+								<input type="hidden" name="_method" value="DELETE"/>
+								<input type="hidden" name="_token" value="{{ csrf_token('delete_allergen_' ~ allergen.id) }}"/>
+								<button type="submit" class="text-salmon hover:text-red-700" aria-label="Supprimer l’allergène {{ allergen.name }}">
+									<i class="bi bi-trash text-lg"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% else %}
+			<p class="text-coffee">Aucun allergène disponible.</p>
+		{% endif %}
+
+		<div class="mt-8 text-right">
+			<a href="{{ path('allergen_new') }}" class="btn-action">
+				<i class="bi bi-plus-circle mr-2"></i>Créer un allergène
+			</a>
+		</div>
+	</div>
+{% endblock %}

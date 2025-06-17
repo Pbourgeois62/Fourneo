@@ -82,6 +82,7 @@ class ProductTypeForm extends AbstractType
                 'required' => false,
                 'mapped' => false,
             ])
+            ->add('allergens', AutoCompleteAllergens::class)
         ;
 
         $builder->addDependent('newCategory', 'isNewCategory', function (DependentField $field, ?bool $isNewCategory) {
@@ -111,8 +112,8 @@ class ProductTypeForm extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Product::class,
-            'csrf_protection' => true, 
-            'csrf_field_name' => '_token', 
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
             'csrf_token_id'   => 'product_form_submission',
         ]);
     }

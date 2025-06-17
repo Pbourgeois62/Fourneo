@@ -29,6 +29,12 @@
 		{{ form_errors(form.category) }}
 	</div>
 
+	<div>
+		{{ form_label(form.allergens, null, {'label_attr': {'class': 'block font-medium text-coffee mb-2'}}) }}
+		{{ form_widget(form.allergens, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
+		{{ form_errors(form.allergens) }}
+	</div>
+
 	<div class="space-y-2">
 		<div class="flex items-center space-x-3">
 			{{ form_widget(form.isNewCategory, {'attr': {'class': 'h-5 w-5 text-blue-600'}}) }}
