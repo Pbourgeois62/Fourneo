@@ -21,7 +21,7 @@
 }
 
 .main-container {
-  @apply container mx-auto py-8 px-1 sm:px-6 rounded-lg shadow-md;
+  @apply container mx-auto py-8 px-1 sm:px-6 rounded-lg;
 }
 
 .text-subtitle {

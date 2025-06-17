@@ -13,13 +13,14 @@ class SaleEventStatusForm extends AbstractType
     {
         $builder->add('status', ChoiceType::class, [
             'choices' => [
-                'Passé' => 'passed',
-                "Aujourd'hui" => 'today',
-                'À venir' => 'incoming',
+                'Voir les événements passés' => 'passed',
+                "Voir les événements du jour" => 'today',
+                'Voir les événements à venir' => 'incoming',
             ],
-            'placeholder' => 'Choisissez un statut',
+            'placeholder' => 'Créer un événement',
             'required' => false,
             'mapped' => true,
+            'label' => false
         ]);
     }
 
@@ -27,6 +28,9 @@ class SaleEventStatusForm extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => null,
+             'csrf_protection' => true, 
+            'csrf_field_name' => '_token', 
+            'csrf_token_id'   => 'sale_event_status_form_submission',
         ]);
     }
 }

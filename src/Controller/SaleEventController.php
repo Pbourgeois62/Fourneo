@@ -44,7 +44,7 @@ final class SaleEventController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'sale_event_show', methods: ['GET', 'POST'])]
+    #[Route('/{id}/show', name: 'sale_event_show', methods: ['GET', 'POST'])]
     public function manageSaleEven(SaleEvent $saleEvent): Response
     {
         return $this->render('sale_event/show.html.twig', [
