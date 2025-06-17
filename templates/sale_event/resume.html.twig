@@ -28,6 +28,10 @@
 			{{ saleEvent.address|default('N/A') }}
 		</p>
 		<p class="text-coffee mb-2 max-w-prose">
+			Météo observée :
+			{{ saleEvent.weather ?  event.weather : 'Non renseigné' }}
+		</p>
+		<p class="text-coffee mb-2 max-w-prose">
 			<strong class="font-medium text-coffee">Début :</strong>
 			{{ saleEvent.startDate ? saleEvent.startDate|date('d/m/Y H:i') : 'Non défini' }}
 		</p>
@@ -53,7 +57,8 @@
 								<strong>Invendus :</strong>
 								{% if productEvent.unsoldQuantity is same as(0) %}
 									<span class="inline-block bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded">
-										Épuisé à {{ productEvent.outOfStockDateTime|date('H:i') }}							
+										Épuisé à
+										{{ productEvent.outOfStockDateTime|date('H:i') }}
 									</span>
 								{% else %}
 									{{ productEvent.unsoldQuantity }}</p>

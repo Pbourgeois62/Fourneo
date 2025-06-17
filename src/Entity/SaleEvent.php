@@ -24,6 +24,9 @@ class SaleEvent
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $address = null;
 
+     #[ORM\Column(length: 255, nullable: true)]
+    private ?string $weather = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -118,6 +121,18 @@ class SaleEvent
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getWeather(): ?string
+    {
+        return $this->weather;
+    }
+
+    public function setWeather(?string $weather): static
+    {
+        $this->weather = $weather;
 
         return $this;
     }

@@ -33,6 +33,8 @@ class saleEventFormCollection extends AbstractController
 
         /** @var SaleEvent $saleEvent */
         $saleEvent = $this->getForm()->getData();
+        $weather = $this->getForm()->get('weather')->getData();
+        $saleEvent->setWeather($weather);
 
         foreach ($saleEvent->getProductEvents() as $productEvent) {
             if ($productEvent->getUnsoldQuantity() === 0) {

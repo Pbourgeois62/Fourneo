@@ -7,6 +7,7 @@ use App\Form\ProductEventFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
@@ -21,7 +22,14 @@ class SaleEventUnsoldQuantityCollectionForm extends AbstractType
                 'allow_add' => false,
                 'allow_delete' => false,
                 'by_reference' => false,
-            ]);
+            ])
+            ->add('weather', TextType::class, [
+                'label' => false,
+                'required' => false,
+                'mapped' => false,
+                'attr' => ['placeholder' => 'Entrer le temps observé ...']
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -31,7 +39,7 @@ class SaleEventUnsoldQuantityCollectionForm extends AbstractType
             'data_class' => SaleEvent::class,
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
-            'csrf_token_id'   => 'products_event_form_submission',           
+            'csrf_token_id'   => 'products_event_form_submission',
         ]);
     }
 }

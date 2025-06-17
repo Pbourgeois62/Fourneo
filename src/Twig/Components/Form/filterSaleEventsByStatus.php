@@ -15,9 +15,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[AsLiveComponent]
 class filterSaleEventsByStatus extends AbstractController
-{
+{   
     use DefaultActionTrait;
     use ComponentWithFormTrait;
+
+    #[LiveProp(writable: true)]
+    public ?string $status = null;
 
     public array $saleEvents = [];
 
@@ -37,8 +40,8 @@ class filterSaleEventsByStatus extends AbstractController
     public function filterByStatus(): void
     {
         $this->submitForm();
-        $status = $this->getForm()->get('status')->getData();
-        switch ($status) {
+        $this->status = $this->getForm()->get('status')->getData();
+        switch ($this->status) {
             case 'passed':
                 $this->saleEvents = $this->saleEventRepository->findPassedSaleEvents();
                 break;
@@ -52,5 +55,5 @@ class filterSaleEventsByStatus extends AbstractController
                 $this->saleEvents = $this->saleEventRepository->findIncomingSaleEvents();
                 break;
         }
-    }    
+    }
 }
