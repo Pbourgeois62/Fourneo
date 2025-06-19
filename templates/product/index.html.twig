@@ -10,7 +10,7 @@
 			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 				{% for product in products %}
 					<div
-						class="item-card">
+						class="item-card flex flex-col justify-between">
 						<!-- Nom produit -->
 						<h2 class="text-xl font-semibold text-coffee mb-2">{{ product.name }}</h2>
 
@@ -51,6 +51,35 @@
 							</span>
 						</p>
 
+						<!-- Étiquettes -->
+						{% if product.labels is not empty %}
+							<div class="mb-3">
+								<strong class="text-sm text-coffee block mb-1">Étiquettes :</strong>
+								<ul class="flex flex-wrap gap-2">
+									{% for label in product.labels %}
+										<li>
+											<span class="inline-block bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded border border-green-200">
+												{{ label.name }}
+											</span>
+										</li>
+									{% endfor %}
+								</ul>
+							</div>
+						{% endif %}
+
+						<!-- Bons de livraison -->
+						{% if product.deliveryNotes is not empty %}
+							<div class="mb-3">
+								<strong class="text-sm text-coffee block mb-1">Bons de livraison :</strong>
+								<ul class="list-disc list-inside text-sm text-coffee">
+									{% for note in product.deliveryNotes %}
+										<li>{{ note.reference ?? 'Sans référence' }}</li>
+									{% endfor %}
+								</ul>
+							</div>
+						{% endif %}
+
+
 						<!-- Actions -->
 						<div class="absolute top-2 right-2 flex gap-2">
 							<a href="{{ path('product_edit', {id: product.id}) }}" class="btn-edit" title="Modifier">
@@ -63,6 +92,15 @@
 									<i class="bi bi-trash text-lg"></i>
 								</button>
 							</form>
+						</div>
+						<div class="flex justify-end space-x-4">
+
+							<a href="{{ path('delivery_note_link', {id: product.id}) }}" class="btn-action">
+								Lier un BL
+							</a>
+							<a href="{{ path('label_new') }}" class="btn-action">
+								Lier une étiquette
+							</a>
 						</div>
 					</div>
 				{% endfor %}

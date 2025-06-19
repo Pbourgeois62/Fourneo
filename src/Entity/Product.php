@@ -31,6 +31,9 @@ class Product
     #[ORM\JoinColumn(nullable: true)]
     private ?Category $category = null;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Label::class, cascade: ['persist', 'remove'])]
+    private Collection $labels;
+
     /**
      * @var Collection<int, ProductEvent>
      */
@@ -43,12 +46,20 @@ class Product
     #[ORM\ManyToMany(targetEntity: Allergen::class, inversedBy: 'products')]
     private Collection $allergens;
 
+    /**
+     * @var Collection<int, DeliveryNote>
+     */
+    #[ORM\ManyToMany(targetEntity: DeliveryNote::class, inversedBy: 'products')]
+    private Collection $deliveryNotes;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->productEvents = new ArrayCollection();
         $this->allergens = new ArrayCollection();
-    }       
+        $this->labels = new ArrayCollection();
+        $this->deliveryNotes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -101,8 +112,8 @@ class Product
         $this->category = $category;
 
         return $this;
-    }   
-    
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -164,6 +175,56 @@ class Product
     public function removeAllergen(Allergen $allergen): static
     {
         $this->allergens->removeElement($allergen);
+
+        return $this;
+    }
+
+    public function getLabels(): Collection
+    {
+        return $this->labels;
+    }
+
+    public function addLabel(Label $label): static
+    {
+        if (!$this->labels->contains($label)) {
+            $this->labels[] = $label;
+            $label->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLabel(Label $label): static
+    {
+        if ($this->labels->removeElement($label)) {
+            if ($label->getProduct() === $this) {
+                $label->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DeliveryNote>
+     */
+    public function getDeliveryNotes(): Collection
+    {
+        return $this->deliveryNotes;
+    }
+
+    public function addDeliveryNote(DeliveryNote $deliveryNote): static
+    {
+        if (!$this->deliveryNotes->contains($deliveryNote)) {
+            $this->deliveryNotes->add($deliveryNote);
+        }
+
+        return $this;
+    }
+
+    public function removeDeliveryNote(DeliveryNote $deliveryNote): static
+    {
+        $this->deliveryNotes->removeElement($deliveryNote);
 
         return $this;
     }

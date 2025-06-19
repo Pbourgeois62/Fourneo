@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lier un bon de livraison au produit{% endblock %}
+
+{% block body %}
+	<h1 class="text-title">Lier un bon de livraison au produit</h1>
+	<div class="main-container">
+        {{ component('Form:addDeliveryNoteToProdutForm', {product: product}) }}
+    </div>        
+{% endblock %}

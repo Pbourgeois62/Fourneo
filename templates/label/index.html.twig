@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des étiquettes{% endblock %}
+
+{% block body %}
+	<h1 class="text-title">Liste des étiquettes</h1>
+	<div class="main-container">
+		{% if labels is not empty %}
+			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{% for label in labels %}
+					<div class="item-card relative">						
+                        
+						<!-- Image -->
+						{% if label.imageName is defined and label.imageName %}
+							<div class="mb-2">
+								<img src="{{ vich_uploader_asset(label, 'imageFile') }}"
+									 alt="Image de l’étiquette"
+									 class="max-h-40 w-auto mx-auto">
+							</div>
+						{% endif %}
+
+						<!-- Actions -->
+						<div class="absolute top-2 right-2 flex space-x-2">
+							<a href="{{ path('label_edit', {id: label.id}) }}" class="btn-edit" aria-label="Modifier l’étiquette">
+								<i class="bi bi-pencil-square text-lg"></i>
+							</a>
+
+							<form method="post" action="{{ path('label_delete', {id: label.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');" class="inline">
+								<input type="hidden" name="_method" value="DELETE"/>
+								<input type="hidden" name="_token" value="{{ csrf_token('delete_label_' ~ label.id) }}"/>
+								<button type="submit" class="text-salmon hover:text-red-700" aria-label="Supprimer l’étiquette">
+									<i class="bi bi-trash text-lg"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% else %}
+			<p class="text-coffee">Aucune étiquette disponible.</p>
+		{% endif %}
+
+		<div class="mt-8 text-right">
+			<a href="{{ path('label_new') }}" class="btn-action">
+				<i class="bi bi-plus-circle mr-2"></i>Créer une étiquette
+			</a>
+		</div>
+	</div>
+{% endblock %}

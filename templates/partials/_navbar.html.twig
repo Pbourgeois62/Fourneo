@@ -1,89 +1,47 @@
-  <nav class="container mx-auto flex justify-between items-center">
-          <a
-            href="{{ path('app_home') }}"
-            class="flex items-center space-x-2 text-2xl font-bold text-salmon hover:scale-105 transition-all duration-200"
-          >
-            <img
-              src="{{ asset('images/logo.png') }}"
-              alt="Logo Fourneo"
-              class="h-8 w-8"
-            />
-            <span>Fourneo</span>
-          </a>
+<nav class="container mx-auto flex justify-between items-center">
+	<a href="{{ path('app_home') }}" class="flex items-center space-x-2 text-2xl font-bold text-salmon hover:scale-105 transition-all duration-200">
+		<img src="{{ asset('images/logo.png') }}" alt="Logo Fourneo" class="h-8 w-8"/>
+		<span>Fourneo</span>
+	</a>
 
-          <!-- MENU BURGER - visible uniquement mobile -->
-          <button
-            data-collapse-toggle="mobile-menu"
-            type="button"
-            class="inline-flex items-center p-2 text-sm text-coffee rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
-            aria-controls="mobile-menu"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <svg
-              class="w-6 h-6"
-              aria-hidden="true"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M3 5h14a1 1 0 010 2H3a1 1 0 110-2zm0 4h14a1 1 0 010 2H3a1 1 0 110-2zm0 4h14a1 1 0 010 2H3a1 1 0 110-2z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-          </button>
+	<!-- MENU BURGER - visible uniquement mobile -->
+	<button data-collapse-toggle="mobile-menu" type="button" class="inline-flex items-center p-2 text-sm text-coffee rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation">
+		<svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" d="M3 5h14a1 1 0 010 2H3a1 1 0 110-2zm0 4h14a1 1 0 010 2H3a1 1 0 110-2zm0 4h14a1 1 0 010 2H3a1 1 0 110-2z" clip-rule="evenodd"></path>
+		</svg>
+	</button>
 
-          <!-- MENU DESKTOP - caché mobile -->
-          <div
-            class="hidden md:flex items-center space-x-6 text-coffee font-semibold"
-            id="desktop-menu"
-          >
-            <a
-              href="{{ path('product_index') }}"
-              class="hover:text-salmon hover:scale-105 transition-all duration-200"
-              >Produits</a
-            >
-            <a
-              href="{{ path('category_index') }}"
-              class="hover:text-salmon hover:scale-105 transition-all duration-200"
-              >Catégories</a
-            >
-             
-            <a
-              href="{{ path('allergen_index') }}"
-              class="hover:text-salmon hover:scale-105 transition-all duration-200"
-              >Allergènes</a
-            >
+	<!-- MENU DESKTOP - caché mobile -->
+	<div class="hidden md:flex items-center space-x-6 text-coffee font-semibold" id="desktop-menu">
+		<a href="{{ path('product_index') }}" class="hover:text-salmon hover:scale-105 transition-all duration-200">Produits</a>
 
-            <a
-              href="{{ path('sale_event_index') }}"
-              class="hover:text-salmon hover:scale-105 transition-all duration-200"
-              >Evénements</a
-            >
-            <a
-              href="{{ path('app_logout') }}"
-              class="text-red-600 hover:text-red-900 hover:scale-105 transition-all duration-200"
-              >Déconnexion</a
-            >
-          </div>
+		<a href="{{ path('delivery_note_index') }}" class="hover:text-salmon hover:scale-105 transition-all duration-200">Livraisons</a>
 
-          <!-- Email utilisateur visible uniquement desktop -->
-          <div class="hidden md:flex items-center space-x-6">
-            <span class="text-coffee font-medium">{{ app.user.email }}</span>
-          </div>
-        </nav>
+		<a href="{{ path('label_index') }}" class="hover:text-salmon hover:scale-105 transition-all duration-200">Etiquettes</a>
 
-        <!-- MENU MOBILE caché par défaut, s’ouvre avec le burger -->
-        <div class="hidden md:hidden mt-2" id="mobile-menu">
-          <div class="flex flex-col space-y-2 px-4 py-2 text-coffee font-semibold bg-cream rounded-md shadow-md">
-            <a href="{{ path('product_index') }}" class="hover:text-salmon hover:scale-105 transition-all duration-200">Produits</a>
-             
-            <a href="{{ path('category_index') }}"
-              class="hover:text-salmon hover:scale-105 transition-all duration-200">Catégories</a>
-            <a href="{{ path('sale_event_index') }}" class="hover:text-salmon hover:scale-105 transition-all duration-200">Evénements</a>
-            <a href="{{ path('app_logout') }}" class="text-red-600 hover:text-red-900 hover:scale-105 transition-all duration-200">Déconnexion</a>
-            <span class="pt-2 text-center">{{ app.user.email }}</span>
-          </div>
-        </div>
+		<a href="{{path('category_index')}}" class="hover:text-salmonhover:scale-105 transition-allduration-200">Catégories</a>
+
+		<a href="{{ path('allergen_index') }}" class="hover:text-salmon hover:scale-105 transition-all duration-200">Allergènes</a>
+
+		<a href="{{ path('sale_event_index') }}" class="hover:text-salmon hover:scale-105 transition-all duration-200">Evénements</a>
+
+		<a href="{{ path('app_logout') }}" class="text-red-600 hover:text-red-900 hover:scale-105 transition-all duration-200">Déconnexion</a>
+	</div>
+
+	<!-- Email utilisateur visible uniquement desktop -->
+	<div class="hidden md:flex items-center space-x-6">
+		<span class="text-coffee font-medium">{{ app.user.email }}</span>
+	</div>
+</nav><!-- MENU MOBILE caché par défaut, s’ouvre avec le burger --><div class="hidden md:hidden mt-2" id="mobile-menu">
+	<div class="flex flex-col space-y-2 px-4 py-2 text-coffee font-semibold bg-cream rounded-md shadow-md">
+		<a href="{{ path('product_index') }}" class="hover:text-salmon hover:scale-105 transition-all duration-200">Produits</a>
+		<a href="{{ path('delivery_note_index') }}" class="hover:text-salmon hover:scale-105 transition-all duration-200">Livraisons</a>
+		<a href="{{ path('label_index') }}" class="hover:text-salmon hover:scale-105 transition-all duration-200">Etiquettes</a>
+		<a href="{{path('category_index')}}" class="hover:text-salmonhover:scale-105 transition-allduration-200">Catégories</a>
+		<a href="{{ path('category_index') }}" class="hover:text-salmon hover:scale-105 transition-all duration-200">Catégories</a>
+		<a href="{{ path('sale_event_index') }}" class="hover:text-salmon hover:scale-105 transition-all duration-200">Evénements</a>
+		<a href="{{ path('app_logout') }}" class="text-red-600 hover:text-red-900 hover:scale-105 transition-all duration-200">Déconnexion</a>
+
+		<span class="pt-2 text-center">{{ app.user.email }}</span>
+	</div>
+</div>

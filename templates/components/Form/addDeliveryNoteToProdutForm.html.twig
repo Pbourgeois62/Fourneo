@@ -1,0 +1,50 @@
+{# templates/components/add_delivery_note_to_product_form.html.twig (ou votre template de composant) #}
+
+<div {{ attributes }}>
+    <div class="item-card">
+        {# AJOUTEZ data-live-form-multipart="true" ici #}
+        {{ form_start(form, { attr: { 'data-live-form-multipart': 'true' } }) }}
+
+        <div class="space-y-6">
+            <div>
+                {{ form_row(form.isExisting) }}
+            </div>
+
+            {% if form.isExisting.vars.checked %}
+                <div>
+                    {{ form_label(form.deliveryNoteChoice) }}
+                    {{ form_widget(form.deliveryNoteChoice, {
+                        attr: {
+                            class: 'mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500',
+                            placeholder: 'Sélectionnez un bon de commande existant'
+                        }
+                    }) }}
+                    {{ form_errors(form.deliveryNoteChoice) }}
+                </div>
+            {% else %}
+                <div>
+                    {# Assurez-vous que le sous-formulaire DeliveryNote est bien rendu #}
+                    {# Cela rendra le champ imageFile de DeliveryNoteTypeForm #}
+                    {{ form_label(form.DeliveryNote) }}
+                    {{ form_widget(form.DeliveryNote) }} {# Rend tous les champs du sous-formulaire #}
+                    {{ form_errors(form.DeliveryNote) }}
+                </div>
+            {% endif %}
+
+            <div class="flex justify-between items-center">
+                <a href="{{ path('sale_event_index') }}" class="btn-return">
+                    <i class="bi bi-arrow-left mr-2"></i>Retour
+                </a>
+
+                <button type="submit"
+                        data-action="live#action:prevent"
+                        data-live-action-param="files|saveDeliveryNote"
+                        class="btn-validation">
+                    Valider / Lier le Bon de Commande
+                </button>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>

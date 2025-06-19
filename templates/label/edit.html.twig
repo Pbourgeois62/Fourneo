@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ label is defined and label ? 'Modifier l\'étiquette' : 'Nouvelle étiquette' }} - Fourneo{% endblock %}
+
+{% block body %}
+    <h1 class="text-title">
+        {{ label is defined and label ? 'Modifier l\'étiquette' : 'Créer une étiquette' }}
+    </h1>
+
+    <div class="main-container">
+        {{ form_start(form, {
+            attr: {
+                enctype: 'multipart/form-data',
+                class: 'space-y-6 bg-white p-8 rounded-xl shadow-lg'
+            }
+        }) }}            
+
+            <div>
+                {{ form_label(form.imageFile, 'Photo de l\'étiquette', {'label_attr': {'class': 'block font-medium text-coffee'}}) }}
+                {{ form_widget(form.imageFile, {'attr': {'class': 'mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100'}}) }}
+                {{ form_errors(form.imageFile) }}
+            </div>           
+
+            <div class="flex justify-end space-x-4">
+                <a href="{{ path('label_index') }}" class="btn-return">
+                    <i class="bi bi-arrow-left mr-2"></i>Retour
+                </a>
+                <button type="submit" class="btn-validation">
+                    Enregistrer
+                </button>
+            </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
