@@ -10,18 +10,18 @@
 }
 
 .text-title {
-  @apply self-start text-4xl text-salmon font-extrabold p-4 mb-6 tracking-wide leading-snug text-center inline-block;
+  @apply self-start text-4xl text-salmon font-extrabold p-4 mb-4 md:mb-6 tracking-wide leading-snug text-center inline-block;
   @apply md:pl-32;
   text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
 }
 
 
 .item-card {
-  @apply relative border-2 border-golden rounded-lg p-4 bg-flour;
+  @apply relative border-2 border-golden rounded-lg p-2 md:p-4 bg-flour;
 }
 
 .main-container {
-  @apply container mx-auto py-8 px-1 sm:px-6 rounded-lg;
+  @apply container mx-auto py-4 md:py-8 px-1 sm:px-6 rounded-lg;
 }
 
 .text-subtitle {
@@ -33,7 +33,11 @@
 }
 
 .btn-edit {
-  @apply text-skyblue hover:text-coffee transition-colors duration-300 ease-in-out;
+  @apply text-skyblue hover:text-blue-700 transition-colors duration-300 ease-in-out;
+}
+
+.btn-delete {
+  @apply text-salmon hover:text-red-800 transition-colors duration-300 ease-in-out;
 }
 
 .btn-validation {
@@ -55,4 +59,17 @@
     background-color: theme('colors.cream') !important;
     font-weight: 600;
   }
+}
+
+#swup {
+    transition: opacity 0.4s ease-in-out;
+    opacity: 1;
+}
+
+html.is-animating #swup {
+    opacity: 0;
+}
+
+html.is-changing #swup {
+    opacity: 0;
 }

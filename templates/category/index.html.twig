@@ -6,6 +6,11 @@
 {% block body %}
 	<h1 class="text-title">Liste des catégories</h1>
 	<div class="main-container">
+	<div class="mt-8 text-right">
+			<a href="{{ path('category_new') }}" class="btn-action mb-4 md:mb-8">
+				<i class="bi bi-plus-circle mr-2"></i>Créer une catégorie
+			</a>
+		</div>
 		{% if categories is not empty %}
 			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{% for category in categories %}
@@ -28,7 +33,7 @@
 							<form method="post" action="{{ path('category_delete', {id: category.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');" class="inline">
 								<input type="hidden" name="_method" value="DELETE"/>
 								<input type="hidden" name="_token" value="{{ csrf_token('delete_category_' ~ category.id) }}"/>
-								<button type="submit" class="text-salmon hover:text-red-700" aria-label="Supprimer la catégorie {{ category.name }}">
+								<button type="submit" class="btn-delete" aria-label="Supprimer la catégorie {{ category.name }}">
 									<i class="bi bi-trash text-lg"></i>
 								</button>
 							</form>
@@ -38,12 +43,6 @@
 			</div>
 		{% else %}
 			<p class="text-coffee">Aucune catégorie disponible.</p>
-		{% endif %}
-
-		<div class="mt-8 text-right">
-			<a href="{{ path('category_new') }}" class="btn-action">
-				<i class="bi bi-plus-circle mr-2"></i>Créer une catégorie
-			</a>
-		</div>
+		{% endif %}		
 	</div>
 {% endblock %}

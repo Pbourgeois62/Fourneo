@@ -89,7 +89,7 @@
 						<form method="post" action="{{ path('sale_event_delete', {id: event.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">
 							<input type="hidden" name="_method" value="DELETE">
 							<input type="hidden" name="_token" value="{{ csrf_token('delete_sale_event_' ~ event.id) }}">
-							<button type="submit" class="text-salmon hover:text-red-700" title="Supprimer">
+							<button type="submit" class="btn-delete" title="Supprimer">
 								<i class="bi bi-trash text-lg"></i>
 							</button>                            	
 						</form>

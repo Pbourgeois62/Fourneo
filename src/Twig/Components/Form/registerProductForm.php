@@ -4,7 +4,7 @@ namespace App\Twig\Components\Form;
 
 use App\Entity\Product;
 use App\Entity\Category;
-use App\Form\ProductTypeForm;
+use App\Form\ProductForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -29,7 +29,7 @@ class registerProductForm extends AbstractController
   
     protected function instantiateForm(): FormInterface
     {       
-        return $this->createForm(ProductTypeForm::class, 
+        return $this->createForm(ProductForm::class, 
         $this->product
     );
     }

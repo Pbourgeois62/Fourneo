@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lier une étiquette au produit
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-title">Lier une étiquette au produit</h1>
+	<div class="main-container">
+		{{ form_start(form, {
+            attr: {               
+                class: 'space-y-6 bg-white p-8 rounded-xl shadow-lg'
+            }
+        }) }}
+
+		<div class="flex justify-end space-x-4">
+			<a href="{{ path('product_show', {id: product.id} ) }}" class="btn-return">
+				<i class="bi bi-arrow-left mr-2"></i>Retour
+			</a>
+			<button type="submit" class="btn-validation">
+				lier
+			</button>
+		</div>
+
+		{{ form_end(form) }}
+		{# {{ component('Form:AddLabelToProductForm', {product: product}) }} #}
+	</div>
+{% endblock %}

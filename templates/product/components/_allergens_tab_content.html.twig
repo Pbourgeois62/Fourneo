@@ -1,0 +1,41 @@
+<div class="mt-6 w-full"> 
+    <div class="flex flex-wrap justify-start gap-3 mb-4">
+        {# Le bouton "Lier un allergène" #}
+        <a href="{{ path('add_allergen_to_product', {id: product.id}) }}" class="btn-action">
+            <i class="bi bi-link-45deg mr-2"></i>Lier
+        </a>
+        {# Le bouton "Créer un allergène" #}
+        <a href="{{ path('allergen_new_for_product', {product: product.id}) }}" class="btn-validation">
+            <i class="bi bi-plus-circle mr-2"></i>Nouveau
+        </a>
+    </div>
+
+    {% if product.allergens is not empty %}
+        <div class="overflow-x-auto mb-4">
+            <table class="min-w-full divide-y divide-gray-200 shadow-sm rounded-lg">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Nom
+                        </th>                        
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for allergen in product.allergens %}
+                        <tr>
+                            <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                                {{ allergen.name ?? 'Aucun nom' }}
+                            </td>
+                            <td class="px-4 py-2 whitespace-nowrap text-center text-sm">
+                                <div class="flex justify-center items-center space-x-2">
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-gray-600 text-sm italic mb-4">Aucun allergène lié à ce produit.</p>
+    {% endif %}
+</div>
