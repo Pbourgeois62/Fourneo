@@ -40,12 +40,10 @@ Avoir [Docker](https://www.docker.com/get-started) node.js et npm d'installés s
 Une fois les prérequis satisfaits:
 
 * Executer le script **docker-start** pour monter les images
-* Exécuter:
+* Afin d'exécuter les migrations, exécuter:
 ```
 php bin/console d:m:m
 ```
-Afin d'exécuter les migrations
-
 * Executer le script **tailwind** pour compiler les assets tailwind CSS
 * Pour stopper les containers et les supprimer, executer le script **docker-stop**
 * Pour travailler directement dans l'image php, executer **frankenphp**
