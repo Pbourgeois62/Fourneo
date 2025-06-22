@@ -41,7 +41,7 @@ Avoir [Docker](https://www.docker.com/get-started) node.js et npm d'installés s
 Une fois les prérequis satisfaits:
 
 * Executer le script **docker-start** pour monter les images
-* Afin d'exécuter les migrations, exécuter:
+* Afin d'appliquer les migrations, exécuter:
 ```
 php bin/console d:m:m
 ```
