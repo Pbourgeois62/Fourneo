@@ -2,7 +2,7 @@
 
 <img src="logo.png" alt="Logo Fourneo" width="150" height="150"> 
 
-Fourneo est une **application web moderne** conçue pour être le compagnon numérique des **artisans boulangers**. Elle vise à simplifier, optimiser et moderniser la gestion quotidienne de la boulangerie, de la production aux événements de vente.
+Fourneo est une **application web moderne** conçue pour être le compagnon numérique des **artisans boulangers**. Elle vise à simplifier, optimiser et moderniser la gestion quotidienne de la boulangerie, de la production à la vente, en passant par la gestion.
 
 ---
 
@@ -12,7 +12,8 @@ Fourneo vous aide à structurer et à gérer efficacement votre activité grâce
 
 * **Gestion des produits :** Enregistrez, cataloguez et organisez facilement tous vos produits de boulangerie.
 * **Création d'événements de vente :** Planifiez et suivez vos ventes spéciales, marchés ou événements directement depuis l'application.
-* **WIP !** Restez à l'écoute, de nouvelles fonctionnalités passionnantes sont en cours de développement pour enrichir votre expérience.
+* **Gestion des livraisons et des documents associés**: Photographiez facilement les étiquettes produits ou les bons de livraison. Associez-les immédiatement à un produit ou enregistrez-les pour les traiter plus tard.
+* **WIP !** Restez à l'écoute, de nouvelles fonctionnalités sont en cours de développement pour enrichir l'application.
 
 ---
 
