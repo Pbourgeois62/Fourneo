@@ -18,7 +18,7 @@ class LabelTypeForm extends AbstractType
         $builder          
 
             ->add('imageFile', VichImageType::class, [
-                'label'        => 'Photo de l\'étiquette',
+                'label'        => false,
                 'required'     => false,
                 'allow_delete' => false,
                 'download_uri' => false,

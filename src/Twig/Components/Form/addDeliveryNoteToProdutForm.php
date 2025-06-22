@@ -7,7 +7,6 @@ use App\Entity\DeliveryNote;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use App\Form\LinkDeliveryNoteToProductForm;
-use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -69,10 +68,7 @@ class addDeliveryNoteToProdutForm extends AbstractController
 
         if ($selectedDeliveryNote && $this->product) {
             $selectedDeliveryNote->addProduct($this->product);
-
             $entityManager->persist($selectedDeliveryNote);
-            $entityManager->persist($this->product);
-
             $entityManager->flush();
 
             $this->addFlash('success', 'Bon de livraison lié au produit avec succès !');
@@ -81,19 +77,5 @@ class addDeliveryNoteToProdutForm extends AbstractController
             $this->addFlash('error', 'Échec de la liaison du bon de livraison au produit. Vérifiez que le produit et le bon de livraison sont corrects.');
             return null;
         }
-    }
-
-    // #[LiveAction]
-    // public function linkDeliveryNoteToProduct(#[LiveArg('itemName')] string $deliveryNoteNumber,EntityManagerInterface $entityManager)
-    // {
-    //     $deliveryNote = $entityManager->getRepository(DeliveryNote::class)->findOneBy(['number' => $deliveryNoteNumber]);
-    //     $deliveryNote->addProduct($this->product);
-    //     $entityManager->persist($deliveryNote);
-
-    //     $entityManager->flush();
-
-    //     $this->addFlash('success', 'Événement de vente lié avec succès !');
-
-    //     return $this->redirectToRoute('product_index');
-    // }
+    }  
 }

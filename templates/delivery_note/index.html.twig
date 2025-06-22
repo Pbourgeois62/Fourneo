@@ -5,6 +5,11 @@
 {% block body %}
 	<h1 class="text-title">Liste des bons de livraison</h1>
 	<div class="main-container">
+	<div class="mt-8 text-right">
+			<a href="{{ path('delivery_note_new') }}" class="btn-action mb-4 md:mb-8">
+				<i class="bi bi-plus-circle mr-2"></i>Créer un bon de livraison
+			</a>
+		</div>
 		{% if deliveryNotes is not empty %}
 			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{% for deliveryNote in deliveryNotes %}
@@ -37,7 +42,7 @@
 							<form method="post" action="{{ path('delivery_note_delete', {id: deliveryNote.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');" class="inline">
 								<input type="hidden" name="_method" value="DELETE"/>
 								<input type="hidden" name="_token" value="{{ csrf_token('delete_delivery_note_' ~ deliveryNote.id) }}"/>
-								<button type="submit" class="text-salmon hover:text-red-700" aria-label="Supprimer le bon n°{{ deliveryNote.number }}">
+								<button type="submit" class="btn-delete" aria-label="Supprimer le bon n°{{ deliveryNote.number }}">
 									<i class="bi bi-trash text-lg"></i>
 								</button>
 							</form>
@@ -47,12 +52,6 @@
 			</div>
 		{% else %}
 			<p class="text-coffee">Aucun bon de livraison disponible.</p>
-		{% endif %}
-
-		<div class="mt-8 text-right">
-			<a href="{{ path('delivery_note_new') }}" class="btn-action">
-				<i class="bi bi-plus-circle mr-2"></i>Créer un bon de livraison
-			</a>
-		</div>
+		{% endif %}		
 	</div>
 {% endblock %}

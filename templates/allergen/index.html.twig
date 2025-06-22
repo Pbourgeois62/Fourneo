@@ -5,6 +5,11 @@
 {% block body %}
 	<h1 class="text-title">Liste des allergènes</h1>
 	<div class="main-container">
+	<div class="mt-8 text-right">
+			<a href="{{ path('allergen_new') }}" class="btn-action mb-4 md:mb-8">
+				<i class="bi bi-plus-circle mr-2"></i>Créer un allergène
+			</a>
+		</div>
 		{% if allergens is not empty %}
 			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 				{% for allergen in allergens %}
@@ -26,7 +31,7 @@
 							<form method="post" action="{{ path('allergen_delete', {id: allergen.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');" class="inline">
 								<input type="hidden" name="_method" value="DELETE"/>
 								<input type="hidden" name="_token" value="{{ csrf_token('delete_allergen_' ~ allergen.id) }}"/>
-								<button type="submit" class="text-salmon hover:text-red-700" aria-label="Supprimer l’allergène {{ allergen.name }}">
+								<button type="submit" class="btn-delete" aria-label="Supprimer l’allergène {{ allergen.name }}">
 									<i class="bi bi-trash text-lg"></i>
 								</button>
 							</form>
@@ -36,12 +41,6 @@
 			</div>
 		{% else %}
 			<p class="text-coffee">Aucun allergène disponible.</p>
-		{% endif %}
-
-		<div class="mt-8 text-right">
-			<a href="{{ path('allergen_new') }}" class="btn-action">
-				<i class="bi bi-plus-circle mr-2"></i>Créer un allergène
-			</a>
-		</div>
+		{% endif %}		
 	</div>
 {% endblock %}

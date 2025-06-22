@@ -16,28 +16,18 @@ class LabelRepository extends ServiceEntityRepository
         parent::__construct($registry, Label::class);
     }
 
-//    /**
-//     * @return Label[] Returns an array of Label objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Label
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * Crée un QueryBuilder pour récupérer les étiquettes (labels) qui ne sont liées à aucun produit.
+     *
+     * @return QueryBuilder
+     */
+    public function findUnlinkedLabels(): array
+    {
+        return $this->createQueryBuilder('l')
+            ->leftJoin('l.produit', 'p')
+            ->andWhere('l.produit IS NULL')
+            ->orderBy('l.id', 'ASC')
+            ->getQuery()
+            ->getResult(); // <-- La requête est exécutée ici
+    }
 }

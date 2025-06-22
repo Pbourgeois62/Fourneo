@@ -36,6 +36,11 @@ class Label
     #[ORM\JoinColumn(nullable: true)]
     private ?Product $produit = null;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();        
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -113,5 +118,22 @@ class Label
         $this->updatedAt = $updatedAt;
 
         return $this;
-    }   
+    }
+    
+    public function __toString(): string
+    {
+        // Retourne une représentation unique et utile du Label.
+        // Cela sera utilisé par défaut si 'choice_label' n'est pas spécifié.
+        // Peut être risqué si le label n'a pas encore d'ID ou si vous avez besoin de formats différents.
+        return (string) $this->getId() . ' - Créé le ' . $this->createdAt->format('Y-m-d H:i');
+    }
+
+    // Option 2B: Méthode dédiée pour le formatage de la date
+    public function getFormattedCreatedAt(): string
+    {
+        if (null === $this->createdAt) {
+            return ''; // Ou une valeur par défaut
+        }
+        return $this->createdAt->format('d/m/Y H:i'); // Format de date lisible
+    }
 }

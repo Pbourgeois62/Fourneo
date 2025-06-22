@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Entity\Allergen;
 use App\Form\AllergenForm;
 use App\Repository\AllergenRepository;
@@ -25,22 +26,36 @@ final class AllergenController extends AbstractController
     }
 
     #[Route('/new', name: 'allergen_new', methods: ['GET', 'POST'])]
-    public function create(Request $request, EntityManagerInterface $em): Response
-    {
-        $allergen = new Allergen();
+    #[Route('/new/{product}', name: 'allergen_new_for_product', methods: ['GET', 'POST'])]
+    public function createAllergen(
+        Request $request,
+        EntityManagerInterface $em,
+        ?Product $product = null
+    ): Response {
+        $allergen = new Allergen();        
+
+        if ($product) {
+            $allergen->addProduct($product);
+        }
         $form = $this->createForm(AllergenForm::class, $allergen);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($allergen);
+            $em->persist($allergen); 
             $em->flush();
 
-            $this->addFlash('success', 'Allergène créé avec succès.');
+            $this->addFlash('success', 'Allergène créé avec succès.'); 
+
+            if ($product) {
+                return $this->redirectToRoute('product_show', ['id' => $product->getId()]);
+            }
+
             return $this->redirectToRoute('allergen_index');
         }
 
         return $this->render('allergen/edit.html.twig', [
             'form' => $form,
+            'product' => $product, 
         ]);
     }
 

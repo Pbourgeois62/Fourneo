@@ -2,43 +2,41 @@
 
 namespace App\Form;
 
-use App\Entity\DeliveryNote;
-use Doctrine\ORM\QueryBuilder;
+use App\Entity\label;
 use Symfony\Component\Form\AbstractType;
-use App\Repository\DeliveryNoteRepository;
+use App\Repository\labelRepository;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class LinkDeliveryNoteToProductForm extends AbstractType
+class linkLabelToProductForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder = new DynamicFormBuilder($builder);
 
         $builder
-            ->add('DeliveryNote', DeliveryNoteTypeForm::class, [])
+            ->add('label', LabelTypeForm::class, [])
             ->add('isExisting', CheckboxType::class, [
-                'label' => 'Souhaitez-vous lier un bon de commande existant ?',
+                'label' => 'Souhaitez-vous lier une étiquette existante ?',
             ]);
 
-        $builder->addDependent('deliveryNoteChoice', 'isExisting', function (DependentField $field, ?bool $isExisting) {
+        $builder->addDependent('labelChoice', 'isExisting', function (DependentField $field, ?bool $isExisting) {
             if (!$isExisting) {
                 return;
             }
 
             $field->add(EntityType::class, [
-                'class' => DeliveryNote::class,
-                'query_builder' => function (DeliveryNoteRepository $er) {
-                    return $er->createQueryBuilder('d')
-                        ->leftJoin('d.products', 'p')
-                        ->andWhere('p.id IS NULL')
-                        ->orderBy('d.number', 'ASC');
+                'class' => Label::class,
+                'query_builder' => function (LabelRepository $er) {
+                    return $er->createQueryBuilder('l')
+                        ->leftJoin('l.produit', 'p')
+                        ->andWhere('l.produit IS NULL')
+                        ->orderBy('l.id', 'ASC');
                 },
                 'autocomplete' => true,
                 'required' => false,
@@ -50,7 +48,7 @@ class LinkDeliveryNoteToProductForm extends AbstractType
                 'constraints' => [
                     new NotBlank(['message' => 'Le numéro de bon de commande est requis.']),                    
                 ],
-                'choice_label' => 'number',
+                'choice_label' => 'formattedCreatedAt',
             ]);
         });
     }

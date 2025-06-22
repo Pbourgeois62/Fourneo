@@ -19,7 +19,7 @@ use Symfonycasts\DynamicForms\DynamicFormBuilder;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfony\Component\Validator\Constraints\Type;
 
-class ProductTypeForm extends AbstractType
+class ProductForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

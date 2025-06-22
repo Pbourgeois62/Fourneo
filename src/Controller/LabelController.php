@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Label;
+use App\Entity\Product;
 use App\Form\LabelTypeForm;
+use App\Form\AddLabelToProductForm;
 use App\Repository\LabelRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 final class LabelController extends AbstractController
 {
     #[Route('', name: 'label_index', methods: ['GET'])]
-    public function index(LabelRepository $labelRepository): Response
+    public function indexLabel(LabelRepository $labelRepository): Response
     {
         return $this->render('label/index.html.twig', [
             'labels' => $labelRepository->findAll(),
@@ -25,9 +27,17 @@ final class LabelController extends AbstractController
     }
 
     #[Route('/new', name: 'label_new', methods: ['GET', 'POST'])]
-    public function create(Request $request, EntityManagerInterface $em): Response
-    {
+    #[Route('/new/{product}', name: 'label_new_for_product', methods: ['GET', 'POST'])]
+    public function createLabel(
+        Request $request,
+        EntityManagerInterface $em,
+        ?Product $product
+    ): Response {
         $label = new Label();
+        if ($product) {
+            $label->setProduct($product);
+        }
+
         $form = $this->createForm(LabelTypeForm::class, $label);
         $form->handleRequest($request);
 
@@ -35,17 +45,23 @@ final class LabelController extends AbstractController
             $em->persist($label);
             $em->flush();
 
-            $this->addFlash('success', 'Étiquette créée avec succès.');
+            $this->addFlash('success', 'Etiquette créé avec succès.');
+
+            if ($product) {               
+                return $this->redirectToRoute('label_show', ['id' => $product->getId()]);
+            }
+
             return $this->redirectToRoute('label_index');
         }
 
         return $this->render('label/edit.html.twig', [
             'form' => $form,
+            'product' => $product,
         ]);
     }
 
     #[Route('/{id}', name: 'label_show', methods: ['GET'])]
-    public function show(Label $label): Response
+    public function showLabel(Label $label): Response
     {
         return $this->render('label/show.html.twig', [
             'label' => $label,
@@ -53,7 +69,7 @@ final class LabelController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'label_edit', methods: ['GET', 'POST'])]
-    public function edit(Label $label, Request $request, EntityManagerInterface $em): Response
+    public function editLabel(Label $label, Request $request, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(LabelTypeForm::class, $label);
         $form->handleRequest($request);
@@ -71,7 +87,7 @@ final class LabelController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'label_delete', methods: ['POST'])]
-    public function delete(Label $label, Request $request, EntityManagerInterface $em): Response
+    public function deleteLabel(Label $label, Request $request, EntityManagerInterface $em): Response
     {
         if ($this->isCsrfTokenValid('delete_label_' . $label->getId(), $request->request->get('_token'))) {
             $em->remove($label);

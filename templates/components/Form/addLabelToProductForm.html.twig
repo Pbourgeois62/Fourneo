@@ -1,0 +1,45 @@
+<div {{ attributes }}>
+    <div class="item-card">
+        {{ form_start(form) }}
+
+        <div class="space-y-6">
+            <div>
+                {{ form_row(form.isExisting) }}
+            </div>
+
+            {% if form.isExisting.vars.checked %}
+                <div>
+                    {{ form_label(form.labelChoice) }}
+                    {{ form_widget(form.labelChoice, {
+                        attr: {
+                            class: 'mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500',
+                            placeholder: 'Sélectionnez une étiquette existante'
+                        }
+                    }) }}
+                    {{ form_errors(form.labelChoice) }}
+                </div>
+            {% else %}
+                <div>
+                    {{ form_label(form.label) }}
+                    {{ form_widget(form.label) }}
+                    {{ form_errors(form.label) }}
+                </div>
+            {% endif %}
+
+            <div class="flex justify-between items-center">
+                <a href="{{ path('product_index') }}" class="btn-return">
+                    <i class="bi bi-arrow-left mr-2"></i>Retour
+                </a>
+
+                <button type="submit"
+                        data-action="live#action:prevent"
+                        data-live-action-param="saveLabel"
+                        class="btn-validation">
+                    Valider / Lier l'Étiquette
+                </button>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>

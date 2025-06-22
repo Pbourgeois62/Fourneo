@@ -14,12 +14,14 @@
 			{{ importmap('app') }}
 		{% endblock %}
 
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet"/>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
 		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"/>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" defer rel="stylesheet"/>
+
 
 		{% block javascripts %}
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+			<script defer src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 			{% block importmap %}
 				{{ importmap('app') }}
 			{% endblock %}
@@ -31,13 +33,13 @@
 		<!-- Overlay assombrissant sur le background uniquement -->
 		<div class="absolute inset-0 bg-black bg-opacity-30 pointer-events-none z-0"></div>
 
-		<div class="min-h-screen flex flex-col relative z-10">
+		<div class="min-h-screen flex flex-col relative z-1">
 			{% if app.user %}
 				<header class="bg-cream shadow-md py-4 px-6">
 					{% include('partials/_navbar.html.twig') %}
 				</header>
 			{% endif %}
-			<main class="p-2 md:p-8 flex flex-col items-center justify-start flex-grow container" id="swup"data-controller="symfony--ux-swup--swup">
+			<main class="p-2 md:p-8 flex flex-col items-center justify-start flex-grow container" id="swup" data-controller="symfony--ux-swup--swup">
 				{{ include('partials/_flash_messages.html.twig') }}
 				{% block body %}{% endblock %}
 			</main>
@@ -45,6 +47,6 @@
 			{% if app.user %}
 				{% include('partials/_footer.html.twig') %}
 			{% endif %}
-		</div>
+		</body>
 	</body>
-</html>
+</html></div></body></html>

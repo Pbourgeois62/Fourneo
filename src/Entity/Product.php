@@ -217,6 +217,9 @@ class Product
     {
         if (!$this->deliveryNotes->contains($deliveryNote)) {
             $this->deliveryNotes->add($deliveryNote);
+            if (!$deliveryNote->getProducts()->contains($this)) {
+                $deliveryNote->addProduct($this);
+            }
         }
 
         return $this;
@@ -224,7 +227,11 @@ class Product
 
     public function removeDeliveryNote(DeliveryNote $deliveryNote): static
     {
-        $this->deliveryNotes->removeElement($deliveryNote);
+        if ($this->deliveryNotes->removeElement($deliveryNote)) {
+            if ($deliveryNote->getProducts()->contains($this)) {
+                $deliveryNote->removeProduct($this);
+            }
+        }
 
         return $this;
     }

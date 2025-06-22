@@ -40,4 +40,19 @@ class DeliveryNoteRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    /**
+     * Récupère les bons de livraison qui ne sont liés à aucun produit.
+     *
+     * @return DeliveryNote[] Returns an array of DeliveryNote objects
+     */
+    public function findUnlinkedDeliveryNotes(): array
+    {
+        return $this->createQueryBuilder('dn') // Alias 'dn' pour DeliveryNote
+            ->leftJoin('dn.products', 'p') // 'products' est la propriété de relation dans DeliveryNote
+            ->andWhere('p.id IS NULL')
+            ->orderBy('dn.number', 'ASC') // 'number' est la propriété du bon de livraison
+            ->getQuery() // Obtient l'objet Query
+            ->getResult(); // Exécute la requête et retourne les résultats sous forme de tableau d'objets
+    }
 }
