@@ -69,21 +69,22 @@ class ProductForm extends AbstractType
                     ]),
                 ],
             ])
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'name',
-                'required' => false,
-                'label' => 'Catégorie du produit',
-                'placeholder' => 'Choisissez une catégorie',
-                // 'expanded' => true,
-                'help' => 'Sélectionnez la catégorie à laquelle ce produit appartient.',
-            ])
+            // ->add('category', EntityType::class, [
+            //     'class' => Category::class,
+            //     'choice_label' => 'name',
+            //     'required' => false,
+            //     'label' => 'Catégorie du produit',
+            //     'placeholder' => 'Choisissez une catégorie',
+            //     'help' => 'Sélectionnez la catégorie à laquelle ce produit appartient.',
+            // ])
             ->add('isNewCategory', CheckboxType::class, [
                 'label' => 'Ou souhaitez-vous créer une nouvelle catégorie ?',
                 'required' => false,
                 'mapped' => false,
             ])
             ->add('allergens', AutoCompleteAllergens::class)
+            ->add('category', AutoCompleteCategoryForm::class, [                
+            ])
         ;
 
         $builder->addDependent('newCategory', 'isNewCategory', function (DependentField $field, ?bool $isNewCategory) {
