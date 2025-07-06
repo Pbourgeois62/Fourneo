@@ -44,11 +44,9 @@
         "
         class="relative text-gray-900 dark:text-white bg-cover bg-center bg-no-repeat font-sans leading-normal tracking-normal h-full"
     >
-        <div class="absolute inset-0 bg-black bg-opacity-30 dark:bg-white dark:bg-opacity-10 pointer-events-none z-0"></div>
-
         <div class="min-h-screen flex flex-col relative z-1">
             {% if app.user %}
-                <header class="bg-cream border-b-2 border-golden py-4 px-6 dark:bg-coffee">
+                <header class="bg-cream py-4 px-6 dark:bg-coffee">
                     <div class="flex justify-end mb-4">
                         <button
                             @click="darkMode = !darkMode"

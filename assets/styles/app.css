@@ -5,6 +5,7 @@
 html {
     @apply transition-colors duration-300;
     height: 100%;
+    @apply scroll-smooth;    
 }
 
 body {
@@ -13,12 +14,12 @@ body {
     box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
     background-image: url('../images/bg-light.webp');
-    background-size: cover;
+    background-size: content;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
     min-height: 100vh;
-    height: 100%;
+    height: 100%;    
 }
 
 html.dark body {
@@ -30,19 +31,13 @@ html.dark body {
     @apply md:pl-32;
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
     @apply transition-colors duration-300;
-
-    .dark & {
-        @apply text-salmon;
-        text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.2);
-    }
 }
 
 .item-card {
-    @apply relative bg-cream border-2 border-golden rounded-lg p-2 md:p-4 bg-flour;
-    @apply transition-colors duration-300;
+    @apply relative text-coffee bg-cream border border-golden rounded-lg p-2 md:p-4 transition-colors duration-300;
 
     .dark & {
-        @apply border-golden bg-coffee;
+        @apply bg-coffee;
         @apply text-flour;
     }
 }
@@ -84,19 +79,27 @@ html.dark body {
 .btn-action {
     @apply inline-block border-2 border-flour bg-green-600 text-flour hover:bg-golden hover:text-salmon hover:border-salmon font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out;
 
-    .dark & {
-        @apply border-gray-700 bg-green-600 text-white hover:bg-golden hover:text-salmon hover:border-salmon;
-    }
 }
 
 .btn-return {
     @apply inline-block border-2 border-gray-500 bg-gray-300 text-coffee hover:bg-gray-200 hover:text-salmon hover:border-salmon font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out;
+}
+
+.dropdown-item-nav {
+    @apply block m-2 py-2 px-4 bg-cream border-2 border-salmon text-coffee hover:bg-golden text-coffee hover:border-salmon hover:text-salmon transition-colors duration-200 rounded-md;
 
     .dark & {
-        @apply border-gray-700 bg-gray-600 text-gray-200 hover:bg-gray-500 hover:text-salmon hover:border-salmon;
+        @apply bg-coffee border-salmon text-flour hover:bg-golden text-flour hover:border-salmon hover:text-salmon transition-colors duration-200 rounded-md;
     }
 }
 
+.btn-nav {
+    @apply flex items-center text-coffee hover:text-golden hover:scale-105 transition-all duration-200;
+    .dark & {
+        @apply text-flour hover:text-golden
+    }
+}
+/* class="flex items-center hover:text-salmon hover:scale-105 transition-all duration-200 rounded-lg text-coffee dark:"> */
 @layer utilities {
     [aria-selected="true"] {
         color: theme('colors.golden') !important;

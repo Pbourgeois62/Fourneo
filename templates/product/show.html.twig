@@ -49,27 +49,27 @@
                                 window.addEventListener('resize', () => checkScroll());
                             " class="relative">
                 <button x-show="showLeftArrow" @click="scrollTabs('left')" class="absolute left-0 top-0 bottom-0 z-10 flex items-center bg-gradient-to-r from-white via-white/80 to-transparent pr-4 pl-2 cursor-pointer
-                                   text-coffee hover:text-golden transition-colors duration-200 focus:outline-none hidden sm:flex" aria-label="Défiler les onglets vers la gauche">
+                                    hover:text-golden transition-colors duration-200 focus:outline-none hidden sm:flex" aria-label="Défiler les onglets vers la gauche">
                     <i class="bi bi-chevron-left text-2xl"></i>
                 </button>
 
                 <div x-ref="tabContainer" class="flex border-b border-gray-200 overflow-x-auto whitespace-nowrap scrollbar-hide py-0.5">
-                    <button @click="activeTab = 'details'" :class="{ 'border-b-2 border-golden text-coffee font-semibold': activeTab === 'details', 'text-gray-600 hover:text-coffee': activeTab !== 'details' }" class="py-3 px-6 text-sm focus:outline-none transition-colors duration-200 ease-in-out flex-shrink-0">
+                    <button @click="activeTab = 'details'" :class="{ 'border-b-2 border-golden  font-semibold': activeTab === 'details', 'text-gray-600 hover:': activeTab !== 'details' }" class="py-3 px-6 text-sm focus:outline-none transition-colors duration-200 ease-in-out flex-shrink-0">
                         Détails
                     </button>
-                    <button @click="activeTab = 'allergens'" :class="{ 'border-b-2 border-golden text-coffee font-semibold': activeTab === 'allergens', 'text-gray-600 hover:text-coffee': activeTab !== 'allergens' }" class="py-3 px-6 text-sm focus:outline-none transition-colors duration-200 ease-in-out flex-shrink-0">
+                    <button @click="activeTab = 'allergens'" :class="{ 'border-b-2 border-golden  font-semibold': activeTab === 'allergens', 'text-gray-600 hover:': activeTab !== 'allergens' }" class="py-3 px-6 text-sm focus:outline-none transition-colors duration-200 ease-in-out flex-shrink-0">
                         Allergènes
                     </button>
-                    <button @click="activeTab = 'label'" :class="{ 'border-b-2 border-golden text-coffee font-semibold': activeTab === 'label', 'text-gray-600 hover:text-coffee': activeTab !== 'label' }" class="py-3 px-6 text-sm focus:outline-none transition-colors duration-200 ease-in-out flex-shrink-0">
+                    <button @click="activeTab = 'label'" :class="{ 'border-b-2 border-golden  font-semibold': activeTab === 'label', 'text-gray-600 hover:': activeTab !== 'label' }" class="py-3 px-6 text-sm focus:outline-none transition-colors duration-200 ease-in-out flex-shrink-0">
                         Etiquettes
                     </button>
-                    <button @click="activeTab = 'delivery_note'" :class="{ 'border-b-2 border-golden text-coffee font-semibold': activeTab === 'delivery_note', 'text-gray-600 hover:text-coffee': activeTab !== 'delivery_note' }" class="py-3 px-6 text-sm focus:outline-none transition-colors duration-200 ease-in-out flex-shrink-0">
+                    <button @click="activeTab = 'delivery_note'" :class="{ 'border-b-2 border-golden  font-semibold': activeTab === 'delivery_note', 'text-gray-600 hover:': activeTab !== 'delivery_note' }" class="py-3 px-6 text-sm focus:outline-none transition-colors duration-200 ease-in-out flex-shrink-0">
                         Bons de Livraison
                     </button>
                 </div>
 
                 <button x-show="showRightArrow" @click="scrollTabs('right')" class="absolute right-0 top-0 bottom-0 z-10 flex items-center bg-gradient-to-l from-white via-white/80 to-transparent pl-4 pr-2 cursor-pointer
-                                   text-coffee hover:text-golden transition-colors duration-200 focus:outline-none hidden sm:flex" aria-label="Défiler les onglets vers la droite">
+                                    hover:text-golden transition-colors duration-200 focus:outline-none hidden sm:flex" aria-label="Défiler les onglets vers la droite">
                     <i class="bi bi-chevron-right text-2xl"></i>
                 </button>
             </div>

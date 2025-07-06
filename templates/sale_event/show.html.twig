@@ -17,9 +17,9 @@
 				<i class="bi bi-pencil-square mr-2"></i>Modifier
 			</a>
 		</div>
-		<h2 class="text-2xl font-semibold text-coffee mb-6">{{ saleEvent.name }}</h2>
+		<h2 class="text-2xl font-semibold  mb-6">{{ saleEvent.name }}</h2>
 
-		{# <h2 class="text-2xl font-semibold text-coffee mb-8 mt-6">Produits associés</h2> #}
+		{# <h2 class="text-2xl font-semibold  mb-8 mt-6">Produits associés</h2> #}
 
 		{% if saleEvent.productEvents is not empty %}
 			{{ component('Form:saleEventFormCollection', { saleEvent: saleEvent }) }}     

@@ -26,6 +26,10 @@
 
 						<!-- Actions -->
 						<div class="absolute top-2 right-2 flex space-x-2">
+							<a href="{{ vich_uploader_asset(label, 'imageFile') }}" target="_blank" class="btn-edit text-green-500 hover:text-green-700" aria-label="Voir l'image de l'étiquette">
+								<i class="bi bi-eye text-lg"></i>
+							</a>
+
 							<a href="{{ path('label_edit', {id: label.id}) }}" class="btn-edit" aria-label="Modifier l’étiquette">
 								<i class="bi bi-pencil-square text-lg"></i>
 							</a>
@@ -42,7 +46,7 @@
 				{% endfor %}
 			</div>
 		{% else %}
-			<p class="text-coffee">Aucune étiquette disponible.</p>
+			<p class="">Aucune étiquette disponible.</p>
 		{% endif %}
 	</div>
 {% endblock %}

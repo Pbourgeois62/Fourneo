@@ -7,7 +7,7 @@
                 'class': 'text-sm md:text-base md:w-1/2 rounded-md border-gray-300 mx-4 mb-4'
             }
     })}}
-        <table class="w-full text-xs md:text-sm text-left text-coffee">
+        <table class="w-full text-xs md:text-sm text-left ">
             <thead class="text-xs uppercase bg-coffee text-flour">
                 <tr>
                     <th class="py-2 px-3 md:py-3 md:px-6">Nom du produit</th>
@@ -18,7 +18,7 @@
                 {% for productEventForm in form.productEvents %}
                     {% set productEvent = productEventForm.vars.data %}
                     <tr class="bg-white border-b hover:bg-gray-50">
-                        <td class="py-3 px-3 md:py-4 md:px-6 font-medium text-coffee whitespace-nowrap">
+                        <td class="py-3 px-3 md:py-4 md:px-6 font-medium  whitespace-nowrap">
                             <div class="flex flex-col">
                                 <span class="text-sm md:text-base">{{ productEvent.product.name }}</span>
                                 <span class="text-xs text-gray-500 md:hidden">Quantité mise en vente : {{ productEvent.quantity }}</span>

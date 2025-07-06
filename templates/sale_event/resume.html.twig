@@ -2,90 +2,100 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Résumé de l'événement :
-	{{ saleEvent.name }}
+    {{ saleEvent.name }}
 {% endblock %}
 
 {% block body %}
-	<h1 class="text-title">Résumé de l'événement</h1>
+    <h1 class="text-title">Résumé de l'événement</h1>
 
+    <div class="main-container bg-flour md:p-8 dark:bg-coffee">
+        <div class="flex justify-between items-center">
+            <h2 class="text-2xl font-semibold text-coffee mb-6 dark:text-flour">{{ saleEvent.name }}</h2> {# Text color for title #}
+            <div class="flex justify-end space-x-4">
+                <a href="{{ path('sale_event_index') }}" class="btn-return">
+                    <i class="bi bi-arrow-left mr-2"></i>Retour
+                </a>
+            </div>
+        </div>
 
-	<div class="main-container bg-flour p-8">
-		<div class="flex justify-between items-center">
-			<h2 class="text-2xl font-semibold text-coffee mb-6">{{ saleEvent.name }}</h2>
-			<div class="flex justify-end space-x-4">
-				<a href="{{ path('sale_event_index') }}" class="btn-return">
-					<i class="bi bi-arrow-left mr-2"></i>Retour
-				</a>
-			</div>
-		</div>
+        <p class="text-coffee mb-2 max-w-prose dark:text-flour"> {# Text color for main paragraphs #}
+            <strong class="font-medium">Description :</strong>
+            {{ saleEvent.description|default('N/A') }}
+        </p>
+        <p class="text-coffee mb-2 max-w-prose dark:text-flour"> {# Text color for main paragraphs #}
+            <strong class="font-medium">Adresse :</strong>
+            {{ saleEvent.address|default('N/A') }}
+        </p>
+        <p class="text-coffee mb-2 max-w-prose dark:text-flour"> {# Text color for main paragraphs #}
+            Météo observée :
+            {{ saleEvent.weather ? saleEvent.weather : 'Non renseigné' }}
+        </p>
+        <p class="text-coffee mb-2 max-w-prose dark:text-flour"> {# Text color for main paragraphs #}
+            <strong class="font-medium">Début :</strong>
+            {{ saleEvent.startDate ? saleEvent.startDate|date('d/m/Y H:i') : 'Non défini' }}
+        </p>
+        <p class="text-coffee mb-2 max-w-prose dark:text-flour"> {# Text color for main paragraphs #}
+            <strong class="font-medium">Fin :</strong>
+            {{ saleEvent.endDate ? saleEvent.endDate|date('d/m/Y H:i') : 'Non défini' }}
+        </p>
 
-		<p class="text-coffee mb-2 max-w-prose">
-			<strong class="font-medium text-coffee">Description :</strong>
-			{{ saleEvent.description|default('N/A') }}
-		</p>
-		<p class="text-coffee mb-2 max-w-prose">
-			<strong class="font-medium text-coffee">Adresse :</strong>
-			{{ saleEvent.address|default('N/A') }}
-		</p>
-		<p class="text-coffee mb-2 max-w-prose">
-			Météo observée :
-			{{ saleEvent.weather ?  saleEvent.weather : 'Non renseigné' }}
-		</p>
-		<p class="text-coffee mb-2 max-w-prose">
-			<strong class="font-medium text-coffee">Début :</strong>
-			{{ saleEvent.startDate ? saleEvent.startDate|date('d/m/Y H:i') : 'Non défini' }}
-		</p>
-		<p class="text-coffee mb-2 max-w-prose">
-			<strong class="font-medium text-coffee">Fin :</strong>
-			{{ saleEvent.endDate ? saleEvent.endDate|date('d/m/Y H:i') : 'Non défini' }}
-		</p>
+        <h2 class="text-2xl font-semibold text-coffee mb-8 mt-6 dark:text-flour">Produits associés</h2> {# Text color for sub-title #}
 
-		<h2 class="text-2xl font-semibold text-coffee mb-8 mt-6">Produits associés</h2>
-
-		{% if saleEvent.productEvents is not empty %}
-			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-				{% for productEvent in saleEvent.productEvents %}
-					<div class="bg-white rounded-xl shadow p-4 border border-gray-200">
-						<h3 class="text-lg font-semibold text-coffee mb-2">
-							{{ productEvent.product.name }}
-						</h3>
-						<div class="text-sm text-coffee space-y-1">
-							<p>
-								<strong>Quantité initiale :</strong>
-								{{ productEvent.quantity }}</p>
-							<p>
-								<strong>Invendus :</strong>
-								{% if productEvent.unsoldQuantity is same as(0) %}
-									<span class="inline-block bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded">
-										Épuisé à
-										{{ productEvent.outOfStockDateTime|date('H:i') }}
-									</span>
-								{% else %}
-									{{ productEvent.unsoldQuantity }}</p>
-							{% endif %}
-							<p>
-								<strong>Prix unitaire :</strong>
-								{{ productEvent.product.price|number_format(2, ',', ' ') }}
-								€</p>
-							<p>
-								<strong>Prix du lot :</strong>
-								{{ productEvent.lotPrice|number_format(2, ',', ' ') }}
-								€</p>
-							<p>
-								<strong>Gains :</strong>
-								{{ (productEvent.lotPrice - productEvent.unsoldPrice)|number_format(2, ',', ' ') }}
-								€</p>
-							<p>
-								<strong>Pertes :</strong>
-								{{ productEvent.unsoldPrice|number_format(2, ',', ' ') }}
-								€</p>
-
-						</div>
-					</div>
-				{% endfor %}
-			</div>
-		{% else %}
-			<p class="text-gray-600">Aucun produit n'est associé à cet événement.</p>
-		{% endif %}
-	</div>
+        {% if saleEvent.productEvents is not empty %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for productEvent in saleEvent.productEvents %}
+                    <div class="bg-white rounded-xl shadow p-4 border border-gray-200 dark:bg-cream dark:border-coffee"> {# Card background and border #}
+                        <h3 class="text-lg font-semibold text-coffee mb-4 dark:text-golden"> {# Product title text color #}
+                            {{ productEvent.product.name }}
+                        </h3>
+                        <div class="overflow-x-auto"> {# Make table scrollable on small screens #}
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-coffee">
+                                <tbody class="bg-white divide-y divide-gray-200 dark:bg-cream dark:divide-coffee text-coffee dark:text-coffee">
+                                    <tr>
+                                        <td class="px-2 py-1 whitespace-nowrap text-sm font-medium">Quantité initiale :</td>
+                                        <td class="px-2 py-1 whitespace-nowrap text-sm text-right">{{ productEvent.quantity }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-2 py-1 whitespace-nowrap text-sm font-medium">Invendus :</td>
+                                        <td class="px-2 py-1 whitespace-nowrap text-sm text-right">
+                                            {% if productEvent.unsoldQuantity is same as(0) %}
+                                                <span class="inline-block bg-red-100 text-red-700 text-xs font-medium px-2 py-1 rounded dark:bg-red-700 dark:text-red-100">
+                                                    Épuisé à
+                                                    {{ productEvent.outOfStockDateTime|date('H:i') }}
+                                                </span>
+                                            {% else %}
+                                                {{ productEvent.unsoldQuantity }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-2 py-1 whitespace-nowrap text-sm font-medium">Prix unitaire :</td>
+                                        <td class="px-2 py-1 whitespace-nowrap text-sm text-right">{{ productEvent.product.price|number_format(2, ',', ' ') }} €</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-2 py-1 whitespace-nowrap text-sm font-medium">Prix du lot :</td>
+                                        <td class="px-2 py-1 whitespace-nowrap text-sm text-right">{{ productEvent.lotPrice|number_format(2, ',', ' ') }} €</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-2 py-1 whitespace-nowrap text-sm font-medium">Gains :</td>
+                                        <td class="px-2 py-1 whitespace-nowrap text-sm text-right text-green-700 font-semibold dark:text-green-300">
+                                            {{ (productEvent.lotPrice - productEvent.unsoldPrice)|number_format(2, ',', ' ') }} €
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-2 py-1 whitespace-nowrap text-sm font-medium">Pertes :</td>
+                                        <td class="px-2 py-1 whitespace-nowrap text-sm text-right text-red-700 font-semibold dark:text-red-300">
+                                            {{ productEvent.unsoldPrice|number_format(2, ',', ' ') }} €
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-coffee dark:text-flour">Aucun produit n'est associé à cet événement.</p> {# Text color for no products message #}
+        {% endif %}
+    </div>
 {% endblock %}

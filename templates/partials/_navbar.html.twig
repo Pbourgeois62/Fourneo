@@ -1,161 +1,215 @@
-<nav class="container mx-auto flex justify-between items-center py-4 px-4 sm:px-6 lg:px-8 relative border-b-2 border-salmon" x-data="{ mobileMenuOpen: false }">
-    <!-- Logo -->
-    <a href="{{ path('app_home') }}" class="flex items-center space-x-2 text-2xl font-bold text-salmon hover:scale-105 transition-all duration-200 rounded-lg">
-        <!-- Placeholder for logo image, replace with actual asset path -->
-        <img src="https://placehold.co/32x32/FA8072/FFFFFF?text=Logo" alt="Logo Fourneo" class="h-8 w-8 rounded-full"/>
-        <span>Fourneo</span>
-    </a>
+<nav
+	class="container mx-auto flex justify-between items-center py-4 px-4 sm:px-6 lg:px-8 relative border-b-2 border-salmon" x-data="{ mobileMenuOpen: false }">
+	<!-- Logo -->
+	<a
+		href="{{ path('app_home') }}" class="flex items-center space-x-2 text-2xl font-bold text-salmon hover:scale-105 transition-all duration-200 rounded-lg">
+		<!-- Placeholder for logo image, replace with actual asset path -->
+		<img src="https://placehold.co/32x32/FA8072/FFFFFF?text=Logo" alt="Logo Fourneo" class="h-8 w-8 rounded-full"/>
+		<span>Fourneo</span>
+	</a>
 
-    <!-- Mobile Menu Toggle Button -->
-    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="inline-flex items-center p-2 text-sm text-coffee rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-mobile-menu" :aria-expanded="mobileMenuOpen ? 'true' : 'false'" aria-label="Toggle navigation">
-        <!-- Hamburger icon SVG for mobile menu toggle -->
-        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M3 5h14a1 1 0 010 2H3a1 1 0 110-2zm0 4h14a1 1 0 010 2H3a1 1 0 110-2zm0 4h14a1 1 0 010 2H3a1 110-2z" clip-rule="evenodd"></path>
-        </svg>
-    </button>
+	<!-- Mobile Menu Toggle Button -->
+	<button
+		@click="mobileMenuOpen = !mobileMenuOpen" type="button" class="inline-flex items-center p-2 text-sm rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-mobile-menu" :aria-expanded="mobileMenuOpen ? 'true' : 'false'" aria-label="Toggle navigation">
+		<!-- Hamburger icon SVG for mobile menu toggle -->
+		<svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" d="M3 5h14a1 1 0 010 2H3a1 1 0 110-2zm0 4h14a1 1 0 010 2H3a1 1 0 110-2zm0 4h14a1 1 0 010 2H3a1 110-2z" clip-rule="evenodd"></path>
+		</svg>
+	</button>
 
-    <!-- Desktop Menu -->
-    <div class="hidden md:flex items-center space-x-6 font-semibold" id="desktop-menu">
+	<!-- Desktop Menu -->
+	<div class="hidden md:flex items-center space-x-6 font-semibold" id="desktop-menu">
+		
+			{# Simplifié la classe pour utiliser dropdown-item-nav #}
+			<a href="{{ path('sale_event_index') }}" class="btn-nav">Événements</a>		
 
-        <!-- Dropdown "Gestion Articles" for Desktop -->
-        <div class="relative group" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
-            <button @click="dropdownOpen = !dropdownOpen" class="flex items-center hover:text-salmon hover:scale-105 transition-all duration-200 rounded-lg text-coffee dark:text-flour"> {# Ajouté text-coffee et dark:text-flour #}
-                Gestion Articles
-                <!-- Image arrow for dropdown - Increased size to w-5 h-5 -->
-                <img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/20x20/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="ml-1 w-5 h-5 transition-transform duration-200" :class="{ 'rotate-180': dropdownOpen }"/>
-            </button>
-            <div x-show="dropdownOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10 origin-top-right">
-                {# text-gray-700 pour le mode clair, dark:text-flour pour le mode sombre #}
-                <ul class="py-1 text-sm text-gray-700 dark:text-flour" aria-labelledby="dropdownGestionArticles">
-                    <li>
-                        <a href="{{ path('product_index') }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-salmon transition-colors duration-200 rounded-md">Produits</a>
-                    </li>
-                    <li>
-                        <a href="{{path('category_index')}}" class="block px-4 py-2 hover:bg-gray-100 hover:text-salmon transition-colors duration-200 rounded-md">Catégories</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('allergen_index') }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-salmon transition-colors duration-200 rounded-md">Allergènes</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('label_index') }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-salmon transition-colors duration-200 rounded-md">Étiquettes</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+		<!-- Dropdown "Gestion Articles" for Desktop -->
+		<div class="relative group" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
+			<button @click="dropdownOpen = !dropdownOpen" class="btn-nav">
+				Produits
+				<!-- Image arrow for dropdown - Increased size to w-5 h-5 -->
+				<img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/20x20/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="ml-1 w-5 h-5 transition-transform duration-200" :class="{ 'rotate-180': dropdownOpen }"/>
+			</button>
+			{# CHANGEMENT ICI : Suppression de ring-1 et ajustement de shadow-lg si désiré #}
+			<div x-show="dropdownOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md bg-transparent z-10 origin-top">
+				<ul class="py-1 text-sm text-gray-700 dark:" aria-labelledby="dropdownGestionArticles">
+					<li>
+						{# Simplifié la classe pour utiliser dropdown-item-nav #}
+						<a href="{{ path('product_index') }}" class="dropdown-item-nav">Accueil</a>
+					</li>
+					<li>
+						{# Simplifié la classe pour utiliser dropdown-item-nav #}
+						<a href="{{path('category_index')}}" class="dropdown-item-nav">Catégories</a>
+					</li>
+					<li>
+						{# Simplifié la classe pour utiliser dropdown-item-nav #}
+						<a href="{{ path('allergen_index') }}" class="dropdown-item-nav">Allergènes</a>
+					</li>
+					<li>
+						{# Simplifié la classe pour utiliser dropdown-item-nav #}
+						<a href="{{ path('label_index') }}" class="dropdown-item-nav">Étiquettes</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 
-        <!-- Dropdown "Gestion Recettes" for Desktop -->
-        <div class="relative group" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
-            <button @click="dropdownOpen = !dropdownOpen" class="flex items-center hover:text-salmon hover:scale-105 transition-all duration-200 rounded-lg text-coffee dark:text-flour"> {# Ajouté text-coffee et dark:text-flour #}
-                Gestion Recettes
-                <!-- Image arrow for dropdown - Increased size to w-5 h-5 -->
-                <img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/20x20/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="ml-1 w-5 h-5 transition-transform duration-200" :class="{ 'rotate-180': dropdownOpen }"/>
-            </button>
-            <div x-show="dropdownOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10 origin-top-right">
-                <ul class="py-1 text-sm text-gray-700 dark:text-flour" aria-labelledby="dropdownGestionRecettes"> {# Ajouté dark:text-flour #}
-                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 hover:text-salmon transition-colors duration-200 rounded-md">Voir toutes les recettes</a></li>
-                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 hover:text-salmon transition-colors duration-200 rounded-md">Créer une recette</a></li>
-                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 hover:text-salmon transition-colors duration-200 rounded-md">Ingrédients</a></li>
-                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100 hover:text-salmon transition-colors duration-200 rounded-md">Unités de mesure</a></li>
-                </ul>
-            </div>
-        </div>
+		<!-- Dropdown "Gestion Recettes" for Desktop -->
+		<div class="relative group" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
+			<button @click="dropdownOpen = !dropdownOpen" class="btn-nav">
+				Recettes
+				<!-- Image arrow for dropdown - Increased size to w-5 h-5 -->
+				<img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/20x20/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="ml-1 w-5 h-5 transition-transform duration-200" :class="{ 'rotate-180': dropdownOpen }"/>
+			</button>
+			{# CHANGEMENT ICI : Suppression de ring-1 et ajustement de shadow-lg si désiré #}
+			<div x-show="dropdownOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md bg-transparent z-10 origin-top">
+				<ul
+					class="py-1 text-sm text-gray-700 dark:" aria-labelledby="dropdownGestionRecettes">
+					{# Simplifié la classe pour utiliser dropdown-item-nav #}
+					<li>
+						<a href="#" class="dropdown-item-nav ">Accueil</a>
+					</li>
+					{# Simplifié la classe pour utiliser dropdown-item-nav #}
+					<li>
+						<a href="#" class="dropdown-item-nav">Créer</a>
+					</li>
+					{# Simplifié la classe pour utiliser dropdown-item-nav #}
+					<li>
+						<a href="#" class="dropdown-item-nav">Ingrédients</a>
+					</li>
+					{# Simplifié la classe pour utiliser dropdown-item-nav #}
+					<li>
+						<a href="#" class="dropdown-item-nav">Unités de mesure</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 
-        <!-- Dropdown "Opérations" for Desktop -->
-        <div class="relative group" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
-            <button @click="dropdownOpen = !dropdownOpen" class="flex items-center hover:text-salmon hover:scale-105 transition-all duration-200 rounded-lg text-coffee dark:text-flour"> {# Ajouté text-coffee et dark:text-flour #}
-                Opérations
-                <!-- Image arrow for dropdown - Increased size to w-5 h-5 -->
-                <img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/20x20/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="ml-1 w-5 h-5 transition-transform duration-200" :class="{ 'rotate-180': dropdownOpen }"/>
-            </button>
-            <div x-show="dropdownOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10 origin-top-right">
-                <ul class="py-1 text-sm text-gray-700 dark:text-flour" aria-labelledby="dropdownOperations"> {# Ajouté dark:text-flour #}
-                    <li>
-                        <a href="{{ path('delivery_note_index') }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-salmon transition-colors duration-200 rounded-md">Livraisons</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('sale_event_index') }}" class="block px-4 py-2 hover:bg-gray-100 hover:text-salmon transition-colors duration-200 rounded-md">Événements</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+		<!-- Dropdown "Opérations" for Desktop -->
+		<div class="relative group" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
+			<button @click="dropdownOpen = !dropdownOpen" class="btn-nav">
+				Livraisons
+				<!-- Image arrow for dropdown - Increased size to w-5 h-5 -->
+				<img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/20x20/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="ml-1 w-5 h-5 transition-transform duration-200" :class="{ 'rotate-180': dropdownOpen }"/>
+			</button>
+			<div x-show="dropdownOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md bg-transparent z-10 origin-top">
+				<ul class="py-1 text-sm text-gray-700 dark:" aria-labelledby="dropdownOperations">
+					<li>
+						{# Simplifié la classe pour utiliser dropdown-item-nav #}
+						<a href="{{ path('delivery_note_index') }}" class="dropdown-item-nav">Bons</a>
+					</li>
+					{# Simplifié la classe pour utiliser dropdown-item-nav #}
+					<li>
+						<a href="{{ path('label_index') }}" class="dropdown-item-nav">Étiquettes</a>
+					</li>
+				</ul>
+			</div>
+		</div>
 
-        <a href="{{ path('app_logout') }}" class="text-red-600 hover:text-red-900 hover:scale-105 transition-all duration-200 rounded-lg dark:text-red-400">Déconnexion</a> {# Ajouté dark:text-red-400 #}
-    </div>
+		<a href="{{ path('app_logout') }}" class="text-red-600 hover:text-red-900 hover:scale-105 transition-all duration-200 rounded-lg dark:text-red-400">Déconnexion</a>
+	</div>
 
-    <!-- User Email for Desktop -->
-    <div class="hidden md:flex items-center space-x-6">
-        <span class="text-coffee font-medium dark:text-flour">{{ app.user.email }}</span> {# Ajouté dark:text-flour #}
-    </div>
+	<!-- User Email for Desktop -->
+	<div class="hidden md:flex items-center space-x-6">
+		<span class="font-medium text-coffee dark:text-flour">{{ app.user.email }}</span>
+	</div>
 
-    <!-- Mobile Menu (Hidden by default, shown with Alpine.js) -->
-    <div class="md:hidden absolute top-full left-0 right-0 w-full z-20 overflow-hidden" x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4">
-        {# Supprimé text-coffee ici pour permettre l'héritage de body #}
-        <div class="flex flex-col space-y-2 px-4 py-2 font-semibold bg-cream rounded-md shadow-md mx-4 mb-4 dark:bg-coffee"> {# Ajouté dark:bg-coffee #}
+	<!-- Mobile Menu (Hidden by default, shown with Alpine.js) -->
+	<div class="md:hidden absolute top-full left-0 right-0 w-full z-20 overflow-hidden" x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4">
+		<div
+			class="flex flex-col space-y-2 px-4 py-2 font-semibold bg-cream rounded-md shadow-md mx-4 mb-4 dark:bg-coffee">
 
-            <!-- Accordion "Gestion Articles" for Mobile -->
-            <div x-data="{ accordionOpen: false }">
-                <h2 class="w-full">
-                    <button @click="accordionOpen = !accordionOpen" type="button" class="flex items-center justify-between w-full p-5 font-medium text-coffee border-b border-gray-200 focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 gap-3 rounded-t-lg dark:text-flour dark:border-gray-700 dark:hover:bg-gray-700"> {# Ajouté dark:text-flour et dark:border-gray-700 #}
-                        <span>Gestion Articles</span>
-                        <!-- Image arrow for accordion - Increased size to w-4 h-4 -->
-                        <img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/16x16/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': accordionOpen }"/>
-                    </button>
-                </h2>
-                <div x-show="accordionOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-screen" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 max-h-screen" x-transition:leave-end="opacity-0 max-h-0">
-                    <div class="p-5 border-b border-gray-200 dark:border-gray-700"> {# Ajouté dark:border-gray-700 #}
-                        <ul class="space-y-2">
-                            <li><a href="{{ path('product_index') }}" class="block text-sm hover:text-salmon transition-all duration-200 rounded-md">Produits</a></li>
-                            <li><a href="{{path('category_index')}}" class="block text-sm hover:text-salmon transition-all duration-200 rounded-md">Catégories</a></li>
-                            <li><a href="{{ path('allergen_index') }}" class="block text-sm hover:text-salmon transition-all duration-200 rounded-md">Allergènes</a></li>
-                            <li><a href="{{ path('label_index') }}" class="block text-sm hover:text-salmon transition-all duration-200 rounded-md">Étiquettes</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+			<!-- Accordion "Gestion Articles" for Mobile -->
+			<div x-data="{ accordionOpen: false }">
+				<h2 class="w-full">
+					<button @click="accordionOpen = !accordionOpen" type="button" class="flex items-center justify-between w-full p-5 font-medium text-coffee border-b border-gray-200 focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 gap-3 rounded-t-lg dark: dark:border-gray-700 dark:hover:bg-gray-700">
+						<span>Gestion Articles</span>
+						<!-- Image arrow for accordion - Increased size to w-4 h-4 -->
+						<img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/16x16/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': accordionOpen }"/>
+					</button>
+				</h2>
+				<div x-show="accordionOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-screen" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 max-h-screen" x-transition:leave-end="opacity-0 max-h-0">
+					<div class="p-5 border-b border-gray-200 dark:border-gray-700">
+						<ul
+							class="space-y-2">
+							{# Simplifié la classe pour utiliser dropdown-item-nav #}
+							<li>
+								<a href="{{ path('product_index') }}" class="dropdown-item-nav">Produits</a>
+							</li>
+							{# Simplifié la classe pour utiliser dropdown-item-nav #}
+							<li>
+								<a href="{{path('category_index')}}" class="dropdown-item-nav">Catégories</a>
+							</li>
+							{# Simplifié la classe pour utiliser dropdown-item-nav #}
+							<li>
+								<a href="{{ path('allergen_index') }}" class="dropdown-item-nav">Allergènes</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
 
-            <!-- Accordion "Gestion Recettes" for Mobile -->
-            <div x-data="{ accordionOpen: false }">
-                <h2 class="w-full">
-                    <button @click="accordionOpen = !accordionOpen" type="button" class="flex items-center justify-between w-full p-5 font-medium text-coffee border-b border-gray-200 focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 gap-3 dark:text-flour dark:border-gray-700 dark:hover:bg-gray-700"> {# Ajouté dark:text-flour et dark:border-gray-700 #}
-                        <span>Gestion Recettes</span>
-                        <!-- Image arrow for accordion - Increased size to w-4 h-4 -->
-                        <img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/16x16/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': accordionOpen }"/>
-                    </button>
-                </h2>
-                <div x-show="accordionOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-screen" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 max-h-screen" x-transition:leave-end="opacity-0 max-h-0">
-                    <div class="p-5 border-b border-gray-200 dark:border-gray-700"> {# Ajouté dark:border-gray-700 #}
-                        <ul class="space-y-2">
-                            <li><a href="#" class="block text-sm hover:text-salmon transition-all duration-200 rounded-md">Voir toutes les recettes</a></li>
-                            <li><a href="#" class="block text-sm hover:text-salmon transition-all duration-200 rounded-md">Créer une recette</a></li>
-                            <li><a href="#" class="block text-sm hover:text-salmon transition-all duration-200 rounded-md">Ingrédients</a></li>
-                            <li><a href="#" class="block text-sm hover:text-salmon transition-all duration-200 rounded-md">Unités de mesure</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+			<!-- Accordion "Gestion Recettes" for Mobile -->
+			<div x-data="{ accordionOpen: false }">
+				<h2 class="w-full">
+					<button @click="accordionOpen = !accordionOpen" type="button" class="flex items-center justify-between w-full p-5 font-medium text-coffee border-b border-gray-200 focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 gap-3 rounded-t-lg dark: dark:border-gray-700 dark:hover:bg-gray-700">
+						<span>Gestion Recettes</span>
+						<!-- Image arrow for accordion - Increased size to w-4 h-4 -->
+						<img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/16x16/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': accordionOpen }"/>
+					</button>
+				</h2>
+				<div x-show="accordionOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-screen" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 max-h-screen" x-transition:leave-end="opacity-0 max-h-0">
+					<div class="p-5 border-b border-gray-200 dark:border-gray-700">
+						<ul
+							class="space-y-2">
+							{# Simplifié la classe pour utiliser dropdown-item-nav #}
+							<li>
+								<a href="#" class="dropdown-item-nav">Voir toutes les recettes</a>
+							</li>
+							{# Simplifié la classe pour utiliser dropdown-item-nav #}
+							<li>
+								<a href="#" class="dropdown-item-nav">Créer une recette</a>
+							</li>
+							{# Simplifié la classe pour utiliser dropdown-item-nav #}
+							<li>
+								<a href="#" class="dropdown-item-nav">Ingrédients</a>
+							</li>
+							{# Simplifié la classe pour utiliser dropdown-item-nav #}
+							<li>
+								<a href="#" class="dropdown-item-nav">Unités de mesure</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
 
-            <!-- Accordion "Opérations" for Mobile -->
-            <div x-data="{ accordionOpen: false }">
-                <h2 class="w-full">
-                    <button @click="accordionOpen = !accordionOpen" type="button" class="flex items-center justify-between w-full p-5 font-medium text-coffee border-b border-gray-200 focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 gap-3 dark:text-flour dark:border-gray-700 dark:hover:bg-gray-700"> {# Ajouté dark:text-flour et dark:border-gray-700 #}
-                        <span>Opérations</span>
-                        <!-- Image arrow for accordion - Increased size to w-4 h-4 -->
-                        <img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/16x16/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': accordionOpen }"/>
-                    </button>
-                </h2>
-                <div x-show="accordionOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-screen" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 max-h-screen" x-transition:leave-end="opacity-0 max-h-0">
-                    <div class="p-5 border-b border-gray-200 dark:border-gray-700"> {# Ajouté dark:border-gray-700 #}
-                        <ul class="space-y-2">
-                            <li><a href="{{ path('delivery_note_index') }}" class="block text-sm hover:text-salmon transition-all duration-200 rounded-md">Livraisons</a></li>
-                            <li><a href="{{ path('sale_event_index') }}" class="block text-sm hover:text-salmon transition-all duration-200 rounded-md">Événements</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+			<!-- Accordion "Opérations" for Mobile -->
+			<div x-data="{ accordionOpen: false }">
+				<h2 class="w-full">
+					<button @click="accordionOpen = !accordionOpen" type="button" class="flex items-center justify-between w-full p-5 font-medium text-coffee border-b border-gray-200 focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 gap-3 rounded-t-lg dark: dark:border-gray-700 dark:hover:bg-gray-700">
+						<span>Opérations</span>
+						<!-- Image arrow for accordion - Increased size to w-4 h-4 -->
+						<img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/16x16/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': accordionOpen }"/>
+					</button>
+				</h2>
+				<div x-show="accordionOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 max-h-0" x-transition:enter-end="opacity-100 max-h-screen" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 max-h-screen" x-transition:leave-end="opacity-0 max-h-0">
+					<div class="p-5 border-b border-gray-200 dark:border-gray-700">
+						<ul
+							class="space-y-2">
+							{# Simplifié la classe pour utiliser dropdown-item-nav #}
+							<li>
+								<a href="{{ path('delivery_note_index') }}" class="dropdown-item-nav">Livraisons</a>
+							</li>
+							<li>
+								<a href="{{ path('sale_event_index') }}" class="dropdown-item-nav">Événements</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
 
-            <a href="{{ path('app_logout') }}" class="py-2 text-red-600 hover:text-red-900 transition-all duration-200 rounded-lg dark:text-red-400">Déconnexion</a> {# Ajouté dark:text-red-400 #}
+			<a href="{{ path('app_logout') }}" class="py-2 text-red-600 hover:text-red-900 transition-all duration-200 rounded-lg dark:text-red-400">Déconnexion</a>
 
-            <span class="pt-2 text-center text-sm text-gray-500 dark:text-flour">{{ app.user.email }}</span> {# Ajouté dark:text-flour #}
-        </div>
-    </div>
+			<span class="pt-2 text-center text-sm text-gray-500 dark:text-flour">{{ app.user.email }}</span>
+		</div>
+	</div>
 </nav>

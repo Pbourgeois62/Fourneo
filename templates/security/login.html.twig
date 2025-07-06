@@ -23,12 +23,12 @@
         <form method="post" class="space-y-4">
             <div>
                 <label for="inputEmail" class="block text-sm font-medium text-cream">Adresse e-mail</label>
-                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="mt-1 block w-full px-3 py-2 border text-coffee border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" autocomplete="email" required autofocus>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="mt-1 block w-full px-3 py-2 border  border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" autocomplete="email" required autofocus>
             </div>
 
             <div>
                 <label for="inputPassword" class="block text-sm font-medium text-cream">Mot de passe</label>
-                <input type="password" name="password" id="inputPassword" class="mt-1 block w-full px-3 py-2 border text-coffee border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" autocomplete="current-password" required>
+                <input type="password" name="password" id="inputPassword" class="mt-1 block w-full px-3 py-2 border  border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" autocomplete="current-password" required>
             </div>
 
             <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">

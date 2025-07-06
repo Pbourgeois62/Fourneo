@@ -6,31 +6,31 @@
     }) }}
 
 	<div>
-		{{ form_label(form.name, null, {'label_attr': {'class': 'block font-medium text-coffee'}}) }}
+		{{ form_label(form.name, null, {'label_attr': {'class': 'block font-medium '}}) }}
 		{{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
 		{{ form_errors(form.name) }}
 	</div>
 
 	<div>
-		{{ form_label(form.size, null, {'label_attr': {'class': 'block font-medium text-coffee'}}) }}
+		{{ form_label(form.size, null, {'label_attr': {'class': 'block font-medium '}}) }}
 		{{ form_widget(form.size, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
 		{{ form_errors(form.size) }}
 	</div>
 
 	<div>
-		{{ form_label(form.price, null, {'label_attr': {'class': 'block font-medium text-coffee'}}) }}
+		{{ form_label(form.price, null, {'label_attr': {'class': 'block font-medium '}}) }}
 		{{ form_widget(form.price, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
 		{{ form_errors(form.price) }}
 	</div>
 
 	<div>
-		{{ form_label(form.category, null, {'label_attr': {'class': 'block font-medium text-coffee mb-2'}}) }}
+		{{ form_label(form.category, null, {'label_attr': {'class': 'block font-medium  mb-2'}}) }}
 		{{ form_widget(form.category, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
 		{{ form_errors(form.category) }}
 	</div>
 
 	<div>
-		{{ form_label(form.allergens, null, {'label_attr': {'class': 'block font-medium text-coffee mb-2'}}) }}
+		{{ form_label(form.allergens, null, {'label_attr': {'class': 'block font-medium  mb-2'}}) }}
 		{{ form_widget(form.allergens, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
 		{{ form_errors(form.allergens) }}
 	</div>
@@ -38,7 +38,7 @@
 	<div class="space-y-2">
 		<div class="flex items-center space-x-3">
 			{{ form_widget(form.isNewCategory, {'attr': {'class': 'h-5 w-5 text-blue-600'}}) }}
-			{{ form_label(form.isNewCategory, null, {'label_attr': {'class': 'font-medium text-coffee cursor-pointer'}}) }}
+			{{ form_label(form.isNewCategory, null, {'label_attr': {'class': 'font-medium  cursor-pointer'}}) }}
 		</div>
 		{% if form.isNewCategory.vars.checked %}
 			<div>
