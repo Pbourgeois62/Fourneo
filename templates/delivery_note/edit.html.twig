@@ -16,20 +16,20 @@
         }) }}
 
             <div>
-                {{ form_label(form.number, null, {'label_attr': {'class': 'block font-medium text-coffee'}}) }}
-                {{ form_widget(form.number, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
+                {{ form_label(form.number, null, {'label_attr': {'class': 'block font-medium '}}) }}
+                {{ form_widget(form.number, {'attr': {'class': 'mt-1 block w-full text-sm text-coffee rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
                 {{ form_errors(form.number) }}
             </div>
 
             <div>
-                {{ form_label(form.imageFile, 'Photo du bon de livraison', {'label_attr': {'class': 'block font-medium text-coffee'}}) }}
-                {{ form_widget(form.imageFile, {'attr': {'class': 'mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100'}}) }}
+                {{ form_label(form.imageFile, 'Photo du bon de livraison', {'label_attr': {'class': 'block font-medium '}}) }}
+                {{ form_widget(form.imageFile, {'attr': {'class': 'mt-1 block w-full text-sm text-coffee file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100'}}) }}
                 {{ form_errors(form.imageFile) }}
             </div>
 
             <div>
-                {{ form_label(form.registeredAt, 'Date d\'enregistrement', {'label_attr': {'class': 'block font-medium text-coffee'}}) }}
-                {{ form_widget(form.registeredAt, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
+                {{ form_label(form.registeredAt, 'Date d\'enregistrement', {'label_attr': {'class': 'block font-medium '}}) }}
+                {{ form_widget(form.registeredAt, {'attr': {'class': 'mt-1 block w-full text-sm text-coffee rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
                 {{ form_errors(form.registeredAt) }}
             </div>
 

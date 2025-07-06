@@ -3,55 +3,123 @@
 {% block title %}Liste des bons de livraison{% endblock %}
 
 {% block body %}
-	<h1 class="text-title">Liste des bons de livraison</h1>
-	<div class="main-container">
-	<div class="mt-8 text-right">
-			<a href="{{ path('delivery_note_new') }}" class="btn-action mb-4 md:mb-8">
-				<i class="bi bi-plus-circle mr-2"></i>Créer un bon de livraison
-			</a>
-		</div>
-		{% if deliveryNotes is not empty %}
-			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-				{% for deliveryNote in deliveryNotes %}
-					<div class="item-card">
-						<!-- Numéro du bon -->
-						<h2 class="text-xl font-semibold text-coffee mb-2">
-							Bon n°{{ deliveryNote.number }}
-						</h2>
+    <h1 class="text-title">Liste des bons de livraison</h1>
+    <div class="main-container">
+        <div class="mt-8 text-right">
+            <a href="{{ path('delivery_note_new') }}" class="btn-action mb-4 md:mb-8">
+                <i class="bi bi-plus-circle mr-2"></i>Créer un bon de livraison
+            </a>
+        </div>
 
-						<!-- Date -->
-						{% if deliveryNote.date is defined and deliveryNote.date %}
-							<p class="text-sm text-coffee mb-1">
-								<strong>Date :</strong> {{ deliveryNote.date|date('d/m/Y') }}
-							</p>
-						{% endif %}
-
-						<!-- Statut -->
-						{% if deliveryNote.status is defined and deliveryNote.status %}
-							<p class="text-sm text-coffee mb-4">
-								<strong>Statut :</strong> {{ deliveryNote.status }}
-							</p>
-						{% endif %}
-
-						<!-- Actions -->
-						<div class="absolute top-2 right-2 flex space-x-2">
-							<a href="{{ path('delivery_note_edit', {id: deliveryNote.id}) }}" class="btn-edit" aria-label="Modifier le bon n°{{ deliveryNote.number }}">
-								<i class="bi bi-pencil-square text-lg"></i>
-							</a>
-
-							<form method="post" action="{{ path('delivery_note_delete', {id: deliveryNote.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');" class="inline">
-								<input type="hidden" name="_method" value="DELETE"/>
-								<input type="hidden" name="_token" value="{{ csrf_token('delete_delivery_note_' ~ deliveryNote.id) }}"/>
-								<button type="submit" class="btn-delete" aria-label="Supprimer le bon n°{{ deliveryNote.number }}">
-									<i class="bi bi-trash text-lg"></i>
-								</button>
-							</form>
-						</div>
-					</div>
-				{% endfor %}
-			</div>
-		{% else %}
-			<p class="text-coffee">Aucun bon de livraison disponible.</p>
-		{% endif %}		
-	</div>
+        {% if deliveryNotes is not empty %}
+            <div class="overflow-x-auto rounded-lg shadow-md">
+                <table class="min-w-full">
+                    <thead class="bg-cream text-coffee rounded-lg dark:bg-coffee dark:text-flour">
+                        <tr class="hidden md:table-row">
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+                                Numéro
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+                                Date
+                            </th>
+                            {# The 'Statut' column is commented out in your provided code #}
+                            {# <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+                                Statut
+                            </th> #}
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+                                Actions
+                            </th>
+                        </tr>
+                        <tr class="md:hidden">
+                            {# Visible on mobile, hidden on medium and larger screens #}
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+                                Bon de livraison
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700">
+                        {% for deliveryNote in deliveryNotes %}
+                            <tr class="hidden md:table-row text-coffee">
+                                {# Hidden on mobile, visible on medium and larger screens #}
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sm text-coffee">
+                                    Bon n°{{ deliveryNote.number }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
+                                    {% if deliveryNote.registeredAt is defined and deliveryNote.registeredAt %}
+                                        {{ deliveryNote.registeredAt|date('d/m/Y') }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </td>
+                                {# The 'Statut' column is commented out in your provided code #}
+                                {# <td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
+                                    {% if deliveryNote.status is defined and deliveryNote.status %}
+                                        {{ deliveryNote.status }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </td> #}
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end items-center space-x-2">
+                                        <a href="{{ vich_uploader_asset(deliveryNote, 'imageFile') }}" target="_blank" class="btn-edit text-green-500 hover:text-green-700" aria-label="Voir le bon de livraison n°{{ deliveryNote.number }}">
+                                            <i class="bi bi-eye text-lg"></i>
+                                        </a>
+                                    <a href="{{ path('delivery_note_edit', {id: deliveryNote.id}) }}" class="btn-edit" aria-label="Modifier le bon n°{{ deliveryNote.number }}">
+                                        <i class="bi bi-pencil-square text-lg"></i>
+                                    </a>
+                                    <form method="post" action="{{ path('delivery_note_delete', {id: deliveryNote.id}) }}" onsubmit="return confirm('Confirmer la suppression du bon n°{{ deliveryNote.number }} ?');" class="inline">
+                                        <input type="hidden" name="_method" value="DELETE"/>
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete_delivery_note_' ~ deliveryNote.id) }}"/>
+                                        <button type="submit" class="btn-delete" aria-label="Supprimer le bon n°{{ deliveryNote.number }}">
+                                            <i class="bi bi-trash text-lg"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr class="md:hidden">
+                                {# Mobile-specific row for delivery notes #}
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium bg-cream dark:bg-coffee">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <a href="{{ path('delivery_note_edit', {id: deliveryNote.id}) }}" class="text-coffee hover:text-salmon dark:text-flour dark:hover:text-salmon">
+                                            Bon n°{{ deliveryNote.number }}
+                                        </a>
+                                        <div class="flex space-x-2">
+                                            {# New: View Delivery Note Document Action for mobile #}
+                                            {% if deliveryNote.documentFile is defined and deliveryNote.documentFile %}
+                                                <a href="{{ vich_uploader_asset(deliveryNote, 'documentFile') }}" target="_blank" class="btn-action" aria-label="Voir le bon de livraison n°{{ deliveryNote.number }}">
+                                                    <i class="bi bi-eye text-lg"></i>
+                                                </a>
+                                            {% endif %}
+                                            <a href="{{ path('delivery_note_edit', {id: deliveryNote.id}) }}" class="btn-edit" aria-label="Modifier le bon n°{{ deliveryNote.number }}">
+                                                <i class="bi bi-pencil-square text-lg"></i>
+                                            </a>
+                                            <form method="post" action="{{ path('delivery_note_delete', {id: deliveryNote.id}) }}" onsubmit="return confirm('Confirmer la suppression du bon n°{{ deliveryNote.number }} ?');" class="inline">
+                                                <input type="hidden" name="_method" value="DELETE"/>
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete_delivery_note_' ~ deliveryNote.id) }}"/>
+                                                <button type="submit" class="btn-delete" aria-label="Supprimer le bon n°{{ deliveryNote.number }}">
+                                                    <i class="bi bi-trash text-lg"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    {# Display date and status below on mobile, as they were in your original item-card #}
+                                    {% if deliveryNote.registeredAt is defined and deliveryNote.registeredAt %}
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                            <strong>Date :</strong> {{ deliveryNote.registeredAt|date('d/m/Y') }}
+                                        </p>
+                                    {% endif %}
+                                    {% if deliveryNote.status is defined and deliveryNote.status %}
+                                        <p class="text-xs text-gray-600 dark:text-gray-400">
+                                            <strong>Statut :</strong> {{ deliveryNote.status }}
+                                        </p>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="text-salmon dark:text-flour text-center py-8">Aucun bon de livraison disponible.</p>
+        {% endif %}
+    </div>
 {% endblock %}

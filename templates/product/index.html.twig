@@ -11,82 +11,103 @@
 				<i class="bi bi-plus-circle mr-2"></i>Créer un produit
 			</a>
 		</div>
+
 		{% if products is not empty %}
-			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				{% for product in products %}
-					<div class="item-card flex flex-col justify-between">
-						<h2 class="text-xl font-semibold text-coffee mb-2">{{ product.name }}</h2>
-
-						{% if product.allergens is not empty %}
-							<div class="mb-3">
-								<strong class="text-sm text-coffee block mb-1">Allergènes :</strong>
-								<ul class="flex flex-wrap gap-2">
-									{% for allergen in product.allergens %}
-										<li>
-											<span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full border border-red-200 cursor-help" title="{{ allergen.description }}">
-												{{ allergen.name }}
-											</span>
-										</li>
-									{% endfor %}
-								</ul>
-							</div>
-						{% endif %}
-
-						<p class="text-sm text-coffee mb-1">
-							<strong>Taille :</strong>
-							{{ product.size ?? '—' }}
-						</p>
-						<p class="text-sm text-coffee mb-1">
-							<strong>Prix :</strong>
-							{{ product.price }}
-							€
-						</p>
-
-						<p class="text-sm text-coffee mb-4">
-							<strong>Catégorie</strong>
-							<span class="inline-block bg-golden text-cream text-xs font-semibold px-2 py-0.5 rounded shadow-sm">
-								{{ product.category.name }}
-							</span>
-						</p>
-
-						<div class="mb-3">
-							<strong class="text-sm text-coffee block mb-1">Étiquettes :</strong>
-							<span class="text-sm text-gray-700">
-								{{ product.labels|length }}
-								étiquette(s)
-							</span>
-						</div>
-
-						<div class="mb-3">
-							<strong class="text-sm text-coffee block mb-1">Bons de livraison :</strong>
-							<span class="text-sm text-gray-700">
-								{{ product.deliveryNotes|length }}
-								bon(s) de livraison
-							</span>
-						</div>
-
-						<div class="absolute top-2 right-2 flex gap-2">
-							<a href="{{ path('product_edit', {id: product.id}) }}" class="btn-edit" title="Modifier">
-								<i class="bi bi-pencil-square text-lg"></i>
-							</a>
-							<form method="post" action="{{ path('product_delete', {id: product.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">
-								<input type="hidden" name="_method" value="DELETE">
-								<input type="hidden" name="_token" value="{{ csrf_token('delete_product_' ~ product.id) }}">
-								<button type="submit" class="btn-delete" title="Supprimer">
-									<i class="bi bi-trash text-lg"></i>
-								</button>
-							</form>
-						</div>
-						<div class="flex justify-end space-x-4">
-							<a href="{{ path('product_show', {id: product.id}) }}" class="btn-action">
-								Gérer
-							</a>
-						</div>
-					</div>
-				{% endfor %}
+			<div class="overflow-x-auto rounded-lg shadow-md">
+				<table class="min-w-full">
+					<thead class="bg-cream text-coffee rounded-lg dark:bg-coffee dark:text-flour">
+						<tr class="hidden md:table-row">
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+								Nom
+							</th>
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+								Taille
+							</th>
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+								Prix (€)
+							</th>
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+								Catégorie
+							</th>
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+								Allergènes
+							</th>
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+								Étiquettes
+							</th>
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+								Livraisons
+							</th>
+							<th scope="col" class="px-6 py-3 text-right text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+								Actions
+							</th>
+						</tr>
+						<tr
+							class="md:hidden">
+							{# Visible on mobile, hidden on medium and larger screens #}
+							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+								Nom
+							</th>
+						</tr>
+					</thead>
+					<tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700">
+						{% for product in products %}
+							<tr
+								class="hidden md:table-row text-coffee">
+								{# Hidden on mobile, visible on medium and larger screens #}
+								<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sm text-coffee">
+									{{ product.name }}
+								</td>
+								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">{{ product.size ?? '—' }}</td>
+								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">{{ product.price }}
+									€</td>
+								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
+									<span class="inline-block bg-golden text-cream text-xs font-semibold px-2 py-0.5 rounded shadow-sm dark:bg-golden dark:text-coffee">
+										{{ product.category.name }}
+									</span>
+								</td>
+								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
+									{% if product.allergens is not empty %}
+										<ul class="flex flex-wrap gap-1">
+											{% for allergen in product.allergens %}
+												<li>
+													<span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full border border-red-200 cursor-help dark:bg-red-900 dark:text-red-200 dark:border-red-700" title="{{ allergen.description }}">
+														{{ allergen.name }}
+													</span>
+												</li>
+											{% endfor %}
+										</ul>
+									{% else %}
+										—
+									{% endif %}
+								</td>
+								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
+									{{ product.labels|length }}
+									étiquette(s)
+								</td>
+								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
+									{{ product.deliveryNotes|length }}
+									bon(s) de livraison
+								</td>
+								<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end items-center space-x-2">
+									<a href="{{ path('product_show', {id: product.id}) }}" class="btn-action">
+										Gérer
+									</a>
+								</td>
+							</tr>
+							<tr class="md:hidden">
+								<td class="px-6 py-4 whitespace-nowrap text-sm font-medium bg-cream dark:bg-coffee">
+									<a href="{{ path('product_show', {id: product.id}) }}" class="text-coffee hover:text-salmon dark:text-flour dark:hover:text-salmon">
+										{{ product.name }}
+									</a>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
 			</div>
 		{% else %}
-			<p class="text-salmon">Aucun produit disponible.</p>
+			<p class="text-salmon dark:text-flour text-center py-8">Aucun produit disponible.</p>
 		{% endif %}
 	</div>
 {% endblock %}

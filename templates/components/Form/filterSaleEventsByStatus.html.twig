@@ -1,119 +1,184 @@
 <div {{ attributes }}>
-	<div class="flex flex-col items-center mb-6">
-    <h2 class="text-golden xl font-semibold mb-4 text-center pr-32">Vous souhaitez ...</h2>
+    <div class="flex flex-col items-center mb-6">
+        <h2 class="text-golden xl font-semibold mb-4 text-center pr-32">Vous souhaitez ...</h2>
 
-    {{ form_start(form, {'attr': {'class': 'w-full max-w-md'}}) }}
+        {{ form_start(form, {'attr': {'class': 'w-full max-w-md'}}) }}
 
-    {{ form_row(form.status, {
-        attr: {
-            'data-action': 'live#action',
-            'data-live-action-param': 'filterByStatus',
-            'class': 'block w-full rounded-md border border-gray-300 bg-white py-2 px-3 focus:border-coffee focus:ring focus:ring-golden text-coffee'
-        }
-    }) }}
+        {{ form_row(form.status, {
+            attr: {
+                'data-action': 'live#action',
+                'data-live-action-param': 'filterByStatus',
+                'class': 'text-coffee block w-full rounded-md border border-gray-300 bg-white py-2 px-3 focus:border-coffee focus:ring focus:ring-golden'
+            }
+        }) }}
 
-    {{ form_end(form) }}
-</div>
+        {{ form_end(form) }}
+    </div>
 
-
-	{% if saleEvents is not empty %}
-		<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-			{% for event in saleEvents %}
-				<div class="item-card relative p-4 border rounded mb-6">
-					<h2 class="text-coffee xl font-semibold mb-2">{{ event.name }}</h2>
-
-					{% if event.description %}
-						<p class="text-coffee sm italic mb-2">{{ event.description }}</p>
-					{% endif %}
-
-					<p class="text-coffee sm mb-1">
-						<strong>Adresse :</strong>
-						{{ event.address }}
-					</p>
-
-					<p class="text-coffee sm mb-1">
-						<strong>Début :</strong>
-						{{ event.startDate ? event.startDate|date('d/m/Y H:i') : 'Non défini' }}
-					</p>
-
-					<p class="text-coffee sm mb-4">
-						<strong>Fin :</strong>
-						{{ event.endDate ? event.endDate|date('d/m/Y H:i') : 'Non défini' }}
-					</p>
-
-                    {% if status != 'incoming' %}
-                    <p class="text-coffee sm mb-4">
-						<strong>Météo observée :</strong>
-						{{ event.weather ?  event.weather : 'Non renseigné' }}
-					</p>
-                    {% endif %}
-
-					<div>
-						{% if event.productEvents is not empty %}
-							<div class="mt-4 pt-4 border-t border-gray-300">
-								<h3 class="text-coffee md font-semibold mb-2">Produits mis en vente</h3>
-								<ul class="list-disc list-inside text-coffee sm">
-									{% for productEvent in event.productEvents %}
-										<li>
-											{{ productEvent.product.name }}
-											- Quantité:
-											{{ productEvent.quantity }}
-										</li>
-									{% endfor %}
-								</ul>
-							</div>
-						{% else %}
-							<p class="text-coffee sm mt-4 pt-4 border-t border-gray-300">
-								Aucun produit associé à cet événement.
-							</p>
-						{% endif %}
-                        {% if status == 'passed' %}
-                        <div class="mt-4 pt-4 border-t border-gray-300 flex justify-end">
-							<a href="{{ path('sale_event_show_resume', {id: event.id}) }}" class="btn-action">Voir le bilan</a>
-						</div>
-                        {% elseif status == 'today' %}
-						<div class="mt-4 pt-4 border-t border-gray-300 flex justify-end">
-							<a href="{{ path('sale_event_show', {id: event.id}) }}" class="btn-action">Gérer la vente</a>
-						</div>
-                        {% elseif status == 'incoming' %}
-                        <div class="mt-4 pt-4 border-t border-gray-300 flex justify-end">
-                            <a href="{{ path('sale_event_edit', {id: event.id}) }}" class="btn-action">Modifier</a>
-                        </div>
+    {% if saleEvents is not empty %}
+        <div class="overflow-x-auto rounded-lg shadow-md">
+            <table class="min-w-full">
+                <thead class="bg-cream text-coffee rounded-lg dark:bg-coffee dark:text-flour">
+                    <tr class="hidden md:table-row">
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+                            Nom de l'événement
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+                            Adresse
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+                            Début
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+                            Fin
+                        </th>
+                        {% if status != 'incoming' %}
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+                            Météo
+                        </th>
                         {% endif %}
-					</div>
-                    {% if status == 'incoming' %}
-					<div class="absolute top-2 right-2 flex gap-2">
-						{# <a href="{{ path('sale_event_edit', {id: event.id}) }}" class="btn-edit" title="Modifier">
-							<i class="bi bi-pencil-square text-coffee lg"></i>
-						</a> #}
-						<form method="post" action="{{ path('sale_event_delete', {id: event.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">
-							<input type="hidden" name="_method" value="DELETE">
-							<input type="hidden" name="_token" value="{{ csrf_token('delete_sale_event_' ~ event.id) }}">
-							<button type="submit" class="btn-delete" title="Supprimer">
-								<i class="bi bi-trash text-lg"></i>
-							</button>                            	
-						</form>
-					</div>
-                    {% endif %}
-				</div>
-			{% endfor %}
-		</div>
-	{% elseif status is null %}
-		<div class="flex justify-center">
-			<a href="{{ path('sale_event_new') }}" class="btn-validation">Créer un événement</a>
-		</div>
-	{% else %}
-		<div class="border-2 border-l-4 border-salmon p-4 bg-flour rounded-lg">
-			<div class="flex">
-				<div class="flex-shrink-0">
-					<i class="bi bi-info-circle-fill text-salmon text-xl"></i>
-				</div>
-				<div class="ml-3">
-					<p class="text-sm text-coffee">
-						Aucun événement trouvé pour ce statut.
-					</p>
-				</div>
-			</div>
-		</div>
-	{% endif %}
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+                            Actions
+                        </th>
+                    </tr>
+                    <tr class="md:hidden">
+                        {# Mobile-specific header, combines key info #}
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+                            Événement
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700">
+                    {% for event in saleEvents %}
+                        <tr class="hidden md:table-row text-coffee">
+                            {# Hidden on mobile, visible on medium and larger screens #}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sm text-coffee">
+                                {{ event.name }}
+                                {% if event.description %}
+                                    <p class="text-xs italic text-gray-500">{{ event.description }}</p>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
+                                {{ event.address }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
+                                {{ event.startDate ? event.startDate|date('d/m/Y H:i') : 'Non défini' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
+                                {{ event.endDate ? event.endDate|date('d/m/Y H:i') : 'Non défini' }}
+                            </td>
+                            {% if status != 'incoming' %}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
+                                {{ event.weather ? event.weather : 'Non renseigné' }}
+                            </td>
+                            {% endif %}
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end items-center space-x-2">
+                                {# Actions based on status #}
+                                {% if status == 'passed' %}
+                                    <a href="{{ path('sale_event_show_resume', {id: event.id}) }}" class="btn-edit" aria-label="Voir le bilan de {{ event.name }}">
+                                        <i class="bi bi-bar-chart-fill text-lg"></i> {# Using a chart icon for "Bilan" #}
+                                    </a>
+                                {% elseif status == 'today' %}
+                                    <a href="{{ path('sale_event_show', {id: event.id}) }}" class="btn-edit" aria-label="Gérer la vente de {{ event.name }}">
+                                        <i class="bi bi-cart-fill text-lg"></i> {# Using a cart icon for "Gérer la vente" #}
+                                    </a>
+                                {% elseif status == 'incoming' %}
+                                    <a href="{{ path('sale_event_edit', {id: event.id}) }}" class="btn-edit" aria-label="Modifier l'événement {{ event.name }}">
+                                        <i class="bi bi-pencil-square text-lg"></i>
+                                    </a>
+                                {% endif %}
+                                <form method="post" action="{{ path('sale_event_delete', {id: event.id}) }}" onsubmit="return confirm('Confirmer la suppression de l\'événement {{ event.name }} ?');" class="inline">
+                                    <input type="hidden" name="_method" value="DELETE"/>
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete_sale_event_' ~ event.id) }}"/>
+                                    <button type="submit" class="btn-delete" aria-label="Supprimer l'événement {{ event.name }}">
+                                        <i class="bi bi-trash text-lg"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr class="md:hidden">
+                            {# Mobile-specific row for events #}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium bg-cream dark:bg-coffee">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-coffee dark:text-flour font-bold">
+                                        {{ event.name }}
+                                    </span>
+                                    <div class="flex space-x-2">
+                                        {# Actions based on status for mobile #}
+                                        {% if status == 'passed' %}
+                                            <a href="{{ path('sale_event_show_resume', {id: event.id}) }}" class="btn-action" aria-label="Voir le bilan de {{ event.name }}">
+                                                <i class="bi bi-bar-chart-fill text-lg"></i>
+                                            </a>
+                                        {% elseif status == 'today' %}
+                                            <a href="{{ path('sale_event_show', {id: event.id}) }}" class="btn-action" aria-label="Gérer la vente de {{ event.name }}">
+                                                <i class="bi bi-cart-fill text-lg"></i>
+                                            </a>
+                                        {% elseif status == 'incoming' %}
+                                            <a href="{{ path('sale_event_edit', {id: event.id}) }}" class="btn-edit" aria-label="Modifier l'événement {{ event.name }}">
+                                                <i class="bi bi-pencil-square text-lg"></i>
+                                            </a>
+                                        {% endif %}
+                                        <form method="post" action="{{ path('sale_event_delete', {id: event.id}) }}" onsubmit="return confirm('Confirmer la suppression de l\'événement {{ event.name }} ?');" class="inline">
+                                            <input type="hidden" name="_method" value="DELETE"/>
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete_sale_event_' ~ event.id) }}"/>
+                                            <button type="submit" class="btn-delete" aria-label="Supprimer l'événement {{ event.name }}">
+                                                <i class="bi bi-trash text-lg"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                {# Display other details below on mobile #}
+                                {% if event.description %}
+                                    <p class="text-xs italic text-gray-500 mt-1">{{ event.description }}</p>
+                                {% endif %}
+                                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                    <strong>Adresse :</strong> {{ event.address }}
+                                </p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">
+                                    <strong>Début :</strong> {{ event.startDate ? event.startDate|date('d/m/Y H:i') : 'Non défini' }}
+                                </p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">
+                                    <strong>Fin :</strong> {{ event.endDate ? event.endDate|date('d/m/Y H:i') : 'Non défini' }}
+                                </p>
+                                {% if status != 'incoming' %}
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">
+                                        <strong>Météo observée :</strong> {{ event.weather ? event.weather : 'Non renseigné' }}
+                                    </p>
+                                {% endif %}
+                                {% if event.productEvents is not empty %}
+                                    <div class="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                                        <h4 class="font-semibold mt-2">Produits en vente :</h4>
+                                        <ul class="list-disc list-inside">
+                                            {% for productEvent in event.productEvents %}
+                                                <li>{{ productEvent.product.name }} - Qté: {{ productEvent.quantity }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% else %}
+                                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">Aucun produit associé.</p>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% elseif status is null %}
+        <div class="flex justify-center">
+            <a href="{{ path('sale_event_new') }}" class="btn-validation">Créer un événement</a>
+        </div>
+    {% else %}
+        <div class="border-2 border-l-4 border-salmon p-4 bg-flour rounded-lg">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <i class="bi bi-info-circle-fill text-salmon text-xl"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-salmon">
+                        Aucun événement trouvé pour ce statut.
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 </div>
