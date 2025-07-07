@@ -1,0 +1,85 @@
+<div {{ attributes }}>
+    <div class="item-card">
+
+        {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+
+        <div>
+            {{ form_label(form.name, null, {'label_attr': {'class': 'block text-sm font-medium '}}) }}
+            {{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div>
+            {{ form_label(form.description, null, {'label_attr': {'class': 'block text-sm font-medium '}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm'}}) }}
+            {{ form_errors(form.description) }}
+        </div>
+
+        <div>
+            {{ form_label(form.yield, null, {'label_attr': {'class': 'block text-sm font-medium '}}) }}
+            {{ form_widget(form.yield, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm'}}) }}
+            {{ form_errors(form.yield) }}
+        </div>
+
+        <div class="flex flex-column gap-4">
+            {{ form_widget(form.recipeProducts.vars.button_add, { label: '+ Ajouter un ingrédient', attr: { class: 'btn-action' } }) }}
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+
+            {% for recipeProductForm in form.recipeProducts %}
+                <div class="relative border rounded-xl p-4 bg-gray-50" data-controller="quantity">
+
+                    {% if recipeProductForm.vars.button_delete is defined %}
+                        <div class="absolute top-2 right-2 z-10">
+                            {{ form_widget(recipeProductForm.vars.button_delete, {
+                                attr: {
+                                    type: 'button',
+                                    class: 'text-red-600 hover:text-red-800 p-0 focus:outline-none w-8 h-8 flex items-center justify-center rounded-full',
+                                    title: 'Supprimer ce produit',
+                                }
+                            }) }}
+                        </div>
+                    {% endif %}
+
+                    <div class="grid grid-cols-1 gap-4 pr-8 sm:grid-cols-2 md:grid-cols-3">
+
+                        <div>
+                            {{ form_row(recipeProductForm.product, {
+                                label: 'Produit',
+                                attr: { class: 'w-full' }
+                            }) }}
+                        </div>
+
+                        <div>
+                            {{ form_row(recipeProductForm.unit, {
+                                label: 'Unité',
+                                attr: { class: 'w-full' }
+                            }) }}
+                        </div>
+
+                        <div>
+                            {{ form_row(recipeProductForm.quantity, {
+                                label: 'Quantité',
+                                attr: {
+                                    class: 'w-full text-center',
+                                    'data-quantity-target': 'quantityInput'
+                                }
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="flex justify-end space-x-4">
+            <a href="{{ path('recipe_index') }}" class="btn-return">
+                <i class="bi bi-arrow-left mr-2"></i>Retour
+            </a>
+            <button type="submit" data-action="live#action:prevent" data-live-action-param="save" class="btn-validation">
+                Enregistrer
+            </button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>

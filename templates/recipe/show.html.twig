@@ -1,0 +1,73 @@
+{# templates/recipe/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Recette : {{ recipe.name }} {% endblock %}
+
+{% block body %}
+    <div class="container mx-auto p-6">
+        <div class="bg-white shadow-lg rounded-lg p-8 mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ recipe.name }}</h1>
+            <p class="text-gray-600 mb-6">{{ recipe.description|default('Aucune description disponible.') }}</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-3">Détails de la recette</h2>
+                    <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <li>**Rendement :** {{ recipe.yield }}</li>
+                        <li>**Coût total estimé :** {{ recipe.totalCost|format_currency('EUR', locale='fr') }}</li>
+                        <li>**Date de création :** {{ recipe.createdAt|date('d/m/Y H:i') }}</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-3">Ingrédients</h2>
+                    {% if recipe.recipeProducts is not empty %}
+                        <ul class="list-none space-y-2">
+                            {% for recipeProduct in recipe.recipeProducts %}
+                                <li class="text-gray-700">
+                                    <span class="font-medium">{{ recipeProduct.quantity }}</span>
+                                    <span class="text-sm text-gray-500">{{ recipeProduct.unit }}</span>
+                                    **{{ recipeProduct.product.name }}**
+                                    {% if recipeProduct.product.price is not null %}
+                                        <span class="text-sm text-gray-500">
+                                            ({{ recipeProduct.product.price|format_currency('EUR', locale='fr') }} / unité)
+                                        </span>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-gray-500">Aucun ingrédient n'a été ajouté à cette recette.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-3">Étapes de préparation</h2>
+                {% if recipe.steps is not empty %}
+                    <ol class="list-decimal list-inside text-gray-700 space-y-3">
+                        {% for step in recipe.steps %}
+                            <li>
+                                <span class="font-medium">{{ step.description }}</span>
+                                {% if step.duration is not null and step.duration > 0 %}
+                                    <span class="text-sm text-gray-500">(Durée : {{ step.duration }} minutes)</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <p class="text-gray-500">Aucune étape de préparation n'a été définie pour cette recette.</p>
+                {% endif %}
+            </div>
+
+            <div class="mt-10 flex justify-end space-x-4">
+                <a href="{{ path('recipe_edit', {'id': recipe.id}) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Modifier la recette
+                </a>
+                <a href="{{ path('recipe_index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Retour à la liste
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

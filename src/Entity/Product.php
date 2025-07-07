@@ -52,6 +52,12 @@ class Product
     #[ORM\ManyToMany(targetEntity: DeliveryNote::class, inversedBy: 'products')]
     private Collection $deliveryNotes;
 
+    /**
+     * @var Collection<int, RecipeProduct>
+     */
+    #[ORM\OneToMany(targetEntity: RecipeProduct::class, mappedBy: 'product', orphanRemoval: true)]
+    private Collection $recipeProducts;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -59,6 +65,7 @@ class Product
         $this->allergens = new ArrayCollection();
         $this->labels = new ArrayCollection();
         $this->deliveryNotes = new ArrayCollection();
+        $this->recipeProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -230,6 +237,35 @@ class Product
         if ($this->deliveryNotes->removeElement($deliveryNote)) {
             if ($deliveryNote->getProducts()->contains($this)) {
                 $deliveryNote->removeProduct($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RecipeProduct>
+     */
+    public function getRecipeProducts(): Collection
+    {
+        return $this->recipeProducts;
+    }
+
+    public function addRecipeProduct(RecipeProduct $recipeProduct): static
+    {
+        if (!$this->recipeProducts->contains($recipeProduct)) {
+            $this->recipeProducts->add($recipeProduct);
+            $recipeProduct->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipeProduct(RecipeProduct $recipeProduct): static
+    {
+        if ($this->recipeProducts->removeElement($recipeProduct)) {
+            if ($recipeProduct->getProduct() === $this) {
+                $recipeProduct->setProduct(null);
             }
         }
 

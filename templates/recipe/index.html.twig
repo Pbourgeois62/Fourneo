@@ -1,0 +1,96 @@
+{# templates/recipe/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des recettes
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-title">Liste des recettes</h1>
+	<div class="main-container">
+		<div class="mt-8 text-right">
+			<a href="{{ path('recipe_new') }}" class="btn-action mb-4 md:mb-8">
+				<i class="bi bi-plus-circle mr-2"></i>Créer une recette
+			</a>
+		</div>
+
+		{% if recipes is not empty %}
+			<div
+				class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{# Grid for cards #}
+				{% for recipe in recipes %}
+					<div
+						class="item-card">
+						{# Card styling #}
+						<h2 class="text-xl font-semibold mb-2 text-coffee dark:text-golden">{{ recipe.name }}</h2>
+
+						{% if recipe.description %}
+							<p class="text-sm italic mb-2 text-gray-700 dark:text-gray-500">{{ recipe.description|length > 100 ? recipe.description|slice(0, 100) ~ '...' : recipe.description }}</p>
+						{% endif %}
+
+						<p class="text-sm mb-1 text-coffee dark:text-flour">
+							<strong>Rendement :</strong>
+							{{ recipe.yield ?? '—' }}
+							{{ recipe.yieldUnit.name ?? '' }}
+						</p>
+
+						<p class="text-sm mb-1 text-coffee dark:text-flour">
+							<strong>Coût Total :</strong>
+							{{ recipe.totalCost is not null ? recipe.totalCost|number_format(2, ',', ' ') ~ ' €' : '—' }}
+						</p>
+
+						{% if recipe.recipeProducts is not empty %}
+							<div class="mt-4 pt-4 border-t border-gray-300 dark:border-coffee">
+								<h3 class="text-md font-semibold mb-2 text-coffee dark:text-golden">Ingrédients principaux</h3>
+								<ul class="list-disc list-inside text-sm text-coffee dark:text-flour">
+									{% for recipeProduct in recipe.recipeProducts|slice(0, 3) %}
+										{# Show first 3 ingredients #}
+										<li>{{ recipeProduct.product.name }}
+											({{ recipeProduct.quantity }}
+											{{ recipeProduct.unit ?? '' }})</li>
+									{% endfor %}
+									{% if recipe.recipeProducts|length > 3 %}
+										<li>... ({{ recipe.recipeProducts|length - 3 }}
+											de plus)</li>
+									{% endif %}
+								</ul>
+							</div>
+						{% else %}
+							<p class="text-sm mt-4 pt-4 border-t border-gray-300 text-coffee dark:text-flour dark:border-coffee">
+								Aucun ingrédient associé à cette recette.
+							</p>
+						{% endif %}
+
+						<div class="mt-4 pt-4 border-t border-gray-300 flex justify-end space-x-2 dark:border-coffee">
+							<a href="{{ path('recipe_show', {id: recipe.id}) }}" class="btn-edit text-green hover:text-green">
+								<i class="bi bi-eye-fill mr-2"></i>
+							</a>
+							<a href="{{ path('recipe_edit', {id: recipe.id}) }}" class="btn-edit" aria-label="Modifier la recette {{ recipe.name }}">
+								<i class="bi bi-pencil-square text-lg"></i>
+							</a>
+							<form method="post" action="{{ path('recipe_delete', {id: recipe.id}) }}" onsubmit="return confirm('Confirmer la suppression de la recette {{ recipe.name }} ?');" class="inline">
+								<input type="hidden" name="_method" value="DELETE"/>
+								<input type="hidden" name="_token" value="{{ csrf_token('delete_recipe_' ~ recipe.id) }}"/>
+								<button type="submit" class="btn-delete" aria-label="Supprimer la recette {{ recipe.name }}">
+									<i class="bi bi-trash text-lg"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% else %}
+			<div class="bg-cream border-2 border-l-4 border-salmon p-4 rounded-lg">
+				<div class="flex">
+					<div class="flex-shrink-0">
+						<i class="bi bi-info-circle-fill text-salmon text-xl"></i>
+					</div>
+					<div class="ml-3">
+						<p class="text-sm text-salmon">
+							Aucune recette enregistrée.
+						</p>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}

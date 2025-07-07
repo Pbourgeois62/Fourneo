@@ -66,11 +66,11 @@
 					class="py-1 text-sm text-gray-700 dark:" aria-labelledby="dropdownGestionRecettes">
 					{# Simplifié la classe pour utiliser dropdown-item-nav #}
 					<li>
-						<a href="#" class="dropdown-item-nav ">Accueil</a>
+						<a href="{{ path('recipe_index') }}" class="dropdown-item-nav ">Accueil</a>
 					</li>
 					{# Simplifié la classe pour utiliser dropdown-item-nav #}
 					<li>
-						<a href="#" class="dropdown-item-nav">Créer</a>
+						<a href="{{ path('recipe_new') }}" class="dropdown-item-nav">Créer</a>
 					</li>
 					{# Simplifié la classe pour utiliser dropdown-item-nav #}
 					<li>
@@ -152,7 +152,7 @@
 			<div x-data="{ accordionOpen: false }">
 				<h2 class="w-full">
 					<button @click="accordionOpen = !accordionOpen" type="button" class="flex items-center justify-between w-full p-5 font-medium text-coffee border-b border-gray-200 focus:ring-4 focus:ring-gray-200 hover:bg-gray-100 gap-3 rounded-t-lg dark: dark:border-gray-700 dark:hover:bg-gray-700">
-						<span>Gestion Recettes</span>
+						<span>Recettes</span>
 						<!-- Image arrow for accordion - Increased size to w-4 h-4 -->
 						<img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/16x16/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': accordionOpen }"/>
 					</button>
@@ -163,11 +163,11 @@
 							class="space-y-2">
 							{# Simplifié la classe pour utiliser dropdown-item-nav #}
 							<li>
-								<a href="#" class="dropdown-item-nav">Voir toutes les recettes</a>
+								<a href="{{ path('recipe_index') }}" class="dropdown-item-nav">Accueil</a>
 							</li>
 							{# Simplifié la classe pour utiliser dropdown-item-nav #}
 							<li>
-								<a href="#" class="dropdown-item-nav">Créer une recette</a>
+								<a href="{{ path('recipe_new') }}" class="dropdown-item-nav">Créer</a>
 							</li>
 							{# Simplifié la classe pour utiliser dropdown-item-nav #}
 							<li>
