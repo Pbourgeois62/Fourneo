@@ -39,14 +39,21 @@ class Recipe
     #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'recipe', cascade: ['persist', 'remove'])]
     private Collection $steps;
 
-    #[ORM\Column(length: 50)]
-    private ?string $status = 'new';
+    /**
+     * @var Collection<int, RecipeProduct>
+     */
+    #[ORM\OneToMany(targetEntity: RecipeProduct::class, mappedBy: 'subRecipe')] // CHANGEMENT ICI : mappedBy: 'subRecipe'
+    private Collection $subRecipes;
+    
+    #[ORM\OneToOne(targetEntity: \App\Entity\Product::class, mappedBy: 'recipe', cascade: ['persist', 'remove'])]
+    private ?\App\Entity\Product $productResult = null;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->recipeProducts = new ArrayCollection();
         $this->steps = new ArrayCollection();
+        $this->subRecipes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -174,16 +181,61 @@ class Recipe
         }
 
         return $totalCost;
+    }    
+
+    public function getTotalDuration(): int
+    {
+        $totalDuration = 0;
+
+        foreach ($this->getSteps() as $step) {
+            $duration = $step->getDurationMinutes();
+
+            if ($duration !== null) {
+                $totalDuration += $duration;
+            }
+        }
+
+        return $totalDuration;
     }
 
-    public function getStatus(): ?string
+    /**
+     * @return Collection<int, RecipeProduct>
+     */
+    public function getSubRecipes(): Collection // CHANGEMENT ICI : Getter pour 'subRecipes'
     {
-        return $this->status;
+        return $this->subRecipes;
     }
 
-    public function setStatus(string $status): static
+    public function addSubRecipe(RecipeProduct $subRecipe): static // CHANGEMENT ICI : Méthode add pour 'subRecipes'
     {
-        $this->status = $status;
+        if (!$this->subRecipes->contains($subRecipe)) {
+            $this->subRecipes->add($subRecipe);
+            $subRecipe->setSubRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubRecipe(RecipeProduct $subRecipe): static // CHANGEMENT ICI : Méthode remove pour 'subRecipes'
+    {
+        if ($this->subRecipes->removeElement($subRecipe)) {
+            // set the owning side to null (unless already changed)
+            if ($subRecipe->getSubRecipe() === $this) {
+                $subRecipe->setSubRecipe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProductResult(): ?Product
+    {
+        return $this->productResult;
+    }
+
+    public function setProductResult(?Product $productResult): static
+    {
+        $this->productResult = $productResult;
 
         return $this;
     }

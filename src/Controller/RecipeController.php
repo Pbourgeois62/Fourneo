@@ -35,16 +35,15 @@ final class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'recipe_new', methods: ['POST', 'GET'])]
-    public function newRecipe(Request $request, EntityManagerInterface $em): Response
-    {
-        
+    #[Route('/new', name: 'recipe_new', methods: ['GET'])]
+    public function newRecipe(): Response
+    {        
        return $this->render('recipe/edit.html.twig', [ 
             'recipe' => null
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'recipe_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'recipe_edit', methods: ['GET'])]
     public function editRecipe(Recipe $recipe): Response
     {
         return $this->render('recipe/edit.html.twig', [
@@ -67,20 +66,11 @@ final class RecipeController extends AbstractController
         return $this->redirectToRoute('recipe_index');
     }
 
-    #[Route('/{id}/add_step', name: 'recipe_add_step', methods: ['GET'])]
-    public function addStep(Request $request, Recipe $recipe, RecipeRepository $recipeRepository, EntityManagerInterface $em): Response
+    #[Route('/{id}/add_steps', name: 'recipe_add_steps', methods: ['GET'])]
+    public function addStep(Recipe $recipe): Response
     {
-        $form = $this->createForm(StepForm::class);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $em->flush();
-            $this->addFlash('success', 'Etape crée avec succès');
-            return $this->redirectToRoute('recipe_index');
-        }
-
-        return $this->render('recipe/edit.html.twig', [
-            'form' => $form,
+        return $this->render('recipe/add_steps.html.twig', [
+            'recipe' => $recipe,
         ]);
     }
 }

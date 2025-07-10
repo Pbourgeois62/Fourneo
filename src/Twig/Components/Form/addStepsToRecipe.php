@@ -3,7 +3,7 @@
 namespace App\Twig\Components\Form;
 
 use App\Entity\Recipe;
-use App\Form\RecipeForm;
+use App\Form\addStepsToRecipeForm;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -15,7 +15,7 @@ use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[AsLiveComponent]
-class addRecipeProduct extends AbstractController
+class addStepsToRecipe extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
@@ -28,7 +28,7 @@ class addRecipeProduct extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {        
-        return $this->createForm(RecipeForm::class, $this->recipe);
+        return $this->createForm(addStepsToRecipeForm::class, $this->recipe);
     }
 
     #[LiveAction]
@@ -41,12 +41,16 @@ class addRecipeProduct extends AbstractController
             return;
         }
         $recipe = $this->getForm()->getData();
+        $steps = $recipe->getSteps();
+        foreach ($steps as $step) {
+            $entityManager->persist($step);
+        }
         
         $entityManager->persist($recipe);
         $entityManager->flush();
 
         $this->addFlash('success', 'Recette enregistrée avec succès !');
 
-        return $this->redirectToRoute('recipe_add_steps', ['id' => $recipe->getId()]);
+        return $this->redirectToRoute('recipe_show', ['id' => $recipe->getId()]);
     }
 }

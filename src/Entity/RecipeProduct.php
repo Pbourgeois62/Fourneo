@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\RecipeProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\RecipeProductRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: RecipeProductRepository::class)]
 class RecipeProduct
@@ -26,6 +28,26 @@ class RecipeProduct
 
     #[ORM\Column(length: 50)]
     private ?string $unit = null;
+
+    #[ORM\ManyToOne(inversedBy: 'subRecipes ')] 
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Recipe $subRecipe = null;
+
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, mixed $payload)
+    {
+        if (($this->product !== null) && ($this->subRecipe !== null)) {
+            $context->buildViolation('Un ingrédient ne peut pas être à la fois un produit et une sous-recette.')
+                ->atPath('product')
+                ->addViolation();
+        }
+
+        if (($this->product === null) && ($this->subRecipe === null)) {
+            $context->buildViolation('Un ingrédient doit être soit un produit, soit une sous-recette.')
+                ->atPath('product')
+                ->addViolation();
+        }
+    }
 
     public function getId(): ?int
     {
@@ -78,5 +100,30 @@ class RecipeProduct
         $this->unit = $unit;
 
         return $this;
+    }
+
+    public function getSubRecipe(): ?Recipe
+    {
+        return $this->subRecipe;
+    }
+
+    public function setSubRecipe(?Recipe $subRecipe): static
+    {
+        $this->subRecipe = $subRecipe;
+        if ($subRecipe !== null) {
+            $this->product = null;
+        }
+
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        if ($this->product !== null) {
+            return $this->product->getName();
+        } elseif ($this->subRecipe !== null) {
+            return $this->subRecipe->getName() . ' (recette)'; 
+        }
+        return 'Ingrédient inconnu'; 
     }
 }
