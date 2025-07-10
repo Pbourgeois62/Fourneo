@@ -21,8 +21,11 @@ class Product
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $size = null;
+     #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private ?bool $isRecipeResult=false;
+
+    // #[ORM\Column(length: 50, nullable: true)]
+    // private ?string $size = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -52,6 +55,16 @@ class Product
     #[ORM\ManyToMany(targetEntity: DeliveryNote::class, inversedBy: 'products')]
     private Collection $deliveryNotes;
 
+    /**
+     * @var Collection<int, RecipeProduct>
+     */
+    #[ORM\OneToMany(targetEntity: RecipeProduct::class, mappedBy: 'product', orphanRemoval: true)]
+    private Collection $recipeProducts;
+
+    #[ORM\OneToOne(targetEntity: \App\Entity\Recipe::class, inversedBy: 'productResult', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?\App\Entity\Recipe $recipe = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -59,6 +72,7 @@ class Product
         $this->allergens = new ArrayCollection();
         $this->labels = new ArrayCollection();
         $this->deliveryNotes = new ArrayCollection();
+        $this->recipeProducts = new ArrayCollection();        
     }
 
     public function getId(): ?int
@@ -90,17 +104,17 @@ class Product
         return $this;
     }
 
-    public function getSize(): ?string
-    {
-        return $this->size;
-    }
+    // public function getSize(): ?string
+    // {
+    //     return $this->size;
+    // }
 
-    public function setSize(?string $size): static
-    {
-        $this->size = $size;
+    // public function setSize(?string $size): static
+    // {
+    //     $this->size = $size;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getCategory(): ?Category
     {
@@ -234,5 +248,69 @@ class Product
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, RecipeProduct>
+     */
+    public function getRecipeProducts(): Collection
+    {
+        return $this->recipeProducts;
+    }
+
+    public function addRecipeProduct(RecipeProduct $recipeProduct): static
+    {
+        if (!$this->recipeProducts->contains($recipeProduct)) {
+            $this->recipeProducts->add($recipeProduct);
+            $recipeProduct->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipeProduct(RecipeProduct $recipeProduct): static
+    {
+        if ($this->recipeProducts->removeElement($recipeProduct)) {
+            if ($recipeProduct->getProduct() === $this) {
+                $recipeProduct->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isRecipeResult(): bool
+    {
+        return $this->isRecipeResult;
+    }
+
+    public function setIsRecipeResult(bool $isRecipeResult): static
+    {
+        $this->isRecipeResult = $isRecipeResult;
+        return $this;
+    }
+
+    public function getRecipe(): ?Recipe
+    {
+        return $this->recipe;
+    }
+
+    public function setRecipe(?Recipe $recipe): static
+    {
+        $this->recipe = $recipe;
+        // Optionnel : s'assurer que isRecipeResult est vrai si une recette est liée
+        if ($recipe !== null) {
+            $this->isRecipeResult = true;
+        }
+        // Attention : Si isRecipeResult devient false, il faudrait aussi détacher la recette
+        return $this;
+    }
+
+    public function getDisplayName(): string
+    {
+        if ($this->isRecipeResult()) {
+            return $this->getName() . ' (Recette)';
+        }
+        return $this->getName();
     }
 }

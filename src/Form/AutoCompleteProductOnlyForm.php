@@ -2,24 +2,28 @@
 
 namespace App\Form;
 
-use App\Entity\Allergen;
+use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\Autocomplete\Form\AsEntityAutocompleteField;
 use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
+use Doctrine\ORM\EntityRepository;
 
 #[AsEntityAutocompleteField]
-class AutoCompleteAllergens extends AbstractType
+class AutoCompleteProductOnlyForm extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => Allergen::class,
+            'class' => Product::class,
             'searchable_fields' => ['name'],
-            'label' => 'Ajouter des allergènes',
+            'label' => 'Rechercher un produit',
             'choice_label' => 'name',
-            'multiple' => true,
-            'required' => false,                        
+            'multiple' => false,
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('p')
+                          ->orderBy('p.name', 'ASC');
+            },
         ]);
     }
 
