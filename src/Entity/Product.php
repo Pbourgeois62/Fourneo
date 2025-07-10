@@ -6,6 +6,7 @@ use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -16,16 +17,18 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le nom du produit ne peut pas être vide.')]
     private ?string $name = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'float')]
+    #[Assert\PositiveOrZero(message: 'Le prix doit être positif ou zéro.')]
     private ?float $price = null;
 
-     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private ?bool $isRecipeResult=false;
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private ?bool $isRecipeResult = false;
 
-    // #[ORM\Column(length: 50, nullable: true)]
-    // private ?string $size = null;
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $size = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -34,34 +37,22 @@ class Product
     #[ORM\JoinColumn(nullable: true)]
     private ?Category $category = null;
 
-    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Label::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Label::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $labels;
 
-    /**
-     * @var Collection<int, ProductEvent>
-     */
-    #[ORM\OneToMany(targetEntity: ProductEvent::class, mappedBy: 'product')]
+    #[ORM\OneToMany(targetEntity: ProductEvent::class, mappedBy: 'product', orphanRemoval: true)]
     private Collection $productEvents;
 
-    /**
-     * @var Collection<int, Allergen>
-     */
     #[ORM\ManyToMany(targetEntity: Allergen::class, inversedBy: 'products')]
     private Collection $allergens;
 
-    /**
-     * @var Collection<int, DeliveryNote>
-     */
     #[ORM\ManyToMany(targetEntity: DeliveryNote::class, inversedBy: 'products')]
     private Collection $deliveryNotes;
 
-    /**
-     * @var Collection<int, RecipeProduct>
-     */
     #[ORM\OneToMany(targetEntity: RecipeProduct::class, mappedBy: 'product', orphanRemoval: true)]
-    private Collection $recipeProducts;
+    private Collection $usedInRecipeProducts;
 
-    #[ORM\OneToOne(targetEntity: \App\Entity\Recipe::class, inversedBy: 'productResult', cascade: ['persist'])]
+    #[ORM\OneToOne(targetEntity: \App\Entity\Recipe::class, inversedBy: 'productResult', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     private ?\App\Entity\Recipe $recipe = null;
 
@@ -72,7 +63,7 @@ class Product
         $this->allergens = new ArrayCollection();
         $this->labels = new ArrayCollection();
         $this->deliveryNotes = new ArrayCollection();
-        $this->recipeProducts = new ArrayCollection();        
+        $this->usedInRecipeProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,7 +79,6 @@ class Product
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -100,31 +90,28 @@ class Product
     public function setPrice(float $price): static
     {
         $this->price = $price;
-
         return $this;
     }
 
-    // public function getSize(): ?string
-    // {
-    //     return $this->size;
-    // }
-
-    // public function setSize(?string $size): static
-    // {
-    //     $this->size = $size;
-
-    //     return $this;
-    // }
-
-    public function getCategory(): ?Category
+    public function isRecipeResult(): ?bool
     {
-        return $this->category;
+        return $this->isRecipeResult;
     }
 
-    public function setCategory(?Category $category): static
+    public function setIsRecipeResult(?bool $isRecipeResult): static
     {
-        $this->category = $category;
+        $this->isRecipeResult = $isRecipeResult;
+        return $this;
+    }
 
+    public function getSize(): ?string
+    {
+        return $this->size;
+    }
+
+    public function setSize(?string $size): static
+    {
+        $this->size = $size;
         return $this;
     }
 
@@ -136,60 +123,17 @@ class Product
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, ProductEvent>
-     */
-    public function getProductEvents(): Collection
+    public function getCategory(): ?Category
     {
-        return $this->productEvents;
+        return $this->category;
     }
 
-    public function addProductEvent(ProductEvent $productEvent): static
+    public function setCategory(?Category $category): static
     {
-        if (!$this->productEvents->contains($productEvent)) {
-            $this->productEvents->add($productEvent);
-            $productEvent->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProductEvent(ProductEvent $productEvent): static
-    {
-        if ($this->productEvents->removeElement($productEvent)) {
-            if ($productEvent->getProduct() === $this) {
-                $productEvent->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Allergen>
-     */
-    public function getAllergens(): Collection
-    {
-        return $this->allergens;
-    }
-
-    public function addAllergen(Allergen $allergen): static
-    {
-        if (!$this->allergens->contains($allergen)) {
-            $this->allergens->add($allergen);
-        }
-
-        return $this;
-    }
-
-    public function removeAllergen(Allergen $allergen): static
-    {
-        $this->allergens->removeElement($allergen);
-
+        $this->category = $category;
         return $this;
     }
 
@@ -201,10 +145,9 @@ class Product
     public function addLabel(Label $label): static
     {
         if (!$this->labels->contains($label)) {
-            $this->labels[] = $label;
+            $this->labels->add($label);
             $label->setProduct($this);
         }
-
         return $this;
     }
 
@@ -215,13 +158,52 @@ class Product
                 $label->setProduct(null);
             }
         }
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, DeliveryNote>
-     */
+    public function getProductEvents(): Collection
+    {
+        return $this->productEvents;
+    }
+
+    public function addProductEvent(ProductEvent $productEvent): static
+    {
+        if (!$this->productEvents->contains($productEvent)) {
+            $this->productEvents->add($productEvent);
+            $productEvent->setProduct($this);
+        }
+        return $this;
+    }
+
+    public function removeProductEvent(ProductEvent $productEvent): static
+    {
+        if ($this->productEvents->removeElement($productEvent)) {
+            if ($productEvent->getProduct() === $this) {
+                $productEvent->setProduct(null);
+            }
+        }
+        return $this;
+    }
+
+    public function getAllergens(): Collection
+    {
+        return $this->allergens;
+    }
+
+    public function addAllergen(Allergen $allergen): static
+    {
+        if (!$this->allergens->contains($allergen)) {
+            $this->allergens->add($allergen);
+        }
+        return $this;
+    }
+
+    public function removeAllergen(Allergen $allergen): static
+    {
+        $this->allergens->removeElement($allergen);
+        return $this;
+    }
+
     public function getDeliveryNotes(): Collection
     {
         return $this->deliveryNotes;
@@ -235,7 +217,6 @@ class Product
                 $deliveryNote->addProduct($this);
             }
         }
-
         return $this;
     }
 
@@ -246,47 +227,30 @@ class Product
                 $deliveryNote->removeProduct($this);
             }
         }
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, RecipeProduct>
-     */
-    public function getRecipeProducts(): Collection
+    public function getUsedInRecipeProducts(): Collection
     {
-        return $this->recipeProducts;
+        return $this->usedInRecipeProducts;
     }
 
-    public function addRecipeProduct(RecipeProduct $recipeProduct): static
+    public function addUsedInRecipeProduct(RecipeProduct $usedInRecipeProduct): static
     {
-        if (!$this->recipeProducts->contains($recipeProduct)) {
-            $this->recipeProducts->add($recipeProduct);
-            $recipeProduct->setProduct($this);
+        if (!$this->usedInRecipeProducts->contains($usedInRecipeProduct)) {
+            $this->usedInRecipeProducts->add($usedInRecipeProduct);
+            $usedInRecipeProduct->setProduct($this);
         }
-
         return $this;
     }
 
-    public function removeRecipeProduct(RecipeProduct $recipeProduct): static
+    public function removeUsedInRecipeProduct(RecipeProduct $usedInRecipeProduct): static
     {
-        if ($this->recipeProducts->removeElement($recipeProduct)) {
-            if ($recipeProduct->getProduct() === $this) {
-                $recipeProduct->setProduct(null);
+        if ($this->usedInRecipeProducts->removeElement($usedInRecipeProduct)) {
+            if ($usedInRecipeProduct->getProduct() === $this) {
+                $usedInRecipeProduct->setProduct(null);
             }
         }
-
-        return $this;
-    }
-
-    public function isRecipeResult(): bool
-    {
-        return $this->isRecipeResult;
-    }
-
-    public function setIsRecipeResult(bool $isRecipeResult): static
-    {
-        $this->isRecipeResult = $isRecipeResult;
         return $this;
     }
 
@@ -298,11 +262,11 @@ class Product
     public function setRecipe(?Recipe $recipe): static
     {
         $this->recipe = $recipe;
-        // Optionnel : s'assurer que isRecipeResult est vrai si une recette est liée
         if ($recipe !== null) {
             $this->isRecipeResult = true;
+        } else {
+            $this->isRecipeResult = false;
         }
-        // Attention : Si isRecipeResult devient false, il faudrait aussi détacher la recette
         return $this;
     }
 
