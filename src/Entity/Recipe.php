@@ -18,40 +18,32 @@ class Recipe
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $yield = null;
+    #[ORM\Column(nullable: true)]
+    private ?float $yield = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\ManyToOne(targetEntity: Unit::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Unit $yieldUnit = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    /**
-     * @var Collection<int, RecipeProduct>
-     */
-    // Les ingrédients de cette recette. Ces RecipeProduct pointeront vers des Products.
-    #[ORM\OneToMany(targetEntity: RecipeProduct::class, mappedBy: 'recipe', orphanRemoval: true, cascade: ['persist', 'remove'])]
-    private Collection $recipeProducts;
+    #[ORM\Column]
+    private ?bool $isSubRecipe = false;
 
-    /**
-     * @var Collection<int, Step>
-     */
     #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'recipe', cascade: ['persist', 'remove'])]
     private Collection $steps;
 
-    // Relation OneToOne **obligatoire** : Chaque recette doit produire un Product
-    // 'remove' si vous voulez supprimer le produit si la recette est supprimée.
-    // 'persist' est nécessaire pour sauvegarder le produit quand la recette est sauvegardée.
-    #[ORM\OneToOne(targetEntity: \App\Entity\Product::class, mappedBy: 'recipe', cascade: ['persist', 'remove'])]
-    private ?\App\Entity\Product $productResult = null; // Le Product que cette recette produit
+    #[ORM\OneToOne(targetEntity: Product::class, mappedBy: 'recipe', cascade: ['persist', 'remove'])]
+    private ?Product $productResult = null;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->recipeProducts = new ArrayCollection();
         $this->steps = new ArrayCollection();
-        // Pas de $this->subRecipes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,47 +84,28 @@ class Recipe
         return $this;
     }
 
-    public function getYield(): ?int
+    public function getYield(): ?float
     {
         return $this->yield;
     }
 
-    public function setYield(int $yield): static
+    public function setYield(?float $yield): static
     {
         $this->yield = $yield;
         return $this;
     }
 
-    /**
-     * @return Collection<int, RecipeProduct>
-     */
-    public function getRecipeProducts(): Collection
+    public function getYieldUnit(): ?Unit
     {
-        return $this->recipeProducts;
+        return $this->yieldUnit;
     }
 
-    public function addRecipeProduct(RecipeProduct $recipeProduct): static
+    public function setYieldUnit(?Unit $yieldUnit): static
     {
-        if (!$this->recipeProducts->contains($recipeProduct)) {
-            $this->recipeProducts->add($recipeProduct);
-            $recipeProduct->setRecipe($this);
-        }
+        $this->yieldUnit = $yieldUnit;
         return $this;
     }
 
-    public function removeRecipeProduct(RecipeProduct $recipeProduct): static
-    {
-        if ($this->recipeProducts->removeElement($recipeProduct)) {
-            if ($recipeProduct->getRecipe() === $this) {
-                $recipeProduct->setRecipe(null);
-            }
-        }
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Step>
-     */
     public function getSteps(): Collection
     {
         return $this->steps;
@@ -157,19 +130,6 @@ class Recipe
         return $this;
     }
 
-    public function getTotalCost(): float
-    {
-        $totalCost = 0.0;
-        foreach ($this->getRecipeProducts() as $recipeProduct) {
-            $product = $recipeProduct->getProduct();
-            $quantity = $recipeProduct->getQuantity();
-            if ($product && method_exists($product, 'getCost') && $quantity !== null) {
-                $totalCost += $product->getPrice() * $quantity;
-            }
-        }
-        return $totalCost;
-    }
-
     public function getTotalDuration(): int
     {
         $totalDuration = 0;
@@ -189,16 +149,18 @@ class Recipe
 
     public function setProductResult(?Product $productResult): static
     {
-        if ($productResult === null && $this->productResult !== null) {
-            $this->productResult->setRecipe(null);
-        }
-
-        if ($productResult !== null && $productResult->getRecipe() !== $this) {
-            $productResult->setRecipe($this);
-        }
-
         $this->productResult = $productResult;
+        return $this;
+    }
 
+    public function getIsSubRecipe(): ?bool
+    {
+        return $this->isSubRecipe;
+    }
+
+    public function setIsSubRecipe(?bool $isSubRecipe): static
+    {
+        $this->isSubRecipe = $isSubRecipe;
         return $this;
     }
 }

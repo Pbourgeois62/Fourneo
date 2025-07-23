@@ -3,13 +3,11 @@
 namespace App\Form;
 
 use App\Entity\DeliveryNote;
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\AbstractType;
 use App\Repository\DeliveryNoteRepository;
 use Symfonycasts\DynamicForms\DependentField;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

@@ -1,7 +1,5 @@
 <div {{ attributes }}>
     <div class="flex flex-col items-center mb-6">
-        <h2 class="text-golden xl font-semibold mb-4 text-center pr-32">Vous souhaitez ...</h2>
-
         {{ form_start(form, {'attr': {'class': 'w-full max-w-md'}}) }}
 
         {{ form_row(form.status, {
@@ -168,17 +166,6 @@
             <a href="{{ path('sale_event_new') }}" class="btn-validation">Créer un événement</a>
         </div>
     {% else %}
-        <div class="border-2 border-l-4 border-salmon p-4 bg-flour rounded-lg">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <i class="bi bi-info-circle-fill text-salmon text-xl"></i>
-                </div>
-                <div class="ml-3">
-                    <p class="text-sm text-salmon">
-                        Aucun événement trouvé pour ce statut.
-                    </p>
-                </div>
-            </div>
-        </div>
+        {% include 'partials/_empty_state.html.twig' with {'message': 'Aucun événement associé à ce status.'} %}
     {% endif %}
 </div>

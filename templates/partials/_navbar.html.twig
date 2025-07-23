@@ -26,7 +26,7 @@
 		<!-- Dropdown "Gestion Articles" for Desktop -->
 		<div class="relative group" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
 			<button @click="dropdownOpen = !dropdownOpen" class="btn-nav">
-				ingrédients
+				Produits
 				<!-- Image arrow for dropdown - Increased size to w-5 h-5 -->
 				<img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/20x20/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="ml-1 w-5 h-5 transition-transform duration-200" :class="{ 'rotate-180': dropdownOpen }"/>
 			</button>
@@ -71,14 +71,10 @@
 					{# Simplifié la classe pour utiliser dropdown-item-nav #}
 					<li>
 						<a href="{{ path('recipe_new') }}" class="dropdown-item-nav">Créer</a>
-					</li>
+					</li>					
 					{# Simplifié la classe pour utiliser dropdown-item-nav #}
 					<li>
-						<a href="#" class="dropdown-item-nav">Ingrédients</a>
-					</li>
-					{# Simplifié la classe pour utiliser dropdown-item-nav #}
-					<li>
-						<a href="#" class="dropdown-item-nav">Unités de mesure</a>
+						<a href="{{ path('unit_index') }}" class="dropdown-item-nav">Unités de mesure</a>
 					</li>
 				</ul>
 			</div>
@@ -133,7 +129,7 @@
 							class="space-y-2">
 							{# Simplifié la classe pour utiliser dropdown-item-nav #}
 							<li>
-								<a href="{{ path('product_index') }}" class="dropdown-item-nav">Ingrédients</a>
+								<a href="{{ path('product_index') }}" class="dropdown-item-nav">Produits</a>
 							</li>
 							{# Simplifié la classe pour utiliser dropdown-item-nav #}
 							<li>
@@ -168,14 +164,10 @@
 							{# Simplifié la classe pour utiliser dropdown-item-nav #}
 							<li>
 								<a href="{{ path('recipe_new') }}" class="dropdown-item-nav">Créer</a>
-							</li>
+							</li>							
 							{# Simplifié la classe pour utiliser dropdown-item-nav #}
 							<li>
-								<a href="#" class="dropdown-item-nav">Ingrédients</a>
-							</li>
-							{# Simplifié la classe pour utiliser dropdown-item-nav #}
-							<li>
-								<a href="#" class="dropdown-item-nav">Unités de mesure</a>
+								<a href="{{ path('unit_index') }}" class="dropdown-item-nav">Unités de mesure</a>
 							</li>
 						</ul>
 					</div>

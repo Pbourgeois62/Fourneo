@@ -1,0 +1,53 @@
+{# templates/unit/form.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {# Titre de la page dans le navigateur #}
+    {{ unit.id ? 'Modifier l\'unité' : 'Nouvelle unité' }} - Fourneo
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-title">
+        {{ unit.id ? 'Modifier l\'unité' : 'Créer une nouvelle unité' }}
+    </h1>
+    <div class="main-container">
+
+        {{ form_start(form, {
+            attr: {
+                class: 'space-y-6 bg-white p-8 rounded-xl shadow-lg'
+            }
+        }) }}
+
+        <div>
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div>
+            {{ form_label(form.factorToBase) }}
+            {{ form_widget(form.factorToBase) }}
+            {{ form_errors(form.factorToBase) }}
+            {{ form_help(form.factorToBase) }}
+        </div>
+
+        <div>
+            {{ form_label(form.baseUnit) }}
+            {{ form_widget(form.baseUnit) }}
+            {{ form_errors(form.baseUnit) }}
+            {{ form_help(form.baseUnit) }} 
+        </div>
+
+        <div class="flex justify-end space-x-4">
+            <a href="{{ path('unit_index') }}" class="btn-return">
+                <i class="bi bi-arrow-left mr-2"></i>Retour aux unités
+            </a>
+            <button type="submit" class="btn-validation">
+                Enregistrer
+            </button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
