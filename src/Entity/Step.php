@@ -19,8 +19,8 @@ class Step
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $description = null;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description = null;    
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $durationMinutes = null;
@@ -31,7 +31,8 @@ class Step
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'step')]
+    #[ORM\ManyToOne(inversedBy: 'steps')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Recipe $recipe = null;
 
     /**

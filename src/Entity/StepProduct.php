@@ -13,29 +13,34 @@ class StepProduct
     #[ORM\Column]
     private ?int $id = null;
 
-    // Relation ManyToOne vers Step
-    #[ORM\ManyToOne(inversedBy: 'stepProducts')] // ou 'stepProducts' si vous l'avez nommé ainsi dans Step
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $quantity = null;
+
+    #[ORM\ManyToOne] 
+    private ?Unit $unit = null;
+
+    #[ORM\ManyToOne(inversedBy: 'stepProducts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Step $step = null;
 
-    // Relation ManyToOne vers RecipeProduct (l'ingrédient global de la recette)
-    #[ORM\ManyToOne(targetEntity: RecipeProduct::class)]
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'stepProducts')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?RecipeProduct $recipeProduct = null;
+    private ?Product $product = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $quantity = null;
-
-    // --- CONSTRUCTEUR ---
-    public function __construct()
-    {
-        // Initialisation si nécessaire
-    }
-
-    // --- GETTERS & SETTERS ---
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getQuantity(): ?float
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(?float $quantity): static
+    {
+        $this->quantity = $quantity;
+        return $this;
     }
 
     public function getStep(): ?Step
@@ -49,25 +54,34 @@ class StepProduct
         return $this;
     }
 
-    public function getRecipeProduct(): ?RecipeProduct
+    public function getProduct(): ?Product
     {
-        return $this->recipeProduct;
+        return $this->product;
     }
 
-    public function setRecipeProduct(?RecipeProduct $recipeProduct): static
+    public function setProduct(?Product $product): static
     {
-        $this->recipeProduct = $recipeProduct;
+        $this->product = $product;
         return $this;
     }
 
-    public function getQuantity(): ?float
+    /**
+     * Get the value of unit
+     */
+    public function getUnit(): ?Unit
     {
-        return $this->quantity;
+        return $this->unit;
     }
 
-    public function setQuantity(?float $quantity): static
+    /**
+     * Set the value of unit
+     *
+     * @return  self
+     */
+    public function setUnit(?Unit $unit): static
     {
-        $this->quantity = $quantity;
+        $this->unit = $unit;
+
         return $this;
     }
 }

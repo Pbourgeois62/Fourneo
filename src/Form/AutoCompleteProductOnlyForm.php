@@ -7,9 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\Autocomplete\Form\AsEntityAutocompleteField;
 use Symfony\UX\Autocomplete\Form\BaseEntityAutocompleteType;
-use Doctrine\ORM\EntityRepository;
 
-#[AsEntityAutocompleteField]
+#[AsEntityAutocompleteField()]
 class AutoCompleteProductOnlyForm extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void
@@ -17,13 +16,8 @@ class AutoCompleteProductOnlyForm extends AbstractType
         $resolver->setDefaults([
             'class' => Product::class,
             'searchable_fields' => ['name'],
-            'label' => 'Rechercher un produit',
-            'choice_label' => 'name',
-            'multiple' => false,
-            'query_builder' => function (EntityRepository $er) {
-                return $er->createQueryBuilder('p')
-                          ->orderBy('p.name', 'ASC');
-            },
+            'placeholder' => 'Rechercher un produit...',
+            'choice_label' => 'displayName',
         ]);
     }
 

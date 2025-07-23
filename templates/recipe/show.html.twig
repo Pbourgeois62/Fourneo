@@ -1,57 +1,95 @@
 {# templates/recipe/show.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Recette : {{ recipe.name }} {% endblock %}
+{% block title %}Recette : {{ recipe.name }}{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto p-6">
-        <div class="bg-white shadow-lg rounded-lg p-8 mb-8">
-            <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ recipe.name }}</h1>
-            <p class="text-gray-600 mb-6">{{ recipe.description|default('Aucune description disponible.') }}</p>
+    <div class="main-container">
+        {# Section pour le titre et les boutons d'action (Modifier/Supprimer) #}
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
+            <h1 class="text-title mb-4 md:mb-0">{{ recipe.name }}</h1>
+            <div class="flex space-x-4">
+                <a href="{{ path('recipe_edit', {'id': recipe.id}) }}" class="btn-action">
+                    <i class="bi bi-pencil-square mr-2"></i> Modifier
+                </a>
+                {# Le bouton de suppression devrait idéalement avoir une confirmation JavaScript #}
+                <form method="post" action="{{ path('recipe_delete', {id: recipe.id}) }}" onsubmit="return confirm('Confirmer la suppression de la recette {{ recipe.name }} ?');" class="inline">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_recipe_' ~ recipe.id) }}"/>
+                    <button type="submit" class="btn-delete">
+                        <i class="bi bi-trash mr-2"></i> Supprimer
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {# Conteneur principal des informations de la recette #}
+        <div class="bg-white shadow-lg rounded-lg p-8 mb-8 dark:bg-coffee dark:text-flour">
+            <p class="text-coffee dark:text-flour mb-6">{{ recipe.description|default('Aucune description disponible.') }}</p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
-                    <h2 class="text-2xl font-semibold text-gray-700 mb-3">Détails de la recette</h2>
-                    <ul class="list-disc list-inside text-gray-700 space-y-2">
-                        <li><strong>Statut :</strong> <span class="font-medium {% if recipe.status == 'VALIDEE' %}text-green-600{% elseif recipe.status == 'EN_COURS' %}text-blue-600{% else %}text-yellow-600{% endif %}">{{ recipe.status|default('Brouillon')|upper }}</span></li>
-                        {% if recipe.totalDuration %}
-                            <li><strong>Durée de préparation :</strong> <span class="font-medium">{{ recipe.formattedDuration }}</span></li>
+                    <h2 class="text-title-medium mb-3 text-coffee dark:text-flour">Détails de la recette</h2>
+                    <ul class="list-disc list-inside text-coffee dark:text-flour space-y-2">
+                        {% if recipe.totalDuration is defined and recipe.totalDuration is not null %}
+                            <li>
+                                <strong>Durée totale :</strong>
+                                <span class="font-medium text-coffee dark:text-flour">{{ recipe.totalDuration }} minutes</span>
+                            </li>
                         {% endif %}
-                        <li><strong>Rendement :</strong> {{ recipe.yield|default('Non spécifié') }}</li>
-                        <li><strong>Coût total estimé :</strong> {{ recipe.totalCost|format_currency('EUR', locale='fr') }}</li>
-                        <li><strong>Date de création :</strong> {{ recipe.createdAt|date('d/m/Y H:i') }}</li>
+                        <li>
+                            <strong>Rendement :</strong>
+                            <span class="text-coffee dark:text-flour">{{ recipe.yield|default('Non spécifié') }} {{ recipe.yieldUnit.name ?? '' }}</span>
+                        </li>
+                        <li>
+                            <strong>Coût total estimé :</strong>
+                            <span class="font-medium text-salmon dark:text-golden">{{ totalCost|format_currency('EUR', locale='fr') }}</span>
+                        </li>
+                        {% if totalCost is not null and recipe.yield is not null and recipe.yield > 0 %}
+                            <li>
+                                <strong>Coût à l'unité :</strong>
+                                <span class="font-medium text-salmon dark:text-golden">{{ (totalCost / recipe.yield)|format_currency('EUR', locale='fr') }}</span>
+                            </li>
+                        {% else %}
+                            <li>
+                                <strong>Coût à l'unité :</strong>
+                                <span class="text-coffee dark:text-flour">Non calculable (rendement ou coût total manquant)</span>
+                            </li>
+                        {% endif %}
+                        <li>
+                            <strong>Date de création :</strong>
+                            <span class="text-coffee dark:text-flour">{{ recipe.createdAt|date('d/m/Y H:i') }}</span>
+                        </li>
                     </ul>
                 </div>
 
                 <div>
-                    <h2 class="text-2xl font-semibold text-gray-700 mb-3">Ingrédients principaux</h2>
-                    {% if recipe.recipeProducts is not empty %}
-                        <ul class="list-none space-y-2">
-                            {% for recipeProduct in recipe.recipeProducts %}
-                                <li class="text-gray-700">
-                                    <span class="font-medium">{{ recipeProduct.quantity }}</span>
-                                    <span class="text-sm text-gray-500">{{ recipeProduct.unit }}</span>
-                                    <strong>{{ recipeProduct.product.name }}</strong>
-                                    {% if recipeProduct.product.price is not null %}
-                                        <span class="text-sm text-gray-500">
-                                            ({{ recipeProduct.product.price|format_currency('EUR', locale='fr') }} / unité)
-                                        </span>
-                                    {% endif %}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p class="text-gray-500">Aucun ingrédient principal n'a été ajouté à cette recette.</p>
+                    {% if recipe.isSubRecipe %}
+                        <h2 class="text-title-medium mb-3 text-coffee dark:text-flour">Produit résultant</h2>
+                        {% if recipe.productResult is not null %}
+                            <p class="text-coffee dark:text-flour">
+                                Cette recette produit :
+                                <strong>{{ recipe.productResult.name }}</strong>
+                                {% if recipe.productResult.price is not null %}
+                                    <span class="text-coffee dark:text-flour text-sm">
+                                        ({{ recipe.productResult.price|format_currency('EUR', locale='fr') }} / unité)
+                                    </span>
+                                {% endif %}
+                            </p>
+                        {% else %}
+                            <p class="text-coffee dark:text-flour">Cette recette ne produit pas encore de produit final spécifié.</p>
+                        {% endif %}
                     {% endif %}
 
                     {% if recipe.subRecipes is defined and recipe.subRecipes is not empty %}
-                        <h3 class="text-xl font-semibold text-gray-700 mt-6 mb-3">Sous-recettes requises</h3>
-                        <ul class="list-disc list-inside text-gray-700 space-y-2">
+                        <h3 class="text-title-small mt-6 mb-3 text-coffee dark:text-flour">Sous-recettes requises</h3>
+                        <ul class="list-disc list-inside text-coffee dark:text-flour space-y-2">
                             {% for subRecipeRel in recipe.subRecipes %}
                                 <li>
-                                    <span class="font-medium">{{ subRecipeRel.quantityRequired|default(1) }}</span>
-                                    <span class="text-sm text-gray-500">{{ subRecipeRel.unit|default('unité(s)') }}</span> de
-                                    <a href="{{ path('recipe_show', {'id': subRecipeRel.subRecipe.id}) }}" class="text-blue-600 hover:underline">
+                                    <span class="font-medium text-coffee dark:text-flour">{{ subRecipeRel.quantityRequired|default(1)|number_format(2, ',', ' ') }}</span>
+                                    <span class="text-xs text-coffee dark:text-flour">{{ subRecipeRel.unit.name|default('unité(s)') }}</span>
+                                    de
+                                    <a href="{{ path('recipe_show', {'id': subRecipeRel.subRecipe.id}) }}" class="text-salmon hover:text-golden dark:text-golden dark:hover:text-salmon">
                                         <strong>{{ subRecipeRel.subRecipe.name }}</strong>
                                     </a>
                                 </li>
@@ -61,26 +99,49 @@
                 </div>
             </div>
 
-            <div class="mt-8 pt-8 border-t border-gray-200"> {# Ajout d'une bordure pour séparer visuellement #}
-                <h2 class="text-2xl font-semibold text-gray-700 mb-3">Étapes de préparation</h2>
+            <div class="mt-8 pt-8 border-t border-cream-dark dark:border-coffee-light">
+                <h2 class="text-title-medium mb-3 text-coffee dark:text-flour">Étapes de préparation</h2>
                 {% if recipe.steps is not empty %}
-                    <ol class="list-decimal list-inside text-gray-700 space-y-4">
+                    <ol class="list-decimal list-inside text-coffee dark:text-flour space-y-4">
                         {% for step in recipe.steps|sort((a, b) => a.number <=> b.number) %}
                             <li class="mb-2">
-                                <span class="font-medium text-gray-800">{{ step.number }}. {{ step.description }}</span>
-                                {% if step.formattedDuration is not null and step.formattedDuration > 0 %}
-                                    <span class="text-sm text-gray-500 block">
-                                        (Durée estimée : {{ step.formattedDuration }} minutes)
+                                <span class="font-medium text-coffee dark:text-flour">{{ step.number }}. {{ step.description }}</span>
+                                {% if step.durationMinutes is not null and step.durationMinutes > 0 %}
+                                    <span class="text-sm text-coffee dark:text-flour block">
+                                        (Durée estimée : {{ step.durationMinutes }} minutes)
                                     </span>
                                 {% endif %}
 
-                                {% if step.etapeProduitUtilises is defined and step.etapeProduitUtilises is not empty %}
-                                    <ul class="list-none ml-6 mt-1 text-gray-600 text-sm">
-                                        {% for etapeProduit in step.step %}
+                                {% if step.stepProducts is not empty %}
+                                    <ul class="list-disc ml-6 mt-1 text-coffee dark:text-flour text-sm">
+                                        {% for stepProduct in step.stepProducts %}
+                                            {% set product = stepProduct.product %}
+                                            {% set quantity = stepProduct.quantity %}
+                                            {% set unitObject = stepProduct.unit %}
+                                            {% set ingredientCost = 0 %}
+
+                                            {# Calculate ingredient cost if all necessary data is available #}
+                                            {% if product.price is not null and product.priceUnit is not null and unitObject is not null %}
+                                                {# Assuming unitObject.factorToBase and product.priceUnit.factorToBase exist and are correct #}
+                                                {% set convertedQuantity = quantity * unitObject.factorToBase / product.priceUnit.factorToBase %}
+                                                {% set ingredientCost = convertedQuantity * product.price %}
+                                            {% endif %}
+
                                             <li>
-                                                - Utilise : <span class="font-semibold">{{ etapeProduit.quantiteUtilisee }}</span>
-                                                <span class="text-xs text-gray-500">{{ etapeProduit.uniteMesure }}</span> de
-                                                <strong>{{ etapeProduit.recetteProduit.product.name }}</strong>
+                                                - Utilise :
+                                                <span class="font-semibold text-coffee dark:text-flour">{{ quantity|number_format(2, ',', ' ') }}</span>
+                                                <span class="text-xs text-coffee dark:text-flour">{{ unitObject ? unitObject.name : '' }}</span>
+                                                de
+                                                <strong class="text-coffee dark:text-flour">{{ product.name }}</strong>
+                                                {% if ingredientCost > 0 %}
+                                                    <span class="text-coffee dark:text-flour">
+                                                        (Coût : {{ ingredientCost|format_currency('EUR', locale='fr') }}
+                                                        {% if product.price is not null and product.priceUnit is not null %}
+                                                            - {{ product.price|format_currency('EUR', locale='fr') }} / {{ product.priceUnit.name }}
+                                                        {% endif %}
+                                                        )
+                                                    </span>
+                                                {% endif %}
                                             </li>
                                         {% endfor %}
                                     </ul>
@@ -89,16 +150,14 @@
                         {% endfor %}
                     </ol>
                 {% else %}
-                    <p class="text-gray-500">Aucune étape de préparation n'a été définie pour cette recette.</p>
+                    {% include 'partials/_empty_state.html.twig' with {'message': 'Aucune étape de préparation n\'a été définie pour cette recette.'} %}
                 {% endif %}
             </div>
 
-            <div class="mt-10 flex justify-end space-x-4">
-                <a href="{{ path('recipe_edit', {'id': recipe.id}) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Modifier la recette
-                </a>
-                <a href="{{ path('recipe_index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Retour à la liste
+            {# Bouton "Retour" en bas, aligné à gauche #}
+            <div class="mt-10">
+                <a href="{{ path('recipe_index') }}" class="btn-return">
+                    <i class="bi bi-arrow-left-circle mr-2"></i> Retour à la liste
                 </a>
             </div>
         </div>

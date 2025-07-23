@@ -1,16 +1,14 @@
-{# templates/recipe/new_edit.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Gérer les étapes de {{ recipe.name }}
+    Création des étapes
 {% endblock %}
 
 {% block body %}
 	<h1 class="text-title">
-		 Gérer les étapes de {{ recipe.name }}
+		 Création des étapes
 	</h1>
 	<div class="main-container">
-	{{ component('Form:addStepsToRecipe', { recipe: recipe}
-	) }}
+	{{ component('Form:addStepsToRecipe', { recipe: recipe}	) }}
 	</div>
 {% endblock %}

@@ -58,7 +58,7 @@
 			</table>
 		</div>
 	{% else %}
-		<p class="text-gray-600 text-sm italic mb-4">Aucun bon de livraison n'est actuellement lié à ce produit.</p>
+{% include 'partials/_empty_state.html.twig' with {'message': 'Aucun bon de livraison disponible'} %}
 	{% endif %}
 
 </div>

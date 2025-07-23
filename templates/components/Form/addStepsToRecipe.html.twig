@@ -3,17 +3,55 @@
 
         {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
 
+        {# Champs pour la recette principale (Nom, Description, Rendement) #}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+                {{ form_row(form.name, {
+                    label: 'Nom de la Recette',
+                    attr: { class: 'w-full text-coffee', placeholder: 'Ex: Gâteau au chocolat' },
+                    label_attr: { class: 'block text-sm font-medium text-coffee' }
+                }) }}
+            </div>
+            {# Nouvelle disposition pour Yield et YieldUnit côte à côte #}
+            <div class="grid grid-cols-2 gap-4"> {# Ajout d'une grille interne pour ces deux champs #}
+                <div>
+                    {{ form_row(form.yield, {
+                        label: 'Rendement de la Recette',
+                        attr: { class: 'w-full text-coffee', placeholder: 'Ex: 8 ou 1.5' }, 
+                        label_attr: { class: 'block text-sm font-medium text-coffee' }
+                    }) }}
+                </div>
+                <div>
+                    {{ form_row(form.yieldUnit, {
+                        label: 'Unité de rendement',
+                        attr: { class: 'w-full text-coffee', placeholder: 'Ex: portions, kg, litres' },
+                        label_attr: { class: 'block text-sm font-medium text-coffee' }
+                    }) }}
+                </div>
+            </div>
+            {# Le champ isSubRecipe peut rester seul ou être regroupé #}
+            <div class="md:col-span-2">
+                {{ form_row(form.isSubRecipe, {
+                attr: { class: 'form-checkbox h-5 w-5 text-blue-600' }
+            }) }}
+            </div>
+            <div class="md:col-span-2">
+                {{ form_row(form.description, {
+                    label: 'Description de la Recette',
+                    attr: { class: 'w-full text-coffee', placeholder: 'Une recette délicieuse...' },
+                    label_attr: { class: 'block text-sm font-medium text-coffee' }
+                }) }}
+            </div>
+        </div>
+
         <div class="flex flex-column gap-4 mt-2">
-            {# Bouton pour ajouter une nouvelle étape #}
             {{ form_widget(form.steps.vars.button_add, { label: '+ Ajouter une étape', attr: { class: 'btn-action' } }) }}
         </div>
 
-        {# La grille principale pour les étapes : 1 colonne sur mobile, 2 sur écrans moyens et plus grands #}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             {% for recipeStepForm in form.steps %}
                 <div class="relative border rounded-xl p-4 bg-gray-50 mb-6">
 
-                    {# Bouton de suppression d'étape #}
                     {% if recipeStepForm.vars.button_delete is defined %}
                         <div class="absolute top-2 right-2 z-10">
                             {{ form_widget(recipeStepForm.vars.button_delete, {
@@ -28,17 +66,11 @@
 
                     <h4 class="text-lg font-semibold text-coffee mb-3">Étape
                         {{ loop.index }}</h4>
-                    {# Champs de l'étape (numéro, titre, description) #}
                     <div class="grid grid-cols-1 gap-4 pr-8 mb-4">
-                        <div>
-                            {{ form_row(recipeStepForm.number, {
-                                label: 'Numéro de l\'étape',
-                                attr: { class: 'w-full text-coffee'},
-                                label_attr: { class: 'block text-sm font-medium text-coffee' }
-                            }) }}
-                        </div>
-                        <div>
-                            {{ form_row(recipeStepForm.name, {
+                        {# Le numéro d'étape est affiché par loop.index et n'a pas besoin d'être un champ de formulaire ici #}
+                        {# Retiré: {{ form_row(recipeStepForm.number, { ... }) }} #}
+                            <div>
+                        {{ form_row(recipeStepForm.name, {
                                 label: 'Titre de l\'étape',
                                 attr: { class: 'w-full text-coffee', placeholder: 'Ex: Préparer la pâte' },
                                 label_attr: { class: 'block text-sm font-medium text-coffee' }
@@ -47,23 +79,26 @@
                         <div>
                             {{ form_row(recipeStepForm.description, {
                                 label: 'Instructions de l\'étape',
-                                attr: { class: 'w-full text-coffee'},
+                                attr: { class: 'w-full text-coffee', placeholder: 'Mélanger les ingrédients...' },
+                                label_attr: { class: 'block text-sm font-medium text-coffee' }
+                            }) }}
+                        </div>
+                            <div>
+                        {{ form_row(recipeStepForm.durationMinutes, {
+                                label: 'Durée (minutes)',
+                                attr: { class: 'w-full text-coffee', placeholder: 'Ex: 30' },
                                 label_attr: { class: 'block text-sm font-medium text-coffee' }
                             }) }}
                         </div>
                     </div>
-
-                    <h5 class="text-md font-medium text-coffee border-t pt-3 mt-3">Ingrédients spécifiques à cette étape</h5>
+                        <h5 class="text-md font-medium text-coffee border-t pt-3 mt-3"> Ingrédients spécifiques à cette étape</h5>
                     <div class="flex flex-column gap-4 mt-2">
-                        {# Bouton d'ajout d'ingrédient à l'étape #}
                         {{ form_widget(recipeStepForm.stepProducts.vars.button_add, { label: '+ Ajouter un ingrédient', attr: { class: 'btn-action' } }) }}
                     </div>
 
-                    {# Grille pour les ingrédients de l'étape : 1 colonne sur mobile, 2 sur petits écrans et plus #}
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 mt-4">
                         {% for stepProductForm in recipeStepForm.stepProducts %}
                             <div class="relative border rounded-xl p-4 bg-gray-100">
-                                {# Bouton de suppression d'ingrédient de l'étape #}
                                 {% if stepProductForm.vars.button_delete is defined %}
                                     <div class="absolute top-2 right-2 z-10">
                                         {{ form_widget(stepProductForm.vars.button_delete, {
@@ -76,40 +111,33 @@
                                     </div>
                                 {% endif %}
 
-                                {# Champs de l'ingrédient d'étape #}
                                 <div class="grid grid-cols-1 gap-4 pr-8">
                                     <div>
-                                        {{ form_row(stepProductForm.recipeProduct, {
+                                        {{ form_row(stepProductForm.product, {
                                             label: 'Ingrédient',
                                             attr: { class: 'w-full text-coffee' },
                                             label_attr: { class: 'block text-sm font-medium text-coffee' }
                                         }) }}
                                     </div>
                                     <div>
-                                        {# Le label de votre champ de quantité, séparé pour un meilleur contrôle #}
                                         <label class="block text-sm font-medium text-coffee" for="{{ stepProductForm.quantity.vars.id }}">Quantité de l'étape</label>
-
-                                        {# Conteneur flexbox pour l'input et le suffixe "/ Total" #}
                                         <div class="flex items-center">
-                                            {# Le champ de saisie de la quantité #}
                                             {{ form_widget(stepProductForm.quantity, {
-                                                attr: { 
-                                                    class: 'w-full text-center text-coffee rounded-r-none', 
-                                                    style: 'min-width: 50px;' 
+                                                attr: {
+                                                    class: 'w-full text-center text-coffee',
+                                                    style: 'min-width: 50px;'
                                                 }
                                             }) }}
-
-                                            {# Le suffixe "/ Total" #}
-                                            {% if stepProductForm.vars.data.recipeProduct is not null %}
-                                                <div class="flex-shrink-0 bg-gray-200 border border-l-0 border-gray-300 text-gray-700 py-2 px-3 rounded-r-md text-sm font-semibold flex items-center justify-center h-[42px]">
-                                                    / {{ stepProductForm.vars.data.recipeProduct.quantity|default(0) }}
-                                                </div>
-                                            {% endif %}
                                         </div>
-
-                                        {# Affichage des erreurs si elles existent, en dessous du groupe input/suffixe #}
-                                        {{ form_errors(stepProductForm.quantity) }}
                                     </div>
+                                    <div>
+                                        {{ form_row(stepProductForm.unit, {
+                                            label: 'Unité',
+                                            attr: { class: 'w-full text-coffee' },
+                                            label_attr: { class: 'block text-sm font-medium text-coffee' }
+                                        }) }}
+                                    </div>
+                                    {{ form_errors(stepProductForm.quantity) }} {# Garder les erreurs à cet endroit si c'est pertinent #}
                                 </div>
                             </div>
                         {% endfor %}
@@ -118,7 +146,6 @@
             {% endfor %}
         </div>
 
-        {# Boutons d'action (Retour, Enregistrer) #}
         <div class="flex justify-end space-x-4 mt-6">
             <a href="{{ path('recipe_index') }}" class="btn-return">
                 <i class="bi bi-arrow-left mr-2"></i>Retour

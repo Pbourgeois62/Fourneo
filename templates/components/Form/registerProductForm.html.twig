@@ -24,6 +24,12 @@
 	</div>
 
 	<div>
+		{{ form_label(form.priceUnit, null, {'label_attr': {'class': 'block font-medium '}}) }}
+		{{ form_widget(form.priceUnit, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
+		{{ form_errors(form.priceUnit) }}
+	</div>
+
+	<div>
 		{{ form_label(form.category, null, {'label_attr': {'class': 'block font-medium  mb-2'}}) }}
 		{{ form_widget(form.category, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500'}}) }}
 		{{ form_errors(form.category) }}

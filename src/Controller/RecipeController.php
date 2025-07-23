@@ -3,11 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Recipe;
-use App\Form\StepForm;
-use App\Form\RecipeForm;
-use App\Entity\RecipeProduct;
-use App\Entity\RecipeProducts;
 use App\Repository\RecipeRepository;
+use App\Service\RecipeCostCalculator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,41 +16,56 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/recipe')]
 final class RecipeController extends AbstractController
 {
-    #[Route('/index', name: 'recipe_index', methods: ['GET'])]
-    public function indexRecipes(RecipeRepository $recipeRepository): Response
-    {
-        return $this->render('recipe/index.html.twig', [
-            'recipes' => $recipeRepository->findAll(),
-        ]);
-    }
+    public function __construct(private RecipeCostCalculator $recipeCostCalculator) {}
 
-    #[Route('/{id}/show', name: 'recipe_show', methods: ['GET'])]
-    public function showRecipe(Recipe $recipe): Response
+    #[Route('', name: 'recipe_index', methods: ['GET', 'POST'])]
+    public function index(RecipeRepository $recipeRepository): Response
     {
-        return $this->render('recipe/show.html.twig', [
-            'recipe' => $recipe,
+        $recipes = $recipeRepository->findAll();
+        $recipesWithCosts = [];
+
+        foreach ($recipes as $recipe) {
+            $recipe->totalCost = $this->recipeCostCalculator->calculateTotalCost($recipe);
+            $recipesWithCosts[] = $recipe;
+        }
+
+        return $this->render('recipe/index.html.twig', [
+            'recipes' => $recipesWithCosts,
         ]);
     }
 
     #[Route('/new', name: 'recipe_new', methods: ['GET'])]
     public function newRecipe(): Response
-    {        
-       return $this->render('recipe/edit.html.twig', [ 
-            'recipe' => null
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'recipe_edit', methods: ['GET'])]
-    public function editRecipe(Recipe $recipe): Response
     {
-        return $this->render('recipe/edit.html.twig', [
+        $recipe = new Recipe();
+
+        return $this->render('recipe/add_steps.html.twig', [
             'recipe' => $recipe
         ]);
     }
 
-    #[Route('/{id}', name: 'recipe_delete', methods: ['POST'])]
-    public function deleteRecipe(Request $request, Recipe $recipe, EntityManagerInterface $em): Response
+    #[Route('/{id}', name: 'recipe_show', requirements: ['id' => '\d+'])]
+    public function show(Recipe $recipe): Response
     {
+        $totalCost = $this->recipeCostCalculator->calculateTotalCost($recipe);
+
+        return $this->render('recipe/show.html.twig', [
+            'recipe' => $recipe,
+            'totalCost' => $totalCost,
+        ]);
+    }
+
+    #[Route('/{id}/edit', name: 'recipe_edit', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function editRecipe(Recipe $recipe): Response
+    {
+        return $this->render('recipe/add_steps.html.twig', [
+            'recipe' => $recipe
+        ]);
+    }
+
+    #[Route('/delete/{id}', name: 'recipe_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function deleteRecipe(Request $request, Recipe $recipe, EntityManagerInterface $em): Response    {
+        
         if ($this->isCsrfTokenValid('delete_recipe_' . $recipe->getId(), $request->request->get('_token'))) {
             $em->remove($recipe);
             $em->flush();
@@ -64,13 +76,5 @@ final class RecipeController extends AbstractController
         }
 
         return $this->redirectToRoute('recipe_index');
-    }
-
-    #[Route('/{id}/add_steps', name: 'recipe_add_steps', methods: ['GET'])]
-    public function addStep(Recipe $recipe): Response
-    {
-        return $this->render('recipe/add_steps.html.twig', [
-            'recipe' => $recipe,
-        ]);
-    }
+    }    
 }

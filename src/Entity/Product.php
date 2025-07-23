@@ -23,9 +23,10 @@ class Product
     #[ORM\Column(type: 'float')]
     #[Assert\PositiveOrZero(message: 'Le prix doit être positif ou zéro.')]
     private ?float $price = null;
-
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private ?bool $isRecipeResult = false;
+    
+    #[ORM\ManyToOne(targetEntity: Unit::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Unit $priceUnit = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $size = null;
@@ -47,14 +48,14 @@ class Product
     private Collection $allergens;
 
     #[ORM\ManyToMany(targetEntity: DeliveryNote::class, inversedBy: 'products')]
-    private Collection $deliveryNotes;
+    private Collection $deliveryNotes;     
 
-    #[ORM\OneToMany(targetEntity: RecipeProduct::class, mappedBy: 'product', orphanRemoval: true)]
-    private Collection $usedInRecipeProducts;
+    #[ORM\OneToMany(targetEntity: StepProduct::class, mappedBy: 'product')]
+    private Collection $stepProducts;
 
-    #[ORM\OneToOne(targetEntity: \App\Entity\Recipe::class, inversedBy: 'productResult', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Recipe::class, inversedBy: 'productResult', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
-    private ?\App\Entity\Recipe $recipe = null;
+    private ?Recipe $recipe = null;    
 
     public function __construct()
     {
@@ -63,7 +64,7 @@ class Product
         $this->allergens = new ArrayCollection();
         $this->labels = new ArrayCollection();
         $this->deliveryNotes = new ArrayCollection();
-        $this->usedInRecipeProducts = new ArrayCollection();
+        $this->stepProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,19 +89,19 @@ class Product
     }
 
     public function setPrice(float $price): static
-    {
+    {   
         $this->price = $price;
         return $this;
+    } 
+    
+    public function getPriceUnit(): ?Unit
+    {
+        return $this->priceUnit;
     }
 
-    public function isRecipeResult(): ?bool
+    public function setPriceUnit(?Unit $priceUnit): static
     {
-        return $this->isRecipeResult;
-    }
-
-    public function setIsRecipeResult(?bool $isRecipeResult): static
-    {
-        $this->isRecipeResult = $isRecipeResult;
+        $this->priceUnit = $priceUnit;
         return $this;
     }
 
@@ -228,27 +229,27 @@ class Product
             }
         }
         return $this;
+    }     
+
+    public function getStepProducts(): Collection
+    {
+        return $this->stepProducts;
     }
 
-    public function getUsedInRecipeProducts(): Collection
+    public function addStepProduct(StepProduct $stepProduct): static
     {
-        return $this->usedInRecipeProducts;
-    }
-
-    public function addUsedInRecipeProduct(RecipeProduct $usedInRecipeProduct): static
-    {
-        if (!$this->usedInRecipeProducts->contains($usedInRecipeProduct)) {
-            $this->usedInRecipeProducts->add($usedInRecipeProduct);
-            $usedInRecipeProduct->setProduct($this);
+        if (!$this->stepProducts->contains($stepProduct)) {
+            $this->stepProducts->add($stepProduct);
+            $stepProduct->setProduct($this);
         }
         return $this;
     }
 
-    public function removeUsedInRecipeProduct(RecipeProduct $usedInRecipeProduct): static
+    public function removeStepProduct(StepProduct $stepProduct): static
     {
-        if ($this->usedInRecipeProducts->removeElement($usedInRecipeProduct)) {
-            if ($usedInRecipeProduct->getProduct() === $this) {
-                $usedInRecipeProduct->setProduct(null);
+        if ($this->stepProducts->removeElement($stepProduct)) {
+            if ($stepProduct->getProduct() === $this) {
+                $stepProduct->setProduct(null);
             }
         }
         return $this;
@@ -261,19 +262,22 @@ class Product
 
     public function setRecipe(?Recipe $recipe): static
     {
-        $this->recipe = $recipe;
-        if ($recipe !== null) {
-            $this->isRecipeResult = true;
-        } else {
-            $this->isRecipeResult = false;
+        if ($recipe === null && $this->recipe !== null) {
+            $this->recipe->setProductResult(null);
         }
+        if ($recipe !== null && $recipe->getProductResult() !== $this) {
+            $recipe->setProductResult($this);
+        }
+
+        $this->recipe = $recipe;
+
         return $this;
     }
 
     public function getDisplayName(): string
     {
-        if ($this->isRecipeResult()) {
-            return $this->getName() . ' (Recette)';
+        if ($this->getRecipe()) {
+            return $this->getRecipe()->getName() . ' (Recette)';
         }
         return $this->getName();
     }

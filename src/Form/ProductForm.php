@@ -2,22 +2,25 @@
 
 namespace App\Form;
 
+use App\Entity\Unit;
 use App\Entity\Product;
+use App\Entity\Allergen;
 use App\Entity\Category;
+use App\Repository\AllergenRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfonycasts\DynamicForms\DependentField;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfonycasts\DynamicForms\DynamicFormBuilder;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Positive;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\Positive;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfonycasts\DynamicForms\DynamicFormBuilder;
-use Symfonycasts\DynamicForms\DependentField;
-use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ProductForm extends AbstractType
 {
@@ -47,8 +50,7 @@ class ProductForm extends AbstractType
                 'attr' => [
                     'placeholder' => 'Entrez le prix (ex: 2.34)',
                 ],
-                'constraints' => [
-                    new NotNull(['message' => 'Le prix est obligatoire.']),
+                'constraints' => [                    
                     new Type([
                         'type' => 'float',
                         'message' => 'Le prix doit être un nombre valide.',
@@ -56,11 +58,20 @@ class ProductForm extends AbstractType
                     new Positive(['message' => 'Le prix doit être un nombre positif.']),
                 ],
             ])
+            ->add('priceUnit', EntityType::class, [
+                'class' => Unit::class,
+                'choice_label' => 'name',
+                'required' => true,
+                'autocomplete' => true,
+                'label' => 'Unité de prix',
+                'placeholder' => 'Choisissez l\'unité d\'achat',
+                'help' => 'L\'unité pour laquelle ce prix est appliqué (Ex: le kilogramme pour la farine).',
+            ])
             ->add('size', TextType::class, [
                 'label' => 'Taille',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Entrez la taille',
+                    'placeholder' => 'Facultatif ... Entrez la taille',
                 ],
                 'constraints' => [
                     new Length([
@@ -73,9 +84,9 @@ class ProductForm extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'required' => false,
+                'autocomplete' => true,
                 'label' => 'Catégorie du produit',
-                'placeholder' => 'Choisissez une catégorie',
-                // 'expanded' => true,
+                'placeholder' => 'facultatif ... Choisissez une catégorie',
                 'help' => 'Sélectionnez la catégorie à laquelle ce produit appartient.',
             ])
             ->add('isNewCategory', CheckboxType::class, [
@@ -83,7 +94,20 @@ class ProductForm extends AbstractType
                 'required' => false,
                 'mapped' => false,
             ])
-            ->add('allergens', AutoCompleteAllergens::class)
+            ->add('allergens', EntityType::class, [
+                'class' => Allergen::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'required' => false,
+                'autocomplete' => true,
+                'by_reference' => false,
+                'label' => 'Allergènes',
+                'placeholder' => 'Choisissez un/des allergènes',
+                'help' => 'Sélectionnez les allergènes présents dans ce produit.',
+                'query_builder' => function (AllergenRepository $er) {
+                    return $er->createQueryBuilder('a')->orderBy('a.name', 'ASC');
+                },
+            ])
         ;
 
         $builder->addDependent('newCategory', 'isNewCategory', function (DependentField $field, ?bool $isNewCategory) {

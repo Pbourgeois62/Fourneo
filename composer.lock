@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fcdb34a2eb489106bd9972f41f1aaa7",
+    "content-hash": "38ab03084ebc82f06f378e13c49c8689",
     "packages": [
         {
             "name": "composer/semver",
@@ -5920,16 +5920,16 @@
         },
         {
             "name": "symfony/ux-autocomplete",
-            "version": "v2.26.1",
+            "version": "v2.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-autocomplete.git",
-                "reference": "3b7c77b3f50a934ca123c6cdbc413d1017a403ef"
+                "reference": "ab0be7ef7d59ea6925fd6fabccbd4d04cb5f5e06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/3b7c77b3f50a934ca123c6cdbc413d1017a403ef",
-                "reference": "3b7c77b3f50a934ca123c6cdbc413d1017a403ef",
+                "url": "https://api.github.com/repos/symfony/ux-autocomplete/zipball/ab0be7ef7d59ea6925fd6fabccbd4d04cb5f5e06",
+                "reference": "ab0be7ef7d59ea6925fd6fabccbd4d04cb5f5e06",
                 "shasum": ""
             },
             "require": {
@@ -5990,7 +5990,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.26.1"
+                "source": "https://github.com/symfony/ux-autocomplete/tree/v2.27.0"
             },
             "funding": [
                 {
@@ -6006,7 +6006,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-06-05T17:25:17+00:00"
+            "time": "2025-06-21T10:08:18+00:00"
         },
         {
             "name": "symfony/ux-live-component",
