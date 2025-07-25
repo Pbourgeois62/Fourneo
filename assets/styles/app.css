@@ -26,11 +26,18 @@ html.dark body {
     background-image: url('../images/background-dark.webp');
 }
 
-.text-title {
+.title {
     @apply self-start text-4xl text-salmon font-extrabold p-4 mb-4 md:mb-6 tracking-wide leading-snug text-center inline-block;
     @apply md:pl-32;
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
     @apply transition-colors duration-300;
+}
+
+.subtitle {
+    @apply self-start text-salmon font-extrabold p-4 mb-4 md:mb-6 tracking-wide leading-snug text-center inline-block;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    @apply transition-colors duration-300;
+    @apply text-3xl;
 }
 
 .item-card {

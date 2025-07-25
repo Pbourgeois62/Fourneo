@@ -11,6 +11,7 @@
         "ext-iconv": "*",
         "doctrine/doctrine-migrations-bundle": "^3.4.2",
         "doctrine/orm": "^3.4",
+        "knplabs/knp-snappy-bundle": "^1.10",
         "runtime/frankenphp-symfony": "^0.2.0",
         "symfony/asset": "7.3.*",
         "symfony/asset-mapper": "7.3.*",

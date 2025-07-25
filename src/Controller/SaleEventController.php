@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\SaleEvent;
-use App\Entity\ProductEvent;
+use App\Service\AllergenCollector;
+use App\Service\RecipeAnalyzer;
 use App\Repository\SaleEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,7 +64,7 @@ final class SaleEventController extends AbstractController
         return $this->redirectToRoute('sale_event_index');
     }
 
-    #[Route('/{id}/show-resume', name: 'sale_event_show_resume', methods: ['GET', 'POST'])]
+    #[Route('/{id}/resume', name: 'sale_event_show_resume', methods: ['GET', 'POST'])]
     public function showResume(SaleEvent $saleEvent): Response
     {
         return $this->render('sale_event/resume.html.twig', [
@@ -71,24 +72,65 @@ final class SaleEventController extends AbstractController
         ]);
     }
 
-    // #[Route('/{id}/product/out-of-stock', name: 'sale_event_product_event_out_of_stock')]
-    // public function markProductEventOutOfStock(
-    //     ProductEvent $productEvent,
-    //     EntityManagerInterface $entityManager
-    // ): Response {
+    #[Route('/{id}/plan', name: 'sale_event_plan')]
+    public function plan(SaleEvent $saleEvent, AllergenCollector $allergenCollector, RecipeAnalyzer $recipeAnalyzer): Response
+    {
+        $productsInSaleView = [];
+        $totalQuantity = 0;
+        $allProductsForAnalysis = [];
+        $recipesToAnalyze = [];
 
-    //     $productEvent->markAsOutOfStockForEvent();
-    //     $productEvent->setUnsoldPrice(0);
+        foreach ($saleEvent->getProductEvents() as $productEvent) {
+            $product = $productEvent->getProduct();
+            $quantitySold = $productEvent->getQuantity();
+            $recipe = $product?->getRecipe();
 
-    //     $saleEventId = $productEvent->getEvent()->getId();
+            if ($product) {
+                $allProductsForAnalysis[] = $product;
+            }
 
-    //     $entityManager->flush();
+            if ($recipe) {
+                $recipesToAnalyze[] = $recipe;
+            }
 
-    //     $this->addFlash('success', sprintf(
-    //         'Le produit "%s" a été marqué comme en rupture de stock pour cet événement.',
-    //         $productEvent->getProduct()->getName()
-    //     ));
+            $productsInSaleView[] = [
+                'name' => $product?->getName() ?? 'Produit inconnu',
+                'quantity' => $quantitySold,
+                'duration' => $recipe?->getTotalDuration() ?? 0,
+            ];
 
-    //     return $this->redirectToRoute('sale_event_show', ['id' => $saleEventId]);
-    // }
+            $totalQuantity += $quantitySold;
+        }
+
+        $totalIngredients = [];
+        foreach ($saleEvent->getProductEvents() as $productEvent) {
+            $product = $productEvent->getProduct();
+            $quantitySold = $productEvent->getQuantity();
+            $recipe = $product?->getRecipe();
+
+            if ($recipe) {
+                $ingredientsForProduct = $recipeAnalyzer->calculateTotalIngredients($recipe, $quantitySold);
+                foreach ($ingredientsForProduct as $ingredientId => $data) {
+                    if (!isset($totalIngredients[$ingredientId])) {
+                        $totalIngredients[$ingredientId] = $data;
+                    } else {
+                        $totalIngredients[$ingredientId]['quantity'] += $data['quantity'];
+                    }
+                }
+            }
+        }
+
+        $totalProductionDuration = $recipeAnalyzer->calculateTotalProductionDuration($recipesToAnalyze);
+        $uniqueAllergensMap = $allergenCollector->collectAllergensForProducts($allProductsForAnalysis);
+        $uniqueAllergenNames = array_values($uniqueAllergensMap);
+
+        return $this->render('sale_event/plan.html.twig', [
+            'saleEvent' => $saleEvent,
+            'products' => $productsInSaleView,
+            'totalQuantity' => $totalQuantity,
+            'totalIngredients' => $totalIngredients,
+            'totalDuration' => $totalProductionDuration,
+            'uniqueAllergens' => $uniqueAllergenNames
+        ]);
+    }
 }
