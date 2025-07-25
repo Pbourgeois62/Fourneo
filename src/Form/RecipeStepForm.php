@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
@@ -34,7 +35,7 @@ class RecipeStepForm extends AbstractType
             ->add('durationMinutes', IntegerType::class, [
                 'label' => 'Durée (minutes)',
                 'required' => false,
-            ])            
+            ])
             ->add('stepProducts', LiveCollectionType::class, [
                 'entry_type' => StepProductForm::class,
                 'entry_options' => [
@@ -45,7 +46,12 @@ class RecipeStepForm extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
                 'label' => false,
-            ]);
+            ])
+            ->add('number', HiddenType::class, [
+                'required' => false,
+                'label' => false, 
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

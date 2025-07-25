@@ -68,6 +68,7 @@ class addStepsToRecipeForm extends AbstractType
                 'by_reference' => false,
                 'entry_options' => [
                     'recipe' => $recipeEntity,
+                    'label' => false,
                 ],
                 'label' => false,
             ])
