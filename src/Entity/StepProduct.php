@@ -23,6 +23,9 @@ class StepProduct
     #[ORM\JoinColumn(nullable: false)]
     private ?Step $step = null;
 
+     #[ORM\Column(type: 'integer', nullable: true)]
+    private ?int $stepNumber = null;
+
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'stepProducts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
@@ -81,6 +84,26 @@ class StepProduct
     public function setUnit(?Unit $unit): static
     {
         $this->unit = $unit;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of stepNumber
+     */ 
+    public function getStepNumber()
+    {
+        return $this->stepNumber;
+    }
+
+    /**
+     * Set the value of stepNumber
+     *
+     * @return  self
+     */ 
+    public function setStepNumber($stepNumber)
+    {
+        $this->stepNumber = $stepNumber;
 
         return $this;
     }
