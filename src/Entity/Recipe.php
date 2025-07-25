@@ -31,8 +31,8 @@ class Recipe
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column]
-    private ?bool $isSubRecipe = false;
+    // #[ORM\Column]
+    // private ?bool $isSubRecipe = false;
 
     #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'recipe', cascade: ['persist', 'remove'])]
     private Collection $steps;
@@ -153,14 +153,14 @@ class Recipe
         return $this;
     }
 
-    public function getIsSubRecipe(): ?bool
-    {
-        return $this->isSubRecipe;
-    }
+    // public function getIsSubRecipe(): ?bool
+    // {
+    //     return $this->isSubRecipe;
+    // }
 
-    public function setIsSubRecipe(?bool $isSubRecipe): static
-    {
-        $this->isSubRecipe = $isSubRecipe;
-        return $this;
-    }
+    // public function setIsSubRecipe(?bool $isSubRecipe): static
+    // {
+    //     $this->isSubRecipe = $isSubRecipe;
+    //     return $this;
+    // }
 }

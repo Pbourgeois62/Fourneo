@@ -62,9 +62,11 @@
 								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">{{ product.price }}
 									€</td>
 								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
+								{% for category in product.categories %}
 									<span class="inline-block bg-golden text-cream text-xs font-semibold px-2 py-0.5 rounded shadow-sm dark:bg-golden dark:text-coffee">
-										{{ product.category.name }}
+										{{ category.name }}
 									</span>
+								{% endfor %}
 								</td>
 								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
 									{% if product.allergens is not empty %}
