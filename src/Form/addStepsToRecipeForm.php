@@ -58,7 +58,13 @@ class addStepsToRecipeForm extends AbstractType
             ->add('isSubRecipe', CheckboxType::class, [
                 'label' => 'Peut être utilisée comme sous-recette',
                 'required' => false,
-                'mapped' => true,
+                'mapped' => false,
+                'label_attr' => ['class' => 'block text-sm font-medium text-coffee mt-4'],
+            ])
+            ->add('isSalable', CheckboxType::class, [
+                'label' => 'Le produit de cette recette est il destiné à la vente?',
+                'required' => false,
+                'mapped' => false,
                 'label_attr' => ['class' => 'block text-sm font-medium text-coffee mt-4'],
             ])
             ->add('steps', LiveCollectionType::class, [

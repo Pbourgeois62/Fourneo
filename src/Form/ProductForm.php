@@ -5,7 +5,6 @@ namespace App\Form;
 use App\Entity\Unit;
 use App\Entity\Product;
 use App\Entity\Allergen;
-use App\Entity\Category;
 use App\Repository\AllergenRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfonycasts\DynamicForms\DependentField;
@@ -14,13 +13,11 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfonycasts\DynamicForms\DynamicFormBuilder;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class ProductForm extends AbstractType
 {
@@ -30,7 +27,7 @@ class ProductForm extends AbstractType
 
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom du produit',
+                'label' => 'Nom de l\'ingrédient',
                 'required' => true,
                 'attr' => [
                     'placeholder' => 'Entrez le nom du produit (ex: Croissant pur beurre)',
@@ -50,7 +47,7 @@ class ProductForm extends AbstractType
                 'attr' => [
                     'placeholder' => 'Entrez le prix (ex: 2.34)',
                 ],
-                'constraints' => [                    
+                'constraints' => [
                     new Type([
                         'type' => 'float',
                         'message' => 'Le prix doit être un nombre valide.',
@@ -66,34 +63,8 @@ class ProductForm extends AbstractType
                 'label' => 'Unité de prix',
                 'placeholder' => 'Choisissez l\'unité d\'achat',
                 'help' => 'L\'unité pour laquelle ce prix est appliqué (Ex: le kilogramme pour la farine).',
-            ])
-            ->add('size', TextType::class, [
-                'label' => 'Taille',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Facultatif ... Entrez la taille',
-                ],
-                'constraints' => [
-                    new Length([
-                        'max' => 10,
-                        'maxMessage' => 'La taille ne doit pas dépasser {{ limit }} caractères.',
-                    ]),
-                ],
-            ])
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'name',
-                'required' => false,
-                'autocomplete' => true,
-                'label' => 'Catégorie du produit',
-                'placeholder' => 'facultatif ... Choisissez une catégorie',
-                'help' => 'Sélectionnez la catégorie à laquelle ce produit appartient.',
-            ])
-            ->add('isNewCategory', CheckboxType::class, [
-                'label' => 'Ou souhaitez-vous créer une nouvelle catégorie ?',
-                'required' => false,
-                'mapped' => false,
-            ])
+            ])           
+            
             ->add('allergens', EntityType::class, [
                 'class' => Allergen::class,
                 'choice_label' => 'name',

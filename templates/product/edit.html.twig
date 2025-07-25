@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ product is not null ? 'Modification' : 'Création'  }} d'un produit{% endblock %}
+{% block title %}{{ product is not null ? 'Modification' : 'Création'  }} d'un ingrédient{% endblock %}
 
 {% block body %}
 
 <h1 class="title">
-		{{ product is not null ? 'Modification du produit: ' ~ product.name : 'Création d\'un nouveau produit' }}
+		{{ product is not null ? 'Modification de l\'ingredient: ' ~ product.name : 'Création d\'un ingrédient' }}
 </h1>
 <div class="main-container">
-{{ component('Form:registerProductForm', { product: product }) }}
+{{ component('Form:registerIngredientForm', { product: product }) }}
 </div>
 {% endblock %}

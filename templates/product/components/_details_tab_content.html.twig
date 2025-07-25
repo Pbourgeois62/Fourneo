@@ -8,8 +8,10 @@
 </p>
 
 <p class="text-sm  mb-4">
-    <strong>Catégorie</strong>
+    <strong>Catégories: </strong>
+    {% for category in product.categories %}
     <span class="inline-block bg-golden text-cream text-xs font-semibold px-2 py-0.5 rounded shadow-sm">
-        {{ product.category.name }}
+        {{ category.name }}<br>
     </span>
+    {% endfor %} 
 </p>

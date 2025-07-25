@@ -34,9 +34,8 @@ class Product
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Category $category = null;
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products')]
+    private Collection $categories;
 
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Label::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $labels;
@@ -55,7 +54,7 @@ class Product
 
     #[ORM\OneToOne(targetEntity: Recipe::class, inversedBy: 'productResult', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
-    private ?Recipe $recipe = null;    
+    private ?Recipe $recipe = null;      
 
     public function __construct()
     {
@@ -65,6 +64,7 @@ class Product
         $this->labels = new ArrayCollection();
         $this->deliveryNotes = new ArrayCollection();
         $this->stepProducts = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,14 +127,28 @@ class Product
         return $this;
     }
 
-    public function getCategory(): ?Category
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
     {
-        return $this->category;
+        return $this->categories;
     }
 
-    public function setCategory(?Category $category): static
+    public function addCategory(Category $category): static
     {
-        $this->category = $category;
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->addProduct($this);
+        }
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeProduct($this);
+        }
         return $this;
     }
 

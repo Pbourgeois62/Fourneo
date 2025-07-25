@@ -5,6 +5,7 @@ namespace App\Twig\Components\Form;
 use App\Entity\Product;
 use App\Entity\Category;
 use App\Form\ProductForm;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -16,7 +17,7 @@ use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[AsLiveComponent]
-class registerProductForm extends AbstractController
+class registerIngredientForm extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
@@ -35,7 +36,7 @@ class registerProductForm extends AbstractController
     }
 
     #[LiveAction]
-    public function save(EntityManagerInterface $entityManager)
+    public function save(EntityManagerInterface $entityManager, CategoryRepository $categoryRepository)
     {
         $this->submitForm();
 
@@ -44,19 +45,18 @@ class registerProductForm extends AbstractController
             return;
         }
         $product = $this->getForm()->getData();
-      
-        if ($this->getForm()->get('isNewCategory')->getData()) {
-            $newCategory = new Category();
-            $newCategory->setName($this->getForm()->get('newCategory')->getData());
-            $product->setCategory($newCategory);
-            $entityManager->persist($newCategory);
-        }
-       
-        
+        $ingredientCategory = $categoryRepository->findOneBy(['name' => 'ingrédient']);
+        if ($ingredientCategory === null) {
+            $ingredientCategory = new Category();
+            $ingredientCategory->setName('ingrédient');
+            $entityManager->persist($ingredientCategory);
+        } else {
+            $product->addCategory($ingredientCategory);
+        }        
         $entityManager->persist($product);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Produit enregistré avec succès !');
+        $this->addFlash('success', 'ingrédient enregistré avec succès !');
 
         return $this->redirectToRoute('product_index');
     }
