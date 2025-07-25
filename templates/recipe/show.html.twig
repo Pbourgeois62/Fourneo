@@ -46,12 +46,14 @@
                 </div>                
             </div>
 
-            <div class="mt-8 pt-8 border-t border-cream-dark dark:border-coffee-light">
+           <div class="mt-8 pt-8 border-t border-cream-dark dark:border-coffee-light">
                 <h2 class="title-medium mb-3 text-coffee dark:text-flour">Étapes de préparation</h2>
                 {% if recipe.steps is not empty %}
-                    <ol class="list-decimal list-inside text-coffee dark:text-flour space-y-4">
+                    {# Change <ol> to <ul> #}
+                    <ul class="list-none text-coffee dark:text-flour space-y-4"> {# Utilise list-none de Tailwind pour supprimer les puces par défaut #}
                         {% for step in recipe.steps|sort((a, b) => a.number <=> b.number) %}
                             <li class="mb-2">
+                                {# Réintroduis l'affichage manuel du numéro d'étape et le point #}
                                 <span class="font-medium text-coffee dark:text-flour">{{ step.number }}. {{ step.description }}</span>
                                 {% if step.durationMinutes is not null and step.durationMinutes > 0 %}
                                     <span class="text-sm text-coffee dark:text-flour block">
@@ -93,7 +95,7 @@
                                 {% endif %}
                             </li>
                         {% endfor %}
-                    </ol>
+                    </ul> {# Change </ol> to </ul> #}
                 {% else %}
                     {% include 'partials/_empty_state.html.twig' with {'message': 'Aucune étape de préparation n\'a été définie pour cette recette.'} %}
                 {% endif %}
