@@ -84,6 +84,9 @@
                                     <a href="{{ path('sale_event_edit', {id: event.id}) }}" class="btn-edit" aria-label="Modifier l'événement {{ event.name }}">
                                         <i class="bi bi-pencil-square text-lg"></i>
                                     </a>
+                                    <a href="{{ path('sale_event_plan', {id: event.id}) }}" class="btn-edit" aria-label="Modifier l'événement {{ event.name }}">
+                                        <i class="bi bi-clipboard-check text-lg"></i>
+                                    </a>                      	
                                 {% endif %}
                                 <form method="post" action="{{ path('sale_event_delete', {id: event.id}) }}" onsubmit="return confirm('Confirmer la suppression de l\'événement {{ event.name }} ?');" class="inline">
                                     <input type="hidden" name="_method" value="DELETE"/>

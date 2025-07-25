@@ -18,11 +18,25 @@
 	</button>
 
 	<!-- Desktop Menu -->
-	<div class="hidden md:flex items-center space-x-6 font-semibold" id="desktop-menu">
-		
-			{# Simplifié la classe pour utiliser dropdown-item-nav #}
-			<a href="{{ path('sale_event_index') }}" class="btn-nav">Événements</a>		
+	<div
+		class="hidden md:flex items-center space-x-6 font-semibold" id="desktop-menu">
 
+		{# Simplifié la classe pour utiliser dropdown-item-nav #}
+		<a href="{{ path('sale_event_index') }}" class="btn-nav">Événements</a>
+		{# Dropdown evenements #}
+		{# <div class="relative group" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
+			<button @click="dropdownOpen = !dropdownOpen" class="btn-nav">
+				Evenements
+			<img src="{{ asset('images/bakery_arrow_3.png') }}" onerror="this.onerror=null;this.src='https://placehold.co/20x20/6F4E37/FFFFFF?text=V'" alt="Icône flèche" class="ml-1 w-5 h-5 transition-transform duration-200" :class="{ 'rotate-180': dropdownOpen }"/>
+			</button>
+			<div x-show="dropdownOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute left-1/2 -translate-x-1/2 mt-2 w-48 rounded-md bg-transparent z-10 origin-top">
+				<ul class="py-1 text-sm text-gray-700 dark:" aria-labelledby="dropdownGestionArticles">
+					<li>
+						<a href="{{ path('sale_event_plan', ) }}" class="dropdown-item-nav">Voir le plan</a>
+					</li>
+				</ul>
+			</div>
+		</div> #}
 		<!-- Dropdown "Gestion Articles" for Desktop -->
 		<div class="relative group" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
 			<button @click="dropdownOpen = !dropdownOpen" class="btn-nav">
@@ -71,7 +85,7 @@
 					{# Simplifié la classe pour utiliser dropdown-item-nav #}
 					<li>
 						<a href="{{ path('recipe_new') }}" class="dropdown-item-nav">Créer</a>
-					</li>					
+					</li>
 					{# Simplifié la classe pour utiliser dropdown-item-nav #}
 					<li>
 						<a href="{{ path('unit_index') }}" class="dropdown-item-nav">Unités de mesure</a>
@@ -164,7 +178,7 @@
 							{# Simplifié la classe pour utiliser dropdown-item-nav #}
 							<li>
 								<a href="{{ path('recipe_new') }}" class="dropdown-item-nav">Créer</a>
-							</li>							
+							</li>
 							{# Simplifié la classe pour utiliser dropdown-item-nav #}
 							<li>
 								<a href="{{ path('unit_index') }}" class="dropdown-item-nav">Unités de mesure</a>

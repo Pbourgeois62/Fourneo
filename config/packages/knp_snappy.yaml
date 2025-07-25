@@ -1,0 +1,14 @@
+# config/packages/knp_snappy.yaml
+knp_snappy:
+    pdf:
+        enabled: true
+        binary: '%env(WKHTMLTOPDF_PATH)%'
+        options:
+            encoding: 'UTF-8'
+            enable-javascript: true
+            # C'est la syntaxe correcte pour l'option base-url
+            base-url: '%env(APP_URL)%'
+    image:
+        enabled: true
+        binary: '%env(WKHTMLTOIMAGE_PATH)%'
+        options: []
