@@ -5,7 +5,7 @@
 html {
     @apply transition-colors duration-300;
     height: 100%;
-    @apply scroll-smooth;    
+    @apply scroll-smooth;
 }
 
 body {
@@ -19,7 +19,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     min-height: 100vh;
-    height: 100%;    
+    height: 100%;
 }
 
 html.dark body {
@@ -72,11 +72,11 @@ html.dark body {
 }
 
 .btn-edit {
-    @apply text-blue-400 hover:text-blue-300 transition-colors duration-300 ease-in-out;    
+    @apply text-blue-400 hover:text-blue-300 transition-colors duration-300 ease-in-out;
 }
 
 .btn-delete {
-    @apply text-red-400 hover:text-red-300 transition-colors duration-300 ease-in-out;   
+    @apply text-red-400 hover:text-red-300 transition-colors duration-300 ease-in-out;
 }
 
 .btn-validation {
@@ -102,10 +102,12 @@ html.dark body {
 
 .btn-nav {
     @apply flex items-center text-coffee hover:text-golden hover:scale-105 transition-all duration-200;
+
     .dark & {
         @apply text-flour hover:text-golden
     }
 }
+
 /* class="flex items-center hover:text-salmon hover:scale-105 transition-all duration-200 rounded-lg text-coffee dark:"> */
 @layer utilities {
     [aria-selected="true"] {
@@ -121,6 +123,16 @@ html.dark body {
             background-color: theme('colors.gray.700') !important;
         }
     }
+}
+
+.card-glow {
+    background-color: #F77F00;
+    box-shadow: 0 10px 25px rgba(247, 127, 0, 0.4);
+}
+
+.card-dynamic {
+    background-color: #F5EFE6;
+    border: 2px solid #F77F00;
 }
 
 #swup {

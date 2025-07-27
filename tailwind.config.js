@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class', // Active la stratégie du mode sombre basée sur les classes
+  darkMode: 'class',
   content: [
     "./assets/**/*.js",
     "./templates/**/*.html.twig",
@@ -13,7 +13,7 @@ module.exports = {
       colors: {
         golden: ' #F6C867',
         cream: ' #FFF4E0',
-        coffee: 'rgb(23, 9, 5)',
+        coffee: '#1c1917',
         salmon: ' #E67E53',
         flour: ' #FAF9F6',
         skyblue: '#89B6DC',    // bleu doux pour validation

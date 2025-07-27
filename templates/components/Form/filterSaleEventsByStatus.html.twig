@@ -163,12 +163,8 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
-    {% elseif status is null %}
-        <div class="flex justify-center">
-            <a href="{{ path('sale_event_new') }}" class="btn-validation">Créer un événement</a>
-        </div>
+        </div>    
     {% else %}
-        {% include 'partials/_empty_state.html.twig' with {'message': 'Aucun événement associé à ce status.'} %}
+        {% include 'partials/_empty_state.html.twig' with {'message': 'Aucun événement de ce typeAucune description disponible..'} %}
     {% endif %}
 </div>

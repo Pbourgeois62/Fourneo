@@ -4,118 +4,108 @@
 {% endblock %}
 
 {% block body %}
-    <h1 class="title">Bienvenue sur votre tableau de bord</h1>
+	<h1 class="title">Bienvenue sur votre tableau de bord</h1>
 
-    <div class="main-container mb-6">
-        <div class="item-card p-4">
-            <h2 class="text-2xl font-bold  border-b pb-3 mb-4">Actions rapides</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+	<div class="main-container mb-6">
+		<div class="item-card p-4">
+			<h2 class="text-2xl font-bold  border-b pb-3 mb-4">Actions rapides</h2>
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 
-                <a href="{{ path('product_new') }}" class="flex flex-col items-center justify-center p-4 bg-flour border border-golden/30 rounded-lg shadow-md
-                   hover:shadow-lg hover:border-golden transition-all duration-300  hover:text-golden text-center group">
-                    <i class="bi bi-box-seam-fill text-4xl mb-2 text-golden group-hover: transition-colors duration-300"></i>
-                    <span class="font-semibold text-lg text-coffee">Nouveau Produit</span>
-                    <p class="text-sm group-hover:transition-colors duration-300 dark:text-coffee">Ajouter un article à vendre</p>
-                </a>
+				<a href="{{ path('product_new') }}" class="flex flex-col items-center justify-center p-4 bg-flour border border-golden/30 rounded-lg shadow-md
+						                   hover:shadow-lg hover:border-golden transition-all duration-300  hover:text-golden text-center group">
+					<i class="bi bi-box-seam-fill text-4xl mb-2 text-golden group-hover: transition-colors duration-300"></i>
+					<span class="font-semibold text-lg text-coffee">Nouveau Produit</span>
+					<p class="text-sm group-hover:transition-colors duration-300 dark:text-coffee">Ajouter un article à vendre</p>
+				</a>
 
-                <a href="{{ path('sale_event_new') }}" class="flex flex-col items-center justify-center p-4 bg-flour border border-golden/30 rounded-lg shadow-md
-                   hover:shadow-lg hover:border-golden transition-all duration-300  hover:text-golden text-center group">
-                    <i class="bi bi-calendar-event-fill text-4xl mb-2 text-golden group-hover: transition-colors duration-300"></i>
-                    <span class="font-semibold text-lg text-coffee">Nouvel Événement</span>
-                    <p class="text-sm group-hover:transition-colors duration-300 dark:text-coffee">Planifier une vente ou un marché</p>
-                </a>
+				<a href="{{ path('sale_event_new') }}" class="flex flex-col items-center justify-center p-4 bg-flour border border-golden/30 rounded-lg shadow-md
+						                   hover:shadow-lg hover:border-golden transition-all duration-300  hover:text-golden text-center group">
+					<i class="bi bi-calendar-event-fill text-4xl mb-2 text-golden group-hover: transition-colors duration-300"></i>
+					<span class="font-semibold text-lg text-coffee">Nouvel Événement</span>
+					<p class="text-sm group-hover:transition-colors duration-300 dark:text-coffee">Planifier une vente ou un marché</p>
+				</a>
 
-                <a href="{{ path('delivery_note_new') }}" class="flex flex-col items-center justify-center p-4 bg-flour border border-golden/30 rounded-lg shadow-md
-                   hover:shadow-lg hover:border-golden transition-all duration-300  hover:text-golden text-center group">
-                    <i class="bi bi-truck-flatbed text-4xl mb-2 text-golden group-hover: transition-colors duration-300"></i>
-                    <span class="font-semibold text-lg text-coffee">Nouveau Bon de Livraison</span>
-                    <p class="text-sm group-hover:transition-colors duration-300 dark:text-coffee">Enregistrer un bon d'expédition</p>
-                </a>
+				<a href="{{ path('delivery_note_new') }}" class="flex flex-col items-center justify-center p-4 bg-flour border border-golden/30 rounded-lg shadow-md
+						                   hover:shadow-lg hover:border-golden transition-all duration-300  hover:text-golden text-center group">
+					<i class="bi bi-truck-flatbed text-4xl mb-2 text-golden group-hover: transition-colors duration-300"></i>
+					<span class="font-semibold text-lg text-coffee">Nouveau Bon de Livraison</span>
+					<p class="text-sm group-hover:transition-colors duration-300 dark:text-coffee">Enregistrer un bon d'expédition</p>
+				</a>
 
-                <a href="{{ path('allergen_new') }}" class="flex flex-col items-center justify-center p-4 bg-flour border border-golden/30 rounded-lg shadow-md
-                   hover:shadow-lg hover:border-golden transition-all duration-300  hover:text-golden text-center group">
-                    <i class="bi bi-exclamation-triangle-fill text-4xl mb-2 text-golden group-hover: transition-colors duration-300"></i>
-                    <span class="font-semibold text-lg text-coffee">Nouvel Allergène</span>
-                    <p class="text-sm group-hover:transition-colors duration-300 dark:text-coffee dark:group-hover:golden ">Ajouter un allergène à la liste</p>
-                </a>
-            </div>
-        </div>
-    </div>
+				<a href="{{ path('allergen_new') }}" class="flex flex-col items-center justify-center p-4 bg-flour border border-golden/30 rounded-lg shadow-md
+						                   hover:shadow-lg hover:border-golden transition-all duration-300  hover:text-golden text-center group">
+					<i class="bi bi-exclamation-triangle-fill text-4xl mb-2 text-golden group-hover: transition-colors duration-300"></i>
+					<span class="font-semibold text-lg text-coffee">Nouvel Allergène</span>
+					<p class="text-sm group-hover:transition-colors duration-300 dark:text-coffee dark:group-hover:golden ">Ajouter un allergène à la liste</p>
+				</a>
+			</div>
+		</div>
+	</div>
 
-    <div class="main-container">
-        <div class="item-card">
-            <div class="space-y-6 text-left">
-                <h2 class="text-2xl font-bold  border-b pb-3 mb-4">Événements du jour</h2>
+	<div class="main-container">
+		<div class="item-card">
+			<div class="space-y-6 text-left">
+				<h2 class="text-2xl font-bold  border-b pb-3 mb-4">Événements du jour</h2>
 
-                {% if todayEvents is not empty %}
-                    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {% for saleEvent in todayEvents %}
-                            <div class="relative bg-flour border border-golden/30 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                                <h3 class="text-xl font-semibold  mb-2">{{ saleEvent.name }}</h3>
+				{% if todayEvents is not empty %}
+					<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+						{% for saleEvent in todayEvents %}
+							<div class="relative bg-flour border border-golden/30 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+								<h3 class="text-xl font-semibold  mb-2">{{ saleEvent.name }}</h3>
 
-                                {% if saleEvent.description %}
-                                    <p class="text-sm text-salmon italic mb-3 line-clamp-2">{{ saleEvent.description }}</p>
-                                {% endif %}
+								{% if saleEvent.description %}
+									<p class="text-sm text-salmon italic mb-3 line-clamp-2">{{ saleEvent.description }}</p>
+								{% endif %}
 
-                                <div class="text-sm  space-y-1 mb-4">
-                                    <p>
-                                        <i class="bi bi-geo-alt-fill mr-2 text-golden"></i>
-                                        <strong>Adresse :</strong>
-                                        {{ saleEvent.address }}
-                                    </p>
-                                    <p>
-                                        <i class="bi bi-calendar-event-fill mr-2 text-golden"></i>
-                                        <strong>Début :</strong>
-                                        {{ saleEvent.startDate ? saleEvent.startDate|date('H:i') : 'Non défini' }}
-                                    </p>
-                                    <p>
-                                        <i class="bi bi-calendar-check-fill mr-2 text-golden"></i>
-                                        <strong>Fin :</strong>
-                                        {{ saleEvent.endDate ? saleEvent.endDate|date('H:i') : 'Non défini' }}
-                                    </p>
-                                </div>
+								<div class="text-sm  space-y-1 mb-4">
+									<p>
+										<i class="bi bi-geo-alt-fill mr-2 text-golden"></i>
+										<strong>Adresse :</strong>
+										{{ saleEvent.address }}
+									</p>
+									<p>
+										<i class="bi bi-calendar-event-fill mr-2 text-golden"></i>
+										<strong>Début :</strong>
+										{{ saleEvent.startDate ? saleEvent.startDate|date('H:i') : 'Non défini' }}
+									</p>
+									<p>
+										<i class="bi bi-calendar-check-fill mr-2 text-golden"></i>
+										<strong>Fin :</strong>
+										{{ saleEvent.endDate ? saleEvent.endDate|date('H:i') : 'Non défini' }}
+									</p>
+								</div>
 
-                                {% if saleEvent.productEvents is not empty %}
-                                    <div class="mt-4 pt-4 border-t border-golden/30">
-                                        <p class="text-md font-medium ">
-                                            <i class="bi bi-box-seam-fill mr-2 text-golden"></i>
-                                            Produits en vente :
-                                            <strong class="text-golden">{{ saleEvent.productEvents|length }}</strong>
-                                        </p>
-                                        <p class="text-md font-medium ">
-                                            <i class="bi bi-cash-stack mr-2 text-golden"></i>
-                                            Enveloppe :
-                                            <strong class="text-golden">{{ saleEvent.totalRevenue|number_format(2, ',', ' ') }} €</strong>
-                                        </p>
-                                    </div>
-                                {% else %}
-                                    <p class="text-sm text-salmon mt-4 pt-4 border-t border-golden/30">Aucun produit associé.</p>
-                                {% endif %}
+								{% if saleEvent.productEvents is not empty %}
+									<div class="mt-4 pt-4 border-t border-golden/30">
+										<p class="text-md font-medium ">
+											<i class="bi bi-box-seam-fill mr-2 text-golden"></i>
+											Produits en vente :
+											<strong class="text-golden">{{ saleEvent.productEvents|length }}</strong>
+										</p>
+										<p class="text-md font-medium ">
+											<i class="bi bi-cash-stack mr-2 text-golden"></i>
+											Enveloppe :
+											<strong class="text-golden">{{ saleEvent.totalRevenue|number_format(2, ',', ' ') }}
+												€</strong>
+										</p>
+									</div>
+								{% else %}
+									<p class="text-sm text-salmon mt-4 pt-4 border-t border-golden/30">Aucun produit associé.</p>
+								{% endif %}
 
-                                <div class="mt-6 flex justify-end">
-                                    <a href="{{ path('sale_event_show', {id: saleEvent.id}) }}" class="btn-validation">
-                                        <i class="bi bi-eye-fill mr-2"></i>
-                                        Gérer la vente
-                                    </a>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    <div class="border-2 border-l-4 border-salmon p-4 rounded-lg">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <i class="bi bi-info-circle-fill text-salmon text-xl"></i>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm ">
-                                    Aucun événement de vente n'est prévu aujourd'hui.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+								<div class="mt-6 flex justify-end">
+									<a href="{{ path('sale_event_show', {id: saleEvent.id}) }}" class="btn-validation">
+										<i class="bi bi-eye-fill mr-2"></i>
+										Gérer la vente
+									</a>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				{% else %}
+					{% include 'partials/_empty_state.html.twig' with {'message': 'Aucun événement aujourd’hui.'} %}
+				{% endif %}
+			</div>
+		</div>
+	</div>
 {% endblock %}

@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Recipe;
-use App\Repository\RecipeRepository;
 use App\Service\RecipeCostCalculator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,23 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/recipe')]
 final class RecipeController extends AbstractController
 {
-    public function __construct(private RecipeCostCalculator $recipeCostCalculator) {}
-
-    #[Route('', name: 'recipe_index', methods: ['GET', 'POST'])]
-    public function index(RecipeRepository $recipeRepository): Response
-    {
-        $recipes = $recipeRepository->findAll();
-        $recipesWithCosts = [];
-
-        foreach ($recipes as $recipe) {
-            $recipe->totalCost = $this->recipeCostCalculator->calculateTotalCost($recipe);
-            $recipesWithCosts[] = $recipe;
-        }
-
-        return $this->render('recipe/index.html.twig', [
-            'recipes' => $recipesWithCosts,
-        ]);
-    }
+    public function __construct(private RecipeCostCalculator $recipeCostCalculator) {}   
 
     #[Route('/new', name: 'recipe_new', methods: ['GET'])]
     public function newRecipe(): Response
@@ -75,6 +58,6 @@ final class RecipeController extends AbstractController
             $this->addFlash('error', 'Token CSRF invalide.');
         }
 
-        return $this->redirectToRoute('recipe_index');
+        return $this->redirectToRoute('product_index');
     }    
 }

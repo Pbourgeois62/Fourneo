@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Product;
+use App\Repository\ProductRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\Autocomplete\Form\AsEntityAutocompleteField;
@@ -18,6 +19,9 @@ class AutoCompleteProductOnlyForm extends AbstractType
             'searchable_fields' => ['name'],
             'placeholder' => 'Rechercher un produit...',
             'choice_label' => 'displayName',
+            'query_builder' => function (ProductRepository $productRepository) {
+                return $productRepository->createQueryBuilderForSubRecipeOrIngredientProducts();
+            },
         ]);
     }
 

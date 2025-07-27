@@ -7,6 +7,11 @@
 {% block body %}
 	<h1 class="title">Événements de vente</h1>
 	<div class="main-container">
+	<div class="mt-8 text-right">
+			<a href="{{ path('sale_event_new') }}" class="btn-action mb-4 md:mb-8">
+				<i class="bi bi-plus-circle mr-2"></i>Créer événement
+			</a>
+		</div>
 		{{ component('Form:filterSaleEventsByStatus') }}
 	</div>
 {% endblock %}

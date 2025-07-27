@@ -5,7 +5,6 @@ namespace App\Twig\Components\Form;
 use App\Form\SaleEventStatusForm;
 use App\Repository\SaleEventRepository;
 use Symfony\Component\Form\FormInterface;
-use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;

@@ -46,7 +46,7 @@
 				{% endfor %}
 			</div>
 		{% else %}
-			<p class="">Aucune étiquette disponible.</p>
+			{% include 'partials/_empty_state.html.twig' with {'message': 'Aucune étiquette disponible'} %}
 		{% endif %}
 	</div>
 {% endblock %}
