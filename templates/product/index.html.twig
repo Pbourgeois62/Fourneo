@@ -5,111 +5,19 @@
 
 {% block body %}
 	<h1 class="title">Liste des produits</h1>
-	<div class="main-container">
-		<div class="mt-8 text-right">
+	<div class="flex flex-col md:flex-row items-center md:justify-center gap-2 md:gap-4">
+		<div>
 			<a href="{{ path('product_new') }}" class="btn-action mb-4 md:mb-8">
-				<i class="bi bi-plus-circle mr-2"></i>Créer un produit
+				<i class="bi bi-plus-circle mr-2"></i>Enregistrer un ingrédient
 			</a>
 		</div>
-
-		{% if products is not empty %}
-			<div class="overflow-x-auto rounded-lg shadow-md">
-				<table class="min-w-full">
-					<thead class="bg-cream text-coffee rounded-lg dark:bg-coffee dark:text-flour">
-						<tr class="hidden md:table-row">
-							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
-								Nom
-							</th>
-							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
-								Taille
-							</th>
-							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
-								Prix (€)
-							</th>
-							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
-								Catégorie
-							</th>
-							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
-								Allergènes
-							</th>
-							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
-								Étiquettes
-							</th>
-							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
-								Livraisons
-							</th>
-							<th scope="col" class="px-6 py-3 text-right text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
-								Actions
-							</th>
-						</tr>
-						<tr
-							class="md:hidden">
-							{# Visible on mobile, hidden on medium and larger screens #}
-							<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
-								Nom
-							</th>
-						</tr>
-					</thead>
-					<tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700">
-						{% for product in products %}
-							<tr
-								class="hidden md:table-row text-coffee">
-								{# Hidden on mobile, visible on medium and larger screens #}
-								<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sm text-coffee">
-									{{ product.name }}
-								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">{{ product.size ?? '—' }}</td>
-								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">{{ product.price }}
-									€</td>
-								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
-								{% for category in product.categories %}
-									<span class="inline-block bg-golden text-cream text-xs font-semibold px-2 py-0.5 rounded shadow-sm dark:bg-golden dark:text-coffee">
-										{{ category.name }}
-									</span>
-								{% endfor %}
-								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
-									{% if product.allergens is not empty %}
-										<ul class="flex flex-wrap gap-1">
-											{% for allergen in product.allergens %}
-												<li>
-													<span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full border border-red-200 cursor-help dark:bg-red-900 dark:text-red-200 dark:border-red-700" title="{{ allergen.description }}">
-														{{ allergen.name }}
-													</span>
-												</li>
-											{% endfor %}
-										</ul>
-									{% else %}
-										—
-									{% endif %}
-								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
-									{{ product.labels|length }}
-									étiquette(s)
-								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-sm text-coffee">
-									{{ product.deliveryNotes|length }}
-									bon(s) de livraison
-								</td>
-								<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end items-center space-x-2">
-									<a href="{{ path('product_show', {id: product.id}) }}" class="btn-action">
-										Gérer
-									</a>
-								</td>
-							</tr>
-							<tr class="md:hidden">
-								<td class="px-6 py-4 whitespace-nowrap text-sm font-medium bg-cream dark:bg-coffee">
-									<a href="{{ path('product_show', {id: product.id}) }}" class="text-coffee hover:text-salmon dark:text-flour dark:hover:text-salmon">
-										{{ product.name }}
-									</a>
-								</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
-		{% else %}
-			{% include 'partials/_empty_state.html.twig' with {'message': 'Aucun produit disponible.'} %}
-		{% endif %}
+		<div>
+			<a href="{{ path('recipe_new') }}" class="btn-action mb-4 md:mb-8">
+				<i class="bi bi-plus-circle mr-2"></i>Enregistrer une recette
+			</a>
+		</div>
+	</div>
+	<div class="main-container">			
+		{{ component('Form:filterProductsByCategory') }}		
 	</div>
 {% endblock %}

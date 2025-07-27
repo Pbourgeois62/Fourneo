@@ -1,0 +1,74 @@
+<div {{ attributes }}>
+	<div class="flex flex-col items-center mb-8">
+		{{ form_start(form, {'attr': {'class': 'w-full max-w-md'}}) }}
+
+		{{ form_row(form.categoryName, {
+            attr: {
+                'data-action': 'live#action',
+                'data-live-action-param': 'filterProductsBycategory',
+                'class': 'text-coffee block w-full rounded-md border border-gray-300 bg-white py-2 px-3 focus:border-coffee focus:ring focus:ring-golden'
+            }
+        }) }}
+
+		{{ form_end(form) }}
+	</div>
+	{# <div class="flex flex-col md:flex-row items-center md:justify-center gap-2 md:gap-4">
+		<div>
+			<a href="{{ path('product_new') }}" class="btn-action mb-4 md:mb-8">
+				<i class="bi bi-plus-circle mr-2"></i>Enregistrer un ingrédient
+			</a>
+		</div>
+		<div>
+			<a href="{{ path('recipe_new') }}" class="btn-action mb-4 md:mb-8">
+				<i class="bi bi-plus-circle mr-2"></i>Enregistrer une recette
+			</a>
+		</div>
+	</div> #}
+
+	{% if products is not empty %}
+		<div class="overflow-x-auto rounded-lg shadow-md">
+			<table class="min-w-full">
+				<thead class="bg-cream text-coffee rounded-lg dark:bg-coffee dark:text-flour">
+					<tr>
+						<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-coffee uppercase tracking-wider dark:text-flour">
+							Nom
+						</th>
+					</tr>
+				</thead>
+				<tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700">
+					{% for product in products %}
+						<tr class="table-row text-coffee">
+							<td class="px-6 py-3 whitespace-nowrap text-sm font-medium">
+								{% set isIngredient = product.categories|filter(category => category.name == 'ingredient')|length > 0 %}
+
+								{% set targetPath = '' %}
+								{% if isIngredient %}
+									{% set targetPath = path('product_show', {id: product.id}) %}
+								{% elseif product.recipe is not null and product.recipe.id is defined %}
+									{% set targetPath = path('recipe_show', {id: product.recipe.id}) %}
+								{% else %}
+									{% set targetPath = path('product_show', {id: product.id}) %}
+								{% endif %}
+
+								<a
+									href="{{ targetPath }}" class="text-coffee hover:text-golden">
+									{# Affichage pour les écrans larges (desktop) #}
+									<span class="hidden sm:inline">
+										{{ product.name }}
+									</span>
+									{# Affichage pour les écrans petits (mobile), avec troncature #}
+									<span class="inline sm:hidden">
+										{{ product.name|truncate(15) }}
+										{# N'oublie pas le filtre truncate ici #}
+									</span>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	{% else %}
+		{% include 'partials/_empty_state.html.twig' with {'message': 'Aucun produit associé à cette catégorie.'} %}
+	{% endif %}
+</div>

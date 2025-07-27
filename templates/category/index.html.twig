@@ -12,6 +12,8 @@
         </div>
 
         {% if categories is not empty %}
+            {% set protectedCategories = ['ingrédient', 'sous-recette', 'a-vendre'] %}
+
             <div class="overflow-x-auto rounded-lg shadow-md">
                 <table class="min-w-full">
                     <thead class="bg-cream text-coffee rounded-lg dark:bg-coffee dark:text-flour">
@@ -32,39 +34,56 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700">
                         {% for category in categories %}
+                            {% set isProtected = category.name in protectedCategories %}
+                            
+                            {# Desktop row #}
                             <tr class="hidden md:table-row text-coffee">
-                                {# Hidden on mobile, visible on medium and larger screens #}
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-sm text-coffee">
                                     {{ category.name }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end items-center space-x-2">
-                                    <a href="{{ path('category_edit', {id: category.id}) }}" class="btn-edit" aria-label="Modifier la catégorie {{ category.name }}">
+                                    <a href="{{ path('category_edit', {id: category.id}) }}" 
+                                       class="btn-edit {% if isProtected %}opacity-50 cursor-not-allowed pointer-events-none{% endif %}" 
+                                       aria-label="Modifier la catégorie {{ category.name }}"
+                                       {% if isProtected %}tabindex="-1"{% endif %}> {# Prevent tabbing to disabled link #}
                                         <i class="bi bi-pencil-square text-lg"></i>
                                     </a>
-                                    <form method="post" action="{{ path('category_delete', {id: category.id}) }}" onsubmit="return confirm('Confirmer la suppression de la catégorie {{ category.name }} ?');" class="inline">
+                                    <form method="post" action="{{ path('category_delete', {id: category.id}) }}" 
+                                          onsubmit="return confirm('Confirmer la suppression de la catégorie {{ category.name }} ?');" 
+                                          class="inline">
                                         <input type="hidden" name="_method" value="DELETE"/>
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete_category_' ~ category.id) }}"/>
-                                        <button type="submit" class="btn-delete" aria-label="Supprimer la catégorie {{ category.name }}">
+                                        <button type="submit" 
+                                                class="btn-delete {% if isProtected %}opacity-50 cursor-not-allowed pointer-events-none{% endif %}" 
+                                                aria-label="Supprimer la catégorie {{ category.name }}"
+                                                {% if isProtected %}disabled{% endif %}> {# Disable button element directly #}
                                             <i class="bi bi-trash text-lg"></i>
                                         </button>
                                     </form>
                                 </td>
                             </tr>
+                            
+                            {# Mobile row #}
                             <tr class="md:hidden">
-                                {# Mobile-specific row for categories #}
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium bg-cream dark:bg-coffee">
                                     <div class="flex justify-between items-center">
-                                        <a href="{{ path('category_edit', {id: category.id}) }}" class="text-coffee hover:text-salmon dark:text-flour dark:hover:text-salmon">
-                                            {{ category.name }}
-                                        </a>
+                                        <span class="text-coffee dark:text-flour">{{ category.name }}</span>
                                         <div class="flex space-x-2">
-                                            <a href="{{ path('category_edit', {id: category.id}) }}" class="btn-edit" aria-label="Modifier la catégorie {{ category.name }}">
+                                            <a href="{{ path('category_edit', {id: category.id}) }}" 
+                                               class="btn-edit {% if isProtected %}opacity-50 cursor-not-allowed pointer-events-none{% endif %}" 
+                                               aria-label="Modifier la catégorie {{ category.name }}"
+                                               {% if isProtected %}tabindex="-1"{% endif %}>
                                                 <i class="bi bi-pencil-square text-lg"></i>
                                             </a>
-                                            <form method="post" action="{{ path('category_delete', {id: category.id}) }}" onsubmit="return confirm('Confirmer la suppression de la catégorie {{ category.name }} ?');" class="inline">
+                                            <form method="post" action="{{ path('category_delete', {id: category.id}) }}" 
+                                                  onsubmit="return confirm('Confirmer la suppression de la catégorie {{ category.name }} ?');" 
+                                                  class="inline">
                                                 <input type="hidden" name="_method" value="DELETE"/>
                                                 <input type="hidden" name="_token" value="{{ csrf_token('delete_category_' ~ category.id) }}"/>
-                                                <button type="submit" class="btn-delete" aria-label="Supprimer la catégorie {{ category.name }}">
+                                                <button type="submit" 
+                                                        class="btn-delete {% if isProtected %}opacity-50 cursor-not-allowed pointer-events-none{% endif %}" 
+                                                        aria-label="Supprimer la catégorie {{ category.name }}"
+                                                        {% if isProtected %}disabled{% endif %}>
                                                     <i class="bi bi-trash text-lg"></i>
                                                 </button>
                                             </form>

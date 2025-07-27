@@ -5,9 +5,11 @@
 
 {% block body %}
     <div class="main-container">
-        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
-            <h1 class="title mb-4 md:mb-0">{{ recipe.name }}</h1>
-            <div class="flex space-x-4">
+
+        {# Header Section: Title and Actions #}
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-8">
+            <h1 class="title">{{ recipe.name }}</h1>
+            <div class="flex space-x-3">
                 <a href="{{ path('recipe_edit', {'id': recipe.id}) }}" class="btn-action">
                     <i class="bi bi-pencil-square mr-2"></i> Modifier
                 </a>
@@ -21,48 +23,60 @@
             </div>
         </div>
 
-        <div class="bg-white shadow-lg rounded-lg p-8 mb-8 dark:bg-coffee dark:text-flour">
-            <p class="text-coffee dark:text-flour mb-6">{{ recipe.description|default('Aucune description disponible.') }}</p>
+        {# Main Content Card #}
+        
+            {# Description #}
+            <p class="text-coffee text-lg leading-relaxed mb-8 italic dark:text-flour">
+                {{ recipe.description|default('Aucune description détaillée disponible pour cette recette.') }}
+            </p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                    <h2 class="title-medium mb-3 text-coffee dark:text-flour">Détails de la recette</h2>
-                    <ul class="list-disc list-inside text-coffee dark:text-flour space-y-2">
-                        {% if recipe.totalDuration is defined and recipe.totalDuration is not null %}
-                            <li>
-                                <strong>Durée totale :</strong>
-                                <span class="font-medium text-coffee dark:text-flour">{{ recipe.totalDuration }} minutes</span>
-                            </li>
-                        {% endif %}
-                        <li>
-                            <strong>Rendement :</strong>
-                            <span class="text-coffee dark:text-flour">{{ recipe.yield|default('Non spécifié') }} {{ recipe.yieldUnit.name ?? '' }}</span>
-                        </li>
-                        <li>
-                            <strong>Coût total :</strong>
-                            <span class="font-medium text-salmon dark:text-golden">{{ totalCost|format_currency('EUR', locale='fr') }}</span>
-                        </li>                        
-                    </ul>
-                </div>                
+            {# Recipe Details Grid #}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 border-t border-b border-cream dark:border-coffee py-6">
+                {% if recipe.totalDuration is defined and recipe.totalDuration is not null %}
+                    <div class="flex items-center space-x-3">
+                        <i class="bi bi-hourglass-split text-2xl text-golden"></i>
+                        <div>
+                            <p class="text-sm text-gray-600 dark:text-flour">Durée totale</p>
+                            <p class="text-xl font-bold text-coffee dark:text-flour">{{ recipe.totalDuration }} min</p>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="flex items-center space-x-3">
+                    <i class="bi bi-person-fill text-2xl text-golden"></i>
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-flour">Rendement</p>
+                        <p class="text-xl font-bold text-coffee dark:text-flour">{{ recipe.yield|default('N/A') }} {{ recipe.yieldUnit.name ?? '' }}</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <i class="bi bi-currency-euro text-2xl text-golden"></i>
+                    <div>
+                        <p class="text-sm text-gray-600 dark:text-flour">Coût total</p>
+                        <p class="text-xl font-bold text-salmon dark:text-golden">{{ totalCost|format_currency('EUR', locale='fr') }}</p>
+                    </div>
+                </div>
             </div>
 
-           <div class="mt-8 pt-8 border-t border-cream-dark dark:border-coffee-light">
-                <h2 class="title-medium mb-3 text-coffee dark:text-flour">Étapes de préparation</h2>
+            {# Preparation Steps Section #}
+            <div class="mb-8">
+                <h2 class="subtitle">Étapes de préparation</h2>
                 {% if recipe.steps is not empty %}
-                    {# Change <ol> to <ul> #}
-                    <ul class="list-none text-coffee dark:text-flour space-y-4"> {# Utilise list-none de Tailwind pour supprimer les puces par défaut #}
+                    <ul class="list-none p-6 sm:p-8 space-y-6">
                         {% for step in recipe.steps|sort((a, b) => a.number <=> b.number) %}
-                            <li class="mb-2">
-                                {# Réintroduis l'affichage manuel du numéro d'étape et le point #}
-                                <span class="font-medium text-coffee dark:text-flour">{{ step.number }}. {{ step.description }}</span>
+                            <li class="p-4 bg-cream dark:bg-coffee rounded-lg shadow-md ">
+                                <div class="flex items-start mb-2">
+                                    <span class="text-2xl font-bold text-golden mr-3">{{ step.number }}.</span>
+                                    <p class="text-lg font-semibold text-coffee dark:text-flour flex-1">{{ step.description }}</p>
+                                </div>
                                 {% if step.durationMinutes is not null and step.durationMinutes > 0 %}
-                                    <span class="text-sm text-coffee dark:text-flour block">
-                                        (Durée estimée : {{ step.durationMinutes }} minutes)
-                                    </span>
+                                    <p class="text-sm text-gray-600 dark:text-flour ml-8 mb-2">
+                                        <i class="bi bi-clock mr-1"></i> Durée estimée : {{ step.durationMinutes }} minutes
+                                    </p>
                                 {% endif %}
 
                                 {% if step.stepProducts is not empty %}
-                                    <ul class="list-disc ml-6 mt-1 text-coffee dark:text-flour text-sm">
+                                    <h4 class="text-md font-semibold text-coffee dark:text-flour ml-8 mt-4 mb-2">Ingrédients nécessaires :</h4>
+                                    <ul class="list-none ml-8 text-coffee dark:text-flour text-sm space-y-1">
                                         {% for stepProduct in step.stepProducts %}
                                             {% set product = stepProduct.product %}
                                             {% set quantity = stepProduct.quantity %}
@@ -74,14 +88,14 @@
                                                 {% set ingredientCost = convertedQuantity * product.price %}
                                             {% endif %}
 
-                                            <li>
-                                                - Utilise :
+                                            <li class="flex items-center">
+                                                <i class="bi bi-dot text-2xl text-golden -ml-1 mr-1"></i>
                                                 <span class="font-semibold text-coffee dark:text-flour">{{ quantity|number_format(2, ',', ' ') }}</span>
-                                                <span class="text-xs text-coffee dark:text-flour">{{ unitObject ? unitObject.name : '' }}</span>
+                                                <span class="text-xs text-gray-600 dark:text-flour ml-1 mr-1">{{ unitObject ? unitObject.name : '' }}</span>
                                                 de
-                                                <strong class="text-coffee dark:text-flour">{{ product.name }}</strong>
+                                                <strong class="text-coffee dark:text-flour ml-1">{{ product.name }}</strong>
                                                 {% if ingredientCost > 0 %}
-                                                    <span class="text-coffee dark:text-flour">
+                                                    <span class="text-sm text-gray-600 dark:text-flour ml-3">
                                                         (Coût : {{ ingredientCost|format_currency('EUR', locale='fr') }}
                                                         {% if product.price is not null and product.priceUnit is not null %}
                                                             - {{ product.price|format_currency('EUR', locale='fr') }} / {{ product.priceUnit.name }}
@@ -95,17 +109,18 @@
                                 {% endif %}
                             </li>
                         {% endfor %}
-                    </ul> {# Change </ol> to </ul> #}
+                    </ul>
                 {% else %}
                     {% include 'partials/_empty_state.html.twig' with {'message': 'Aucune étape de préparation n\'a été définie pour cette recette.'} %}
                 {% endif %}
             </div>
 
-            <div class="mt-10">
-                <a href="{{ path('recipe_index') }}" class="btn-return">
-                    <i class="bi bi-arrow-left-circle mr-2"></i> Retour à la liste
+            {# Back to list button #}
+            <div class="mt-8 pt-6">
+                <a href="{{ path('product_index') }}" class="btn-return">
+                    <i class="bi bi-arrow-left-circle mr-2"></i> Retour
                 </a>
             </div>
-        </div>
+        
     </div>
 {% endblock %}

@@ -119,7 +119,7 @@
                 </table>
             </div>
         {% else %}
-            <p class="text-salmon dark:text-flour text-center py-8">Aucun bon de livraison disponible.</p>
+           {% include 'partials/_empty_state.html.twig' with {'message': 'Aucun bon de livraison disponible'} %}
         {% endif %}
     </div>
 {% endblock %}

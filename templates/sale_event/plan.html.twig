@@ -4,22 +4,8 @@
 	{{ saleEvent.name }}
 {% endblock %}
 
-{% block stylesheets %}
-	{{ parent() }}
-	<style>
-		.card-glow {
-			background-color: #F77F00; /* Saumon */
-			box-shadow: 0 10px 25px rgba(247, 127, 0, 0.4);
-		}
-		.card-dynamic {
-			background-color: #F5EFE6; /* Crème */
-			border: 2px solid #F77F00; /* Bordure Saumon */
-		}
-	</style>
-{% endblock %}
-
 {% block body %}
-	<div class="main-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+	<div class="main-container ">
 		<div class="flex justify-between items-center mb-10">
 			<h1 class="title">
 				Fiche de production
